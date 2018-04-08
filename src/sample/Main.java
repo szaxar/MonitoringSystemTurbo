@@ -6,6 +6,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class Main extends Application {
 
     @Override
@@ -18,6 +21,22 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
+
+        Calendar systemStartTime = Calendar.getInstance();
+        ComputerStatistics computerStatistics=new ComputerStatistics(systemStartTime);
+
+
         launch(args);
+
+        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+            public void run() {
+                Calendar systemCloseTime = Calendar.getInstance();
+                computerStatistics.setSystemCloseTime(systemCloseTime);
+                System.out.println(computerStatistics.toString());
+            }
+        }, "Shutdown-thread"));
+
+
+
     }
 }
