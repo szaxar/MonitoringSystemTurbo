@@ -6,13 +6,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.Date;
 
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 300, 275));
@@ -22,21 +21,10 @@ public class Main extends Application {
 
     public static void main(String[] args) {
 
-        Calendar systemStartTime = Calendar.getInstance();
-        ComputerStatistics computerStatistics=new ComputerStatistics(systemStartTime);
-
-
+        Date systemStartTime = new Date();
+        ComputerStatistics computerStatistics = new ComputerStatistics(systemStartTime);
+        Runtime.getRuntime().addShutdownHook(new ShutDownThread(computerStatistics));
         launch(args);
-
-        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-            public void run() {
-                Calendar systemCloseTime = Calendar.getInstance();
-                computerStatistics.setSystemCloseTime(systemCloseTime);
-                System.out.println(computerStatistics.toString());
-            }
-        }, "Shutdown-thread"));
-
-
 
     }
 }
