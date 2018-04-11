@@ -18,17 +18,15 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-
     public static void main(String[] args) {
-
-//        Date systemStartTime = new Date();
-//        ComputerStatistics computerStatistics = new ComputerStatistics(systemStartTime);
-//        Runtime.getRuntime().addShutdownHook(new ShutDownThread(computerStatistics));
-//        launch(args);
+        Date systemStartTime = new Date();
+        ComputerStatistics computerStatistics = new ComputerStatistics(systemStartTime);
+        Runtime.getRuntime().addShutdownHook(new ShutDownThread(computerStatistics));
 
         ApplicationStatistics applicationStatistics = new ApplicationStatistics("idea64.exe");
         System.out.println(applicationStatistics.isRunning());
         System.out.println(applicationStatistics.isActive());
 
+        launch(args);
     }
 }
