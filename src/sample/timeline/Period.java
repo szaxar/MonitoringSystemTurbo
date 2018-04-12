@@ -29,7 +29,6 @@ public abstract class Period {
     }
 
     public int getTimeInSec() {
-        return (int)((datetimeEnd.getTime() - datetimeStart.getTime()) / 1000);
+        return (int) ((datetimeEnd.getTime() - datetimeStart.getTime()) / 1000);
     }
-
 }

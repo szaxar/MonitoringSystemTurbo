@@ -35,8 +35,8 @@ public class Main extends Application {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("Running time:" + timeline.getRunningTimeInSec());
-        System.out.println("Active time:" + timeline.getActiveTimeInSec());
+        System.out.println("Running time: " + timeline.getRunningTimeInSec());
+        System.out.println("Active time: " + timeline.getActiveTimeInSec());
 
         launch(args);
     }
