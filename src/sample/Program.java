@@ -1,25 +1,24 @@
-package json.json;
+package sample;
 
 public class Program {
 	private String name;
 	private String fullPath;
-	
+
 	public Program() {
-		this.name="";
-		this.fullPath="";
+		this.name = "";
+		this.fullPath = "";
 	}
-	
+
 	public Program(String name, String fullPath) {
-		this.name=name;
-		this.fullPath=fullPath;
+		this.name = name;
+		this.fullPath = fullPath;
 	}
-	
+
 	public String getName() {
 		return this.name;
 	}
-	
+
 	public String getFullPath() {
 		return this.fullPath;
 	}
-
 }
