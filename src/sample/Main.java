@@ -23,9 +23,9 @@ public class Main extends Application {
         ComputerStatistics computerStatistics = new ComputerStatistics(systemStartTime);
         Runtime.getRuntime().addShutdownHook(new ShutDownThread(computerStatistics));
 
-        ApplicationStatistics applicationStatistics = new ApplicationStatistics("idea64.exe");
-        System.out.println(applicationStatistics.isRunning());
-        System.out.println(applicationStatistics.isActive());
+        ApplicationService applicationService = new ApplicationService("idea64.exe");
+        System.out.println(applicationService.isRunning());
+        System.out.println(applicationService.isActive());
 
         launch(args);
     }
