@@ -55,9 +55,18 @@ public class ApplicationService {
         if (processInfo == null) {
             return -1;
         }
-        return Integer.parseInt(processInfo
-                .replaceAll(" {20}", " ")
-                .split(" ")[1]);
+
+        boolean reachedFirstSpace = false;
+        for(int i = 0; i<processInfo.length(); i++) {
+            if(processInfo.charAt(i) == ' ') {
+                reachedFirstSpace = true;
+            } else if (processInfo.charAt(i) != ' ' && reachedFirstSpace) {
+                processInfo = processInfo.substring(i);
+                break;
+            }
+        }
+
+        return Integer.parseInt(processInfo.split(" ")[0]);
     }
 
     public void updateTimeline() {
