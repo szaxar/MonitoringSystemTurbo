@@ -18,7 +18,8 @@ public class ApplicationStatistics {
 
     public boolean isRunning() {
         try {
-            return getProcessInfo().startsWith(filename);
+            String processInfo = getProcessInfo();
+            return processInfo != null;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -29,7 +30,6 @@ public class ApplicationStatistics {
         IntByReference pointer = new IntByReference();
         HWND hwnd = User32.INSTANCE.GetForegroundWindow();
         User32.INSTANCE.GetWindowThreadProcessId(hwnd, pointer);
-
         try {
             return getPid() == pointer.getValue();
         } catch (IOException e) {
@@ -39,7 +39,11 @@ public class ApplicationStatistics {
     }
 
     private int getPid() throws IOException {
-        return Integer.parseInt(getProcessInfo()
+        String processInfo = getProcessInfo();
+        if (processInfo == null) {
+            return -1;
+        }
+        return Integer.parseInt(processInfo
                 .replaceAll(" {20}", " ")
                 .split(" ")[1]);
     }
@@ -52,12 +56,7 @@ public class ApplicationStatistics {
         do {
             line = input.readLine();
         } while (line != null && !line.startsWith(filename));
-
         input.close();
-        if (line != null && line.startsWith(filename)) {
-            return line;
-        } else {
-            return "";
-        }
+        return line;
     }
 }
