@@ -2,10 +2,14 @@ package sample;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.*;
+
+import json.json.Program;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 
 public class JsonManager {
@@ -18,7 +22,12 @@ public class JsonManager {
 	}
 
 	public static List<Program> load() throws JsonParseException, JsonMappingException, IOException {
-		List<Program> list = mapper.readValue(new File("config.json"), new TypeReference<List<Program>>() {});
-		return list;
+		File file = new File("config.json");
+		List<Program> list;
+		if(file.exists()) {
+			list = mapper.readValue(file, new TypeReference<List<Program>>() { });
+			return list;
+		}
+		return new ArrayList<Program>();
 	}
 }
