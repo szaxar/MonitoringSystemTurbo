@@ -7,9 +7,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.*;
-
-import json.json.Program;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 
 public class JsonManager {
@@ -23,9 +20,8 @@ public class JsonManager {
 
 	public static List<Program> load() throws JsonParseException, JsonMappingException, IOException {
 		File file = new File("config.json");
-		List<Program> list;
 		if(file.exists()) {
-			list = mapper.readValue(file, new TypeReference<List<Program>>() { });
+			List<Program> list = mapper.readValue(file, new TypeReference<List<Program>>() { });
 			return list;
 		}
 		return new ArrayList<Program>();
