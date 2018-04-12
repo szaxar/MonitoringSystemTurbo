@@ -65,4 +65,7 @@ public class ApplicationService {
         timeline.update(currentDate, getApplicationState());
     }
 
+    public Timeline getTimeline() {
+        return timeline;
+    }
 }

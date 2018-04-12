@@ -28,4 +28,8 @@ public abstract class Period {
         this.datetimeEnd = datetimeEnd;
     }
 
+    public int getTimeInSec() {
+        return (int)((datetimeEnd.getTime() - datetimeStart.getTime()) / 1000);
+    }
+
 }

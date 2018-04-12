@@ -13,8 +13,7 @@ public class Timeline {
     private ArrayList<Period> periods = new ArrayList<>();
 
     public Timeline() {
-        this.datetimeStart = new Date();
-        this.datetimeEnd = new Date();
+        this(new Date(), new Date());
     }
 
     public Timeline(Date datetimeStart, Date datetimeEnd) {
@@ -51,12 +50,36 @@ public class Timeline {
         lastPeriod.setDatetimeEnd(datetime);
     }
 
+    public Date getDatetimeStart() {
+        return datetimeStart;
+    }
+
+    public Date getDatetimeEnd() {
+        return datetimeEnd;
+    }
+
+    public ArrayList<Period> getPeriods() {
+        return periods;
+    }
+
     public int getActiveTimeInSec() {
-        return 0;
+        int timeInSec = 0;
+        for (Period period : periods) {
+            if (period instanceof ActivePeriod) {
+                timeInSec += period.getTimeInSec();
+            }
+        }
+        return timeInSec;
     }
 
     public int getRunningTimeInSec() {
-        return 0;
+        int timeInSec = 0;
+        for (Period period : periods) {
+            if (period instanceof RunningPeriod) {
+                timeInSec += period.getTimeInSec();
+            }
+        }
+        return timeInSec;
     }
 
 }
