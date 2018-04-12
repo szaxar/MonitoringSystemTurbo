@@ -3,8 +3,9 @@ package sample;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class ComputerStatistics {
+public class ComputerStatistics extends Thread {
 
+    private boolean isRunning = true;
     private Date systemStartTime;
     private Date systemCloseTime;
     private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
@@ -13,8 +14,20 @@ public class ComputerStatistics {
         this.systemStartTime = systemStartTime;
     }
 
-    public void setSystemCloseTime(Date systemCloseTime) {
-        this.systemCloseTime = systemCloseTime;
+    @Override
+    public void run() {
+        while (isRunning) {
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {}
+            this.systemCloseTime = new Date();
+        }
+    }
+
+    @Override
+    public void interrupt() {
+        super.interrupt();
+        isRunning = false;
     }
 
     @Override

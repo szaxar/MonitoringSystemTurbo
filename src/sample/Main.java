@@ -22,22 +22,33 @@ public class Main extends Application {
     public static void main(String[] args) {
         Date systemStartTime = new Date();
         ComputerStatistics computerStatistics = new ComputerStatistics(systemStartTime);
-        Runtime.getRuntime().addShutdownHook(new ShutDownThread(computerStatistics));
-
+        computerStatistics.start();
 
         ApplicationMonitor appMonitor = new ApplicationMonitor();
         appMonitor.start();
-        ApplicationService appService = new ApplicationService("idea64.exe");
+        ApplicationService appService = new ApplicationService("chrome.exe");
         appMonitor.startMonitoring(appService);
         Timeline timeline = appService.getTimeline();
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Thread.sleep(10000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         System.out.println("Running time: " + timeline.getRunningTimeInSec());
         System.out.println("Active time: " + timeline.getActiveTimeInSec());
 
         launch(args);
+        try {
+            computerStatistics.interrupt();
+            computerStatistics.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        try {
+            appMonitor.interrupt();
+            appMonitor.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
