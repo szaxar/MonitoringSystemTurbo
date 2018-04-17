@@ -1,8 +1,10 @@
-import app.ApplicationMonitor;
-import app.ApplicationService;
-import computer.ComputerMonitor;
-import computer.ComputerStatistics;
-import timeline.Timeline;
+package model;
+
+import model.app.ApplicationMonitor;
+import model.app.ApplicationService;
+import model.computer.ComputerMonitor;
+import model.computer.ComputerStatistics;
+import model.timeline.Timeline;
 
 import java.util.*;
 
@@ -51,7 +53,7 @@ public class TrackingService {
                 return applicationService.getTimeline();
             }
         }
-        throw new IllegalStateException("You did not specify such an app to monitor!");
+        throw new IllegalStateException("You did not specify such an model.app to monitor!");
     }
 
     public Map<String, Timeline> getAllApplicationsStatistics() {

@@ -1,4 +1,4 @@
-package app;
+package model.app;
 
 public enum ApplicationState {
     NOT_RUNNING,

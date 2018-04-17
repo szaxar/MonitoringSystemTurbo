@@ -3,7 +3,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import timeline.Timeline;
+import model.TrackingService;
+import model.timeline.Timeline;
 
 public class Main extends Application {
 

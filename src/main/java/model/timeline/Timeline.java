@@ -1,6 +1,6 @@
-package timeline;
+package model.timeline;
 
-import app.ApplicationState;
+import model.app.ApplicationState;
 
 import java.util.ArrayList;
 import java.util.Date;

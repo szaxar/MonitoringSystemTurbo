@@ -1,4 +1,4 @@
-package timeline;
+package model.timeline;
 
 import java.util.Date;
 

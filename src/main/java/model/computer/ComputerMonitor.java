@@ -1,4 +1,4 @@
-package computer;
+package model.computer;
 
 import java.util.Date;
 
