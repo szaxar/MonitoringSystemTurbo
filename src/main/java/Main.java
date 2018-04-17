@@ -1,9 +1,12 @@
+import history.StatisticsManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import timeline.Timeline;
+
+import java.io.IOException;
 
 public class Main extends Application {
 
@@ -31,6 +34,12 @@ public class Main extends Application {
         System.out.println("Chrome foreground time: " + chromeStatistics.getActiveTimeInSec());
         System.out.println("IDEA background time: " + ideaStatistics.getRunningTimeInSec());
         System.out.println("IDEA foreground time: " + ideaStatistics.getActiveTimeInSec());
+
+        try {
+            StatisticsManager.saveStatistics("chrome", chromeStatistics.getPeriods());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         launch(args);
     }
