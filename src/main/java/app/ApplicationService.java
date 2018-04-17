@@ -13,13 +13,28 @@ import java.util.Date;
 public class ApplicationService {
     private static final String tasklistPath = System.getenv("windir") + "\\system32\\tasklist.exe";
     private final String filename;
+    private final String appName;
     private final Timeline timeline = new Timeline();
 
-    public ApplicationService(String filename) {
-        this.filename = filename;
+    public ApplicationService(String applicationName) {
+        this.appName = applicationName;
+        this.filename = String.format("%s.exe", applicationName);
     }
 
-    public ApplicationState getApplicationState() {
+    public void updateTimeline() {
+        Date currentDate = new Date();
+        timeline.update(currentDate, getApplicationState());
+    }
+
+    public Timeline getTimeline() {
+        return timeline;
+    }
+
+    public String getApplicationName() {
+        return appName;
+    }
+
+    private ApplicationState getApplicationState() {
         try {
             String processInfo = getProcessInfo();
             if (processInfo == null) {
@@ -65,14 +80,5 @@ public class ApplicationService {
             }
         }
         return Integer.parseInt(processInfo.split(" ")[0]);
-    }
-
-    public void updateTimeline() {
-        Date currentDate = new Date();
-        timeline.update(currentDate, getApplicationState());
-    }
-
-    public Timeline getTimeline() {
-        return timeline;
     }
 }

@@ -1,13 +1,9 @@
-import app.ApplicationMonitor;
-import app.ApplicationService;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import timeline.Timeline;
-
-import java.util.Date;
 
 public class Main extends Application {
 
@@ -20,35 +16,22 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        Date systemStartTime = new Date();
-        ComputerStatistics computerStatistics = new ComputerStatistics(systemStartTime);
-        computerStatistics.start();
-
-        ApplicationMonitor appMonitor = new ApplicationMonitor();
-        appMonitor.start();
-        ApplicationService appService = new ApplicationService("chrome.exe");
-        appMonitor.startMonitoring(appService);
-        Timeline timeline = appService.getTimeline();
+        TrackingService trackingService = new TrackingService("chrome", "idea64");
+        trackingService.start();
         try {
             Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("Running time: " + timeline.getRunningTimeInSec());
-        System.out.println("Active time: " + timeline.getActiveTimeInSec());
+        trackingService.stop();
+        Timeline chromeStatistics = trackingService.getStatisticsForApp("chrome");
+        Timeline ideaStatistics = trackingService.getStatisticsForApp("idea64");
+        System.out.println("ComputerStatistics: " + trackingService.getComputerStatistics().toString());
+        System.out.println("Chrome background time: " + chromeStatistics.getRunningTimeInSec());
+        System.out.println("Chrome foreground time: " + chromeStatistics.getActiveTimeInSec());
+        System.out.println("IDEA background time: " + ideaStatistics.getRunningTimeInSec());
+        System.out.println("IDEA foreground time: " + ideaStatistics.getActiveTimeInSec());
 
         launch(args);
-        try {
-            computerStatistics.interrupt();
-            computerStatistics.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        try {
-            appMonitor.interrupt();
-            appMonitor.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }

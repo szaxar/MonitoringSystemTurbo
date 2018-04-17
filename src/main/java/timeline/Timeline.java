@@ -81,5 +81,4 @@ public class Timeline {
         }
         return timeInSec;
     }
-
 }

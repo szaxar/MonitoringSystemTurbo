@@ -1,9 +1,9 @@
+package computer;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class ComputerStatistics extends Thread {
-
-    private boolean isRunning = true;
+public class ComputerStatistics {
     private Date systemStartTime;
     private Date systemCloseTime;
     private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
@@ -12,25 +12,21 @@ public class ComputerStatistics extends Thread {
         this.systemStartTime = systemStartTime;
     }
 
-    @Override
-    public void run() {
-        while (isRunning) {
-            try {
-                Thread.sleep(200);
-            } catch (InterruptedException e) {}
-            this.systemCloseTime = new Date();
-        }
+    public Date getSystemStartTime() {
+        return systemStartTime;
     }
 
-    @Override
-    public void interrupt() {
-        super.interrupt();
-        isRunning = false;
+    public Date getSystemCloseTime() {
+        return systemCloseTime;
+    }
+
+    void setSystemCloseTime(Date systemCloseTime) {
+        this.systemCloseTime = systemCloseTime;
     }
 
     @Override
     public String toString() {
-        return "ComputerStatistics{" +
+        return "computer.ComputerStatistics{" +
                 "systemStartTime=" + sdf.format(systemStartTime.getTime()) +
                 ", systemCloseTime=" + sdf.format(systemCloseTime.getTime()) +
                 '}';

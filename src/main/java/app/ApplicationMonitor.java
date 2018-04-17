@@ -1,11 +1,20 @@
 package app;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ApplicationMonitor extends Thread {
 
     private boolean isRunning = true;
-    private final ArrayList<ApplicationService> appServicesToMonitor = new ArrayList<>();
+    private final List<ApplicationService> appServicesToMonitor;
+
+    public ApplicationMonitor(List<ApplicationService> applicationServices) {
+        appServicesToMonitor = applicationServices;
+    }
+
+    public ApplicationMonitor() {
+        appServicesToMonitor = new ArrayList<>();
+    }
 
     public void startMonitoring(ApplicationService appService) {
         synchronized (appServicesToMonitor) {
@@ -32,7 +41,7 @@ public class ApplicationMonitor extends Thread {
 
     @Override
     public void interrupt() {
-        super.interrupt();
         isRunning = false;
+        super.interrupt();
     }
 }
