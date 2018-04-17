@@ -1,6 +1,6 @@
-package sample.timeline;
+package timeline;
 
-import sample.ApplicationState;
+import app.ApplicationState;
 
 import java.util.ArrayList;
 import java.util.Date;

@@ -1,9 +1,9 @@
-package sample;
+package app;
 
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef.HWND;
 import com.sun.jna.ptr.IntByReference;
-import sample.timeline.Timeline;
+import timeline.Timeline;
 
 import java.io.BufferedReader;
 import java.io.IOException;

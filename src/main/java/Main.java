@@ -1,11 +1,11 @@
-package sample;
-
+import app.ApplicationMonitor;
+import app.ApplicationService;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import sample.timeline.Timeline;
+import timeline.Timeline;
 
 import java.util.Date;
 
@@ -13,7 +13,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("../../resources/sample.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("./sample.fxml"));
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
@@ -29,11 +29,11 @@ public class Main extends Application {
         ApplicationService appService = new ApplicationService("chrome.exe");
         appMonitor.startMonitoring(appService);
         Timeline timeline = appService.getTimeline();
-//        try {
-//            Thread.sleep(10000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         System.out.println("Running time: " + timeline.getRunningTimeInSec());
         System.out.println("Active time: " + timeline.getActiveTimeInSec());
 
