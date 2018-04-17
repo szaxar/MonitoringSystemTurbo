@@ -1,0 +1,16 @@
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+targetCompatibility = 1.8
+sourceCompatibility = 1.8
+version = '0.1'
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.12'
+}
