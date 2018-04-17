@@ -6,6 +6,9 @@ import javafx.stage.Stage;
 import model.TrackingService;
 import model.timeline.Timeline;
 
+import java.io.IOException;
+import java.util.List;
+
 public class Main extends Application {
 
     @Override
@@ -17,7 +20,17 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        TrackingService trackingService = new TrackingService("chrome", "idea64");
+        List<Program> loadedList = null;
+        try {
+            loadedList = JsonManager.load();
+            loadedList.add(new Program("saper", "D://saper.exe"));
+            JsonManager.save(loadedList);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        assert loadedList != null;
+        TrackingService trackingService = new TrackingService(loadedList.get(0).getName(), loadedList.get(1).getName());
         trackingService.start();
         try {
             Thread.sleep(10000);
