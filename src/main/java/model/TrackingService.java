@@ -14,7 +14,7 @@ public class TrackingService {
     private ApplicationMonitor applicationMonitor;
     private ComputerMonitor computerMonitor;
 
-    public TrackingService(String... applicationNames) {
+    public TrackingService(List<String> applicationNames) {
         for (String appName : applicationNames) {
             applicationServices.add(new ApplicationService(appName));
         }
