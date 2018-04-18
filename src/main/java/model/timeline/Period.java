@@ -31,4 +31,9 @@ public abstract class Period {
     public int getTimeInSec() {
         return (int) ((datetimeEnd.getTime() - datetimeStart.getTime()) / 1000);
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s(%s, %s)", this.getClass().getSimpleName(), datetimeStart, datetimeEnd);
+    }
 }

@@ -3,14 +3,16 @@ package model.timeline;
 import model.app.ApplicationState;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 public class Timeline {
 
-    private Date datetimeStart;
-    private Date datetimeEnd;
+    protected Date datetimeStart;
+    protected Date datetimeEnd;
     private ApplicationState lastApplicationState = ApplicationState.NOT_RUNNING;
-    private ArrayList<Period> periods = new ArrayList<>();
+    protected ArrayList<Period> periods = new ArrayList<>();
 
     public Timeline() {
         this(new Date(), new Date());
@@ -58,8 +60,8 @@ public class Timeline {
         return datetimeEnd;
     }
 
-    public ArrayList<Period> getPeriods() {
-        return periods;
+    public List<Period> getPeriods() {
+        return Collections.unmodifiableList(periods);
     }
 
     public int getActiveTimeInSec() {
@@ -80,5 +82,10 @@ public class Timeline {
             }
         }
         return timeInSec;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Timeline(%s, %s, %s)", datetimeStart, datetimeEnd, periods);
     }
 }

@@ -4,8 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ComputerStatistics {
-    private Date systemStartTime;
-    private Date systemCloseTime;
+    protected Date systemStartTime;
+    protected Date systemCloseTime;
     private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 
     public ComputerStatistics(Date systemStartTime) {
