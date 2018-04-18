@@ -3,7 +3,9 @@ package timeline;
 import app.ApplicationState;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 public class Timeline {
 
@@ -58,8 +60,8 @@ public class Timeline {
         return datetimeEnd;
     }
 
-    public ArrayList<Period> getPeriods() {
-        return periods;
+    public List<Period> getPeriods() {
+        return Collections.unmodifiableList(periods);
     }
 
     public int getActiveTimeInSec() {

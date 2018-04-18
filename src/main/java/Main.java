@@ -36,7 +36,7 @@ public class Main extends Application {
         System.out.println("IDEA foreground time: " + ideaStatistics.getActiveTimeInSec());
 
         try {
-            StatisticsManager.saveStatistics("chrome", chromeStatistics.getPeriods());
+            StatisticsManager.save("chrome", chromeStatistics);
         } catch (IOException e) {
             e.printStackTrace();
         }
