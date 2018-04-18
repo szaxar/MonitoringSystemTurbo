@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 import timeline.Timeline;
 
 import java.io.IOException;
+import java.util.List;
 
 public class Main extends Application {
 
@@ -21,11 +22,11 @@ public class Main extends Application {
     public static void main(String[] args) {
         TrackingService trackingService = new TrackingService("chrome", "idea64");
         trackingService.start();
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Thread.sleep(10000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         trackingService.stop();
         Timeline chromeStatistics = trackingService.getStatisticsForApp("chrome");
         Timeline ideaStatistics = trackingService.getStatisticsForApp("idea64");
@@ -37,6 +38,9 @@ public class Main extends Application {
 
         try {
             StatisticsManager.save("chrome", chromeStatistics);
+            List<Timeline> timelines = StatisticsManager.load("chrome");
+            System.out.println(timelines.size());
+            System.out.println(timelines);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -33,5 +33,6 @@ public class TimelineJsonSerializer extends StdSerializer<Timeline> {
         }
         jsonGenerator.writeEndArray();
         jsonGenerator.writeEndObject();
+        jsonGenerator.writeRaw('\n');
     }
 }

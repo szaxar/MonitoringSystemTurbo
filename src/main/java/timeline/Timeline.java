@@ -9,10 +9,10 @@ import java.util.List;
 
 public class Timeline {
 
-    private Date datetimeStart;
-    private Date datetimeEnd;
+    protected Date datetimeStart;
+    protected Date datetimeEnd;
     private ApplicationState lastApplicationState = ApplicationState.NOT_RUNNING;
-    private ArrayList<Period> periods = new ArrayList<>();
+    protected ArrayList<Period> periods = new ArrayList<>();
 
     public Timeline() {
         this(new Date(), new Date());
@@ -82,5 +82,10 @@ public class Timeline {
             }
         }
         return timeInSec;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Timeline(%s, %s, %s)", datetimeStart, datetimeEnd, periods);
     }
 }
