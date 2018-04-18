@@ -11,6 +11,16 @@ repositories {
     mavenCentral()
 }
 
+jar {
+    manifest {
+        attributes 'Main-Class': 'Main'
+    }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
 dependencies {
     compile group: 'net.java.dev.jna', name: 'jna', version: '4.5.1'
     compile group: 'net.java.dev.jna', name: 'jna-platform', version: '4.5.1'
