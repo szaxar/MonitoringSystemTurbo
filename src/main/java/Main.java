@@ -26,9 +26,6 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         TrackingService trackingService = new TrackingService("chrome", "idea64");
-        ComputerStatistics computerStatistics = new ComputerStatistics(new Date());
-        ComputerMonitor computerMonitor = new ComputerMonitor(computerStatistics);
-        computerMonitor.start();
         trackingService.start();
         try {
             Thread.sleep(10000);
@@ -36,7 +33,6 @@ public class Main extends Application {
             e.printStackTrace();
         }
         trackingService.stop();
-        computerMonitor.interrupt();
         Timeline chromeStatistics = trackingService.getStatisticsForApp("chrome");
         Timeline ideaStatistics = trackingService.getStatisticsForApp("idea64");
         System.out.println("ComputerStatistics: " + trackingService.getComputerStatistics().toString());
@@ -46,7 +42,7 @@ public class Main extends Application {
         System.out.println("IDEA foreground time: " + ideaStatistics.getActiveTimeInSec());
 
         try {
-            StatisticsManager.save(computerStatistics);
+            StatisticsManager.save(trackingService.getComputerStatistics());
             List<ComputerStatistics> computerStatisticsList = StatisticsManager.loadComputerStats();
             System.out.println(computerStatisticsList.size());
             System.out.println(computerStatisticsList);
