@@ -1,10 +1,11 @@
+package exporter;
 import java.io.*;
 
-public class LogsExporter {
+public class LogExporter {
     private String filePath;
     private static final String SEPARATOR = ",";
 
-    public LogsExporter(String filePath) {
+    public LogExporter(String filePath) {
         this.filePath = filePath;
     }
 

@@ -1,3 +1,4 @@
+package exporter;
 
 public class LogInfo {
     private String logDate;
