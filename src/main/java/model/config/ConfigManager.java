@@ -1,18 +1,20 @@
-import java.io.File;
+package model.config;
+
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JsonManager {
+public class ConfigManager {
 	private static ObjectMapper mapper = new ObjectMapper();
 
-	private JsonManager() {};
+	private ConfigManager() {};
 
 	public static void save(List<Program> list) throws JsonGenerationException, JsonMappingException, IOException {
 		mapper.writeValue(new File("config.json"), list);

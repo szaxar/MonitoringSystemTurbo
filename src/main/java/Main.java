@@ -1,3 +1,5 @@
+import exporter.LogExporter;
+import exporter.LogInfo;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -6,10 +8,13 @@ import javafx.stage.Stage;
 import model.TrackingService;
 import model.computer.ComputerMonitor;
 import model.computer.ComputerStatistics;
+import model.config.ConfigManager;
+import model.config.Program;
 import model.history.StatisticsManager;
 import model.timeline.Timeline;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -33,7 +38,7 @@ public class Main extends Application {
         System.out.println("Opening config file");
         List<Program> loadedPrograms = null;
         try {
-            loadedPrograms = JsonManager.load();
+            loadedPrograms = ConfigManager.load();
         } catch (IOException e) {
             //e.printStackTrace();
             System.out.println("Error occurred while reading from config file");
@@ -61,8 +66,6 @@ public class Main extends Application {
         trackingService.stop();
         computerMonitor.interrupt();
 
-
-
         System.out.println("Computer statistics saved...");
 
         printStatistics(programNames, trackingService);
@@ -75,11 +78,14 @@ public class Main extends Application {
             e.printStackTrace();
         }
 
-        launch(args);
+
+        //launch(args);
     }
 
-    private static void printStatistics(List<String> programNames, TrackingService trackingService) {
 
+
+    private static void printStatistics(List<String> programNames, TrackingService trackingService) {
+        LogExporter exporter = new LogExporter("report.csv");
         for(String name : programNames){
             Timeline statistics = trackingService.getStatisticsForApp(name);
             System.out.println("ComputerStatistics: " + trackingService.getComputerStatistics().toString());
@@ -92,6 +98,16 @@ public class Main extends Application {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+            SimpleDateFormat dateformat = new SimpleDateFormat("dd-MM-yyyy");
+            exporter.saveLog(new LogInfo(
+                    name,
+                    dateformat.format(trackingService.getComputerStatistics().getSystemStartTime()),
+                    sdf.format(statistics.getDatetimeStart()),
+                            sdf.format(statistics.getDatetimeEnd()),
+                            String.valueOf(statistics.getRunningTimeInSec()),
+                            String.valueOf(statistics.getActiveTimeInSec())
+                    ));
 
         }
 
@@ -105,7 +121,7 @@ public class Main extends Application {
             listToSave.add(new Program(processName, "C://"));
         }
         try {
-            JsonManager.save(listToSave);
+            ConfigManager.save(listToSave);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,3 +1,5 @@
+package model.config;
+
 public class Program {
 	private String name;
 	private String fullPath;

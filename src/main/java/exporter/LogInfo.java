@@ -1,13 +1,15 @@
 package exporter;
 
 public class LogInfo {
+    private String name;
     private String logDate;
     private String startTime;
     private String endTime;
     private String activeHours;
     private String passiveHours;
 
-    public LogInfo(String logDate, String startTime, String endTime, String activeHours, String passiveHours) {
+    public LogInfo(String name, String logDate, String startTime, String endTime, String activeHours, String passiveHours) {
+        this.name = name;
         this.logDate = logDate;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -56,7 +58,8 @@ public class LogInfo {
     }
 
     @Override
-    public String toString(){
-        return this.logDate+" "+this.startTime+" "+this.endTime+" "+this.activeHours+" "+this.endTime;
+    public String toString() {
+        return this.name + " " + this.logDate + " " + this.startTime + " "
+                + this.endTime + " " + this.activeHours + " " + this.passiveHours;
     }
 }

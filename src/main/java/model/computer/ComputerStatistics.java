@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ComputerStatistics {
+
     protected Date systemStartTime;
     protected Date systemCloseTime;
     private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
@@ -24,6 +25,9 @@ public class ComputerStatistics {
         this.systemCloseTime = systemCloseTime;
     }
 
+    public String getSystemStartTimeString(){
+        return sdf.format(systemStartTime.getTime());
+    }
     @Override
     public String toString() {
         return "model.computer.ComputerStatistics{" +
