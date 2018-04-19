@@ -13,7 +13,7 @@ repositories {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'Main'
+        attributes 'Main-Class': 'monitoringsystemturbo.Main'
     }
 
     from {
