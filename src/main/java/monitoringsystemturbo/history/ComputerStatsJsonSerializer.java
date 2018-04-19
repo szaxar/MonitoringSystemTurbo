@@ -1,9 +1,9 @@
-package model.history;
+package monitoringsystemturbo.history;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import model.computer.ComputerStatistics;
+import monitoringsystemturbo.model.computer.ComputerStatistics;
 
 import java.io.IOException;
 

@@ -1,11 +1,11 @@
-package model.history;
+package monitoringsystemturbo.history;
 
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import model.computer.ComputerStatistics;
-import model.timeline.Timeline;
+import monitoringsystemturbo.model.computer.ComputerStatistics;
+import monitoringsystemturbo.model.timeline.Timeline;
 
 import java.io.FileWriter;
 import java.io.IOException;

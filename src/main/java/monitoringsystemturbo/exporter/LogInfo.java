@@ -1,4 +1,4 @@
-package exporter;
+package monitoringsystemturbo.exporter;
 
 public class LogInfo {
     private String name;

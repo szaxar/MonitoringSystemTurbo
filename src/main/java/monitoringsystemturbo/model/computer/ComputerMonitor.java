@@ -1,4 +1,4 @@
-package model.computer;
+package monitoringsystemturbo.model.computer;
 
 import java.util.Date;
 

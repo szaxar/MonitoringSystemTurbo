@@ -1,4 +1,4 @@
-package model.app;
+package monitoringsystemturbo.model.app;
 
 public enum ApplicationState {
     NOT_RUNNING,

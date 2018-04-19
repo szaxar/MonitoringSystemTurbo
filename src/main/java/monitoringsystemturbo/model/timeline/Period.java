@@ -1,4 +1,4 @@
-package model.timeline;
+package monitoringsystemturbo.model.timeline;
 
 import java.util.Date;
 

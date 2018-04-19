@@ -1,11 +1,11 @@
-package model.history;
+package monitoringsystemturbo.history;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import model.timeline.ActivePeriod;
-import model.timeline.Period;
-import model.timeline.RunningPeriod;
-import model.timeline.Timeline;
+import monitoringsystemturbo.model.timeline.ActivePeriod;
+import monitoringsystemturbo.model.timeline.Period;
+import monitoringsystemturbo.model.timeline.RunningPeriod;
+import monitoringsystemturbo.model.timeline.Timeline;
 
 import java.io.IOException;
 import java.util.Date;

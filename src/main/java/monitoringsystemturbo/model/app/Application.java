@@ -1,15 +1,15 @@
-package model.config;
+package monitoringsystemturbo.model.app;
 
-public class Program {
+public class Application {
 	private String name;
 	private String fullPath;
 
-	public Program() {
+	public Application() {
 		this.name = "";
 		this.fullPath = "";
 	}
 
-	public Program(String name, String fullPath) {
+	public Application(String name, String fullPath) {
 		this.name = name;
 		this.fullPath = fullPath;
 	}

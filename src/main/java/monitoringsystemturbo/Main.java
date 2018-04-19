@@ -1,17 +1,18 @@
-import exporter.LogExporter;
-import exporter.LogInfo;
-import javafx.application.Application;
+package monitoringsystemturbo;
+
+import monitoringsystemturbo.exporter.LogExporter;
+import monitoringsystemturbo.exporter.LogInfo;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import model.TrackingService;
-import model.computer.ComputerMonitor;
-import model.computer.ComputerStatistics;
-import model.config.ConfigManager;
-import model.config.Program;
-import model.history.StatisticsManager;
-import model.timeline.Timeline;
+import monitoringsystemturbo.model.ConfigManager;
+import monitoringsystemturbo.model.TrackingService;
+import monitoringsystemturbo.model.app.Application;
+import monitoringsystemturbo.model.computer.ComputerMonitor;
+import monitoringsystemturbo.model.computer.ComputerStatistics;
+import monitoringsystemturbo.history.StatisticsManager;
+import monitoringsystemturbo.model.timeline.Timeline;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -20,7 +21,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-public class Main extends Application {
+public class Main extends javafx.application.Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -36,20 +37,20 @@ public class Main extends Application {
         saveProcessesToConfig(Arrays.copyOfRange(args, 0, args.length-1));
 
         System.out.println("Opening config file");
-        List<Program> loadedPrograms = null;
+        List<Application> loadedApplications = null;
         try {
-            loadedPrograms = ConfigManager.load();
+            loadedApplications = ConfigManager.load();
         } catch (IOException e) {
             //e.printStackTrace();
             System.out.println("Error occurred while reading from config file");
         }
-        if(loadedPrograms == null){
+        if(loadedApplications == null){
             System.out.println("Error occurred while reading from config file");
             System.exit(1);
         }
         List<String> programNames = new ArrayList<>();
-        for(Program program : loadedPrograms){
-            programNames.add(program.getName());
+        for(Application application : loadedApplications){
+            programNames.add(application.getName());
         }
 
         System.out.println("Starting monitoring...");
@@ -116,9 +117,9 @@ public class Main extends Application {
     }
 
     private static void saveProcessesToConfig(String[] processNames) {
-        List<Program> listToSave = new ArrayList<Program>();
+        List<Application> listToSave = new ArrayList<Application>();
         for(String processName : processNames){
-            listToSave.add(new Program(processName, "C://"));
+            listToSave.add(new Application(processName, "C://"));
         }
         try {
             ConfigManager.save(listToSave);

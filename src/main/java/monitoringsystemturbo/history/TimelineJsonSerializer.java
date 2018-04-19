@@ -1,10 +1,10 @@
-package model.history;
+package monitoringsystemturbo.history;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import model.timeline.Period;
-import model.timeline.Timeline;
+import monitoringsystemturbo.model.timeline.Period;
+import monitoringsystemturbo.model.timeline.Timeline;
 
 import java.io.IOException;
 

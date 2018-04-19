@@ -1,6 +1,6 @@
-package model.timeline;
+package monitoringsystemturbo.model.timeline;
 
-import model.app.ApplicationState;
+import monitoringsystemturbo.model.app.ApplicationState;
 
 import java.util.ArrayList;
 import java.util.Collections;

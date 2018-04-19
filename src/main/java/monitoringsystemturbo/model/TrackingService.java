@@ -1,10 +1,10 @@
-package model;
+package monitoringsystemturbo.model;
 
-import model.app.ApplicationMonitor;
-import model.app.ApplicationService;
-import model.computer.ComputerMonitor;
-import model.computer.ComputerStatistics;
-import model.timeline.Timeline;
+import monitoringsystemturbo.model.app.ApplicationMonitor;
+import monitoringsystemturbo.model.app.ApplicationService;
+import monitoringsystemturbo.model.computer.ComputerMonitor;
+import monitoringsystemturbo.model.computer.ComputerStatistics;
+import monitoringsystemturbo.model.timeline.Timeline;
 
 import java.util.*;
 
@@ -53,7 +53,7 @@ public class TrackingService {
                 return applicationService.getTimeline();
             }
         }
-        throw new IllegalStateException("You did not specify such an model.app to monitor!");
+        throw new IllegalStateException("You did not specify such an monitoringsystemturbo.model.app to monitor!");
     }
 
     public Map<String, Timeline> getAllApplicationsStatistics() {

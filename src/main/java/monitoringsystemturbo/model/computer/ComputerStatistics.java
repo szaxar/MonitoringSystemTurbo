@@ -1,4 +1,4 @@
-package model.computer;
+package monitoringsystemturbo.model.computer;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,7 +30,7 @@ public class ComputerStatistics {
     }
     @Override
     public String toString() {
-        return "model.computer.ComputerStatistics{" +
+        return "monitoringsystemturbo.model.computer.ComputerStatistics{" +
                 "systemStartTime=" + sdf.format(systemStartTime.getTime()) +
                 ", systemCloseTime=" + sdf.format(systemCloseTime.getTime()) +
                 '}';

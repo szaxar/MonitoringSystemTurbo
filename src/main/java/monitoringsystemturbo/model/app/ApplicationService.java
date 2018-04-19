@@ -1,9 +1,9 @@
-package model.app;
+package monitoringsystemturbo.model.app;
 
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef.HWND;
 import com.sun.jna.ptr.IntByReference;
-import model.timeline.Timeline;
+import monitoringsystemturbo.model.timeline.Timeline;
 
 import java.io.BufferedReader;
 import java.io.IOException;

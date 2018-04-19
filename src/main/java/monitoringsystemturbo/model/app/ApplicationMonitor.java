@@ -1,4 +1,4 @@
-package model.app;
+package monitoringsystemturbo.model.app;
 
 import java.util.ArrayList;
 import java.util.List;

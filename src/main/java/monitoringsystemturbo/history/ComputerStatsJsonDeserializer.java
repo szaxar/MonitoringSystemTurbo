@@ -1,7 +1,7 @@
-package model.history;
+package monitoringsystemturbo.history;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import model.computer.ComputerStatistics;
+import monitoringsystemturbo.model.computer.ComputerStatistics;
 
 import java.util.Date;
 
