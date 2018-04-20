@@ -11,6 +11,9 @@ import java.util.Map;
 public class Exporter {
 
     private static final SimpleDateFormat datetimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static final String hourSummary = "h";
+    private static final String minuteSummary = "min";
+    private static final String secondSummary = "s";
 
     private String filename;
     private ArrayList<ComputerStatistics> computerStatisticsList = new ArrayList<>();
@@ -82,7 +85,7 @@ public class Exporter {
 
     private String getDurationFormat(int duration) {
         if (duration == 0) {
-            return "0s";
+            return "0" + secondSummary;
         }
         int sec = duration % 60;
         duration /= 60;
@@ -91,19 +94,19 @@ public class Exporter {
         int h = duration;
         StringBuilder durationFormat = new StringBuilder();
         if (h != 0) {
-            durationFormat.append(h).append("h");
+            durationFormat.append(h).append(hourSummary);
         }
         if (min != 0) {
             if (durationFormat.length() > 0) {
                 durationFormat.append(" ");
             }
-            durationFormat.append(min).append("min");
+            durationFormat.append(min).append(minuteSummary);
         }
         if (sec != 0) {
             if (durationFormat.length() > 0) {
                 durationFormat.append(" ");
             }
-            durationFormat.append(sec).append("s");
+            durationFormat.append(sec).append(secondSummary);
         }
         return durationFormat.toString();
     }
