@@ -11,6 +11,7 @@ import monitoringsystemturbo.model.computer.ComputerMonitor;
 import monitoringsystemturbo.model.computer.ComputerStatistics;
 import monitoringsystemturbo.model.timeline.Timeline;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class Presentation extends javafx.application.Application {
         primaryStage.setTitle("MonitoringSystemTurbo");
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
 
         validateUserArguments(args);
         saveProcessesToConfig(Arrays.copyOfRange(args, 0, args.length-1));
@@ -110,7 +111,7 @@ public class Presentation extends javafx.application.Application {
 
     }
 
-    private static void saveProcessesToConfig(String[] processNames) {
+    private static void saveProcessesToConfig(String[] processNames) throws FileNotFoundException {
         List<Application> listToSave = new ArrayList<Application>();
         for(String processName : processNames){
             listToSave.add(new Application(processName, "C://"));
