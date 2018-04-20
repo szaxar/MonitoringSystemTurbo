@@ -1,8 +1,7 @@
 package monitoringsystemturbo;
 
 import javafx.stage.Stage;
-import monitoringsystemturbo.exporter.LogExporter;
-import monitoringsystemturbo.exporter.LogInfo;
+import monitoringsystemturbo.exporter.Exporter;
 import monitoringsystemturbo.history.StatisticsManager;
 import monitoringsystemturbo.model.ConfigManager;
 import monitoringsystemturbo.model.TrackingService;
@@ -12,7 +11,6 @@ import monitoringsystemturbo.model.computer.ComputerStatistics;
 import monitoringsystemturbo.model.timeline.Timeline;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -80,7 +78,8 @@ public class Presentation extends javafx.application.Application {
 
 
     private static void printStatistics(List<String> programNames, TrackingService trackingService) {
-        LogExporter exporter = new LogExporter("report.csv");
+        Exporter exporter = new Exporter("report");
+        exporter.addComputerStatistics(trackingService.getComputerStatistics());
         for(String name : programNames){
             Timeline statistics = trackingService.getStatisticsForApp(name);
             System.out.println("ComputerStatistics: " + trackingService.getComputerStatistics().toString());
@@ -93,21 +92,11 @@ public class Presentation extends javafx.application.Application {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-            SimpleDateFormat dateformat = new SimpleDateFormat("dd-MM-yyyy");
-            exporter.saveLog(new LogInfo(
-                    name,
-                    dateformat.format(trackingService.getComputerStatistics().getSystemStartTime()),
-                    sdf.format(statistics.getDatetimeStart()),
-                            sdf.format(statistics.getDatetimeEnd()),
-                            String.valueOf(statistics.getRunningTimeInSec()),
-                            String.valueOf(statistics.getActiveTimeInSec())
-                    ));
-
+            exporter.addApplicationStatistics(name, statistics);
         }
-
+        exporter.exportGeneralInfo();
+        exporter.exportDetailInfo();
         System.out.println("All applications statistics saved...");
-
     }
 
     private static void saveProcessesToConfig(String[] processNames) {
