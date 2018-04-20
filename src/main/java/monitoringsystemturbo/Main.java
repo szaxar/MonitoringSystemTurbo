@@ -1,5 +1,6 @@
 package monitoringsystemturbo;
 
+import monitoringsystemturbo.controller.MainController;
 import monitoringsystemturbo.exporter.LogExporter;
 import monitoringsystemturbo.exporter.LogInfo;
 import javafx.fxml.FXMLLoader;
@@ -25,62 +26,61 @@ public class Main extends javafx.application.Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/sample.fxml"));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
-        primaryStage.show();
+        primaryStage.setTitle("MonitoringSystemTurbo");
+        MainController mainController = new MainController(primaryStage);
+        mainController.showMainWindow();
     }
 
     public static void main(String[] args) {
 
-        validateUserArguments(args);
-        saveProcessesToConfig(Arrays.copyOfRange(args, 0, args.length-1));
+//        validateUserArguments(args);
+//        saveProcessesToConfig(Arrays.copyOfRange(args, 0, args.length-1));
+//
+//        System.out.println("Opening config file");
+//        List<Application> loadedApplications = null;
+//        try {
+//            loadedApplications = ConfigManager.load();
+//        } catch (IOException e) {
+//            //e.printStackTrace();
+//            System.out.println("Error occurred while reading from config file");
+//        }
+//        if(loadedApplications == null){
+//            System.out.println("Error occurred while reading from config file");
+//            System.exit(1);
+//        }
+//        List<String> programNames = new ArrayList<>();
+//        for(Application application : loadedApplications){
+//            programNames.add(application.getName());
+//        }
+//
+//        System.out.println("Starting monitoring...");
+//        TrackingService trackingService = new TrackingService(programNames);
+//        ComputerStatistics computerStatistics = new ComputerStatistics(new Date());
+//        ComputerMonitor computerMonitor = new ComputerMonitor(computerStatistics);
+//        computerMonitor.start();
+//        trackingService.start();
+//        try {
+//            Thread.sleep(Integer.parseInt(args[args.length-1])*1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        trackingService.stop();
+//        computerMonitor.interrupt();
+//
+//        System.out.println("Computer statistics saved...");
+//
+//        printStatistics(programNames, trackingService);
+//        try {
+//            StatisticsManager.save(computerStatistics);
+//            List<ComputerStatistics> computerStatisticsList = StatisticsManager.loadComputerStats();
+////            System.out.println(computerStatisticsList.size());
+////            System.out.println(computerStatisticsList);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
-        System.out.println("Opening config file");
-        List<Application> loadedApplications = null;
-        try {
-            loadedApplications = ConfigManager.load();
-        } catch (IOException e) {
-            //e.printStackTrace();
-            System.out.println("Error occurred while reading from config file");
-        }
-        if(loadedApplications == null){
-            System.out.println("Error occurred while reading from config file");
-            System.exit(1);
-        }
-        List<String> programNames = new ArrayList<>();
-        for(Application application : loadedApplications){
-            programNames.add(application.getName());
-        }
 
-        System.out.println("Starting monitoring...");
-        TrackingService trackingService = new TrackingService(programNames);
-        ComputerStatistics computerStatistics = new ComputerStatistics(new Date());
-        ComputerMonitor computerMonitor = new ComputerMonitor(computerStatistics);
-        computerMonitor.start();
-        trackingService.start();
-        try {
-            Thread.sleep(Integer.parseInt(args[args.length-1])*1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        trackingService.stop();
-        computerMonitor.interrupt();
-
-        System.out.println("Computer statistics saved...");
-
-        printStatistics(programNames, trackingService);
-        try {
-            StatisticsManager.save(computerStatistics);
-            List<ComputerStatistics> computerStatisticsList = StatisticsManager.loadComputerStats();
-//            System.out.println(computerStatisticsList.size());
-//            System.out.println(computerStatisticsList);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        //launch(args);
+        launch(args);
     }
 
 
