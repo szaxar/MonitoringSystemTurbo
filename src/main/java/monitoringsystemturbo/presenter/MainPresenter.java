@@ -1,5 +1,6 @@
 package monitoringsystemturbo.presenter;
 
+import javafx.collections.FXCollections;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
@@ -29,10 +30,24 @@ public class MainPresenter {
     @FXML
     public void initialize(List<Application> loadedApplications) {
         this.loadedApplications = loadedApplications;
-        for (Application application : loadedApplications) {
-            applicationList.getItems().add(application);
-        }
+        applicationList.setItems(FXCollections.observableList(loadedApplications));
+        setCellFactory();
+    }
 
+    @FXML
+    public void onAddApplication() {
+    }
+
+    @FXML
+    public void onRemoveApplication() {
+    }
+
+    @FXML
+    public void onExport() {
+    }
+
+
+    private void setCellFactory(){
         applicationList.setCellFactory(param -> new ListCell<Application>() {
             private ImageView imageView = new ImageView();
 
@@ -56,21 +71,7 @@ public class MainPresenter {
                 }
             }
         });
-
     }
-
-    @FXML
-    public void onAddApplication() {
-    }
-
-    @FXML
-    public void onRemoveApplication() {
-    }
-
-    @FXML
-    public void onExport() {
-    }
-
 
 }
 
