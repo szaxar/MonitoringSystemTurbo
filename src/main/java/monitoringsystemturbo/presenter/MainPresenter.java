@@ -1,12 +1,21 @@
 package monitoringsystemturbo.presenter;
 
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import monitoringsystemturbo.model.app.Application;
 
+import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.List;
+
+import static monitoringsystemturbo.utils.IconConverter.iconToImage;
+import static monitoringsystemturbo.utils.IconConverter.imageToBufferedImage;
 
 
 public class MainPresenter {
@@ -30,13 +39,20 @@ public class MainPresenter {
             @Override
             public void updateItem(Application name, boolean empty) {
                 super.updateItem(name, empty);
-                //imageView=new ImageView( name.getIcon());
+
                 if (empty) {
                     setText(null);
                     setGraphic(null);
                 } else {
+                    Icon icon = FileSystemView.getFileSystemView()
+                            .getSystemIcon(new File(name.getFullPath()));
+
+                    BufferedImage bufferedImage = imageToBufferedImage(iconToImage(icon));
+                    Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+
+                    imageView.setImage(image);
                     setText(name.getName());
-                    //setGraphic(imageView);
+                    setGraphic(imageView);
                 }
             }
         });
@@ -57,3 +73,4 @@ public class MainPresenter {
 
 
 }
+
