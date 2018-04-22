@@ -28,6 +28,11 @@ public class ComputerStatistics {
     public String getSystemStartTimeString(){
         return sdf.format(systemStartTime.getTime());
     }
+
+    public int getRunningTimeInSec() {
+        return (int) ((systemCloseTime.getTime() - systemStartTime.getTime()) / 1000);
+    }
+
     @Override
     public String toString() {
         return "monitoringsystemturbo.model.computer.ComputerStatistics{" +
