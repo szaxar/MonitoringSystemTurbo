@@ -8,11 +8,12 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import monitoringsystemturbo.model.app.Application;
+import sun.awt.shell.ShellFolder;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileSystemView;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import static monitoringsystemturbo.utils.IconConverter.iconToImage;
@@ -52,21 +53,27 @@ public class MainPresenter {
             private ImageView imageView = new ImageView();
 
             @Override
-            public void updateItem(Application name, boolean empty) {
-                super.updateItem(name, empty);
+            public void updateItem(Application application, boolean empty) {
+                super.updateItem(application, empty);
 
                 if (empty) {
                     setText(null);
                     setGraphic(null);
                 } else {
-                    Icon icon = FileSystemView.getFileSystemView()
-                            .getSystemIcon(new File(name.getFullPath()));
+                    File file = new File(application.getFullPath());
+                    ShellFolder sf=null;
+                    try {
+                        sf = ShellFolder.getShellFolder(file);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    Icon icon = new ImageIcon(sf.getIcon(true));
 
                     BufferedImage bufferedImage = imageToBufferedImage(iconToImage(icon));
                     Image image = SwingFXUtils.toFXImage(bufferedImage, null);
 
                     imageView.setImage(image);
-                    setText(name.getName());
+                    setText(application.getName());
                     setGraphic(imageView);
                 }
             }
