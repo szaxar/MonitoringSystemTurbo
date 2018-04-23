@@ -2,10 +2,13 @@ package monitoringsystemturbo.presenter;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import monitoringsystemturbo.model.app.Application;
 
 import java.util.List;
@@ -40,6 +43,8 @@ public class MainPresenter {
     private void setCellFactory() {
         applicationList.setCellFactory(param -> new ListCell<Application>() {
             private ImageView imageView = new ImageView();
+            private Label label = new Label();
+            private VBox vbox = new VBox();
 
             @Override
             public void updateItem(Application application, boolean empty) {
@@ -50,9 +55,12 @@ public class MainPresenter {
                     setGraphic(null);
                 } else {
                     Image image = iconToFxImage(application.findIcon());
+                    label.setText(application.getName());
                     imageView.setImage(image);
-                    setText(application.getName());
-                    setGraphic(imageView);
+                    vbox.setAlignment(Pos.CENTER);
+                    vbox.getChildren().add(imageView);
+                    vbox.getChildren().add(label);
+                    setGraphic(vbox);
                 }
             }
         });
