@@ -1,5 +1,7 @@
 package monitoringsystemturbo.utils;
 
+import javafx.embed.swing.SwingFXUtils;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -7,11 +9,16 @@ import java.awt.image.PixelGrabber;
 
 public class IconConverter {
 
+    public static javafx.scene.image.Image iconToFxImage(Icon icon) {
+        BufferedImage bufferedImage = imageToBufferedImage(iconToImage(icon));
+        javafx.scene.image.Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+        return image;
+    }
+
     public static Image iconToImage(Icon icon) {
         if (icon instanceof ImageIcon) {
-            return ((ImageIcon)icon).getImage();
-        }
-        else {
+            return ((ImageIcon) icon).getImage();
+        } else {
             int w = icon.getIconWidth();
             int h = icon.getIconHeight();
             GraphicsEnvironment ge =
@@ -29,7 +36,7 @@ public class IconConverter {
 
     public static BufferedImage imageToBufferedImage(Image image) {
         if (image instanceof BufferedImage)
-            return (BufferedImage)image;
+            return (BufferedImage) image;
 
         // This code ensures that all the pixels in the image are loaded
         image = new ImageIcon(image).getImage();
@@ -54,13 +61,16 @@ public class IconConverter {
             GraphicsConfiguration gc = gs.getDefaultConfiguration();
 
             bimage = gc.createCompatibleImage(image.getWidth(null), image.getHeight(null), transparency);
-        } catch (HeadlessException e) { } //No screen
+        } catch (HeadlessException e) {
+        } //No screen
 
         if (bimage == null) {
             // Create a buffered image using the default color model
             int type = BufferedImage.TYPE_INT_RGB;
 
-            if (hasAlpha == true) {type = BufferedImage.TYPE_INT_ARGB;}
+            if (hasAlpha == true) {
+                type = BufferedImage.TYPE_INT_ARGB;
+            }
             bimage = new BufferedImage(image.getWidth(null), image.getHeight(null), type);
         }
 
@@ -73,17 +83,19 @@ public class IconConverter {
 
         return bimage;
     }
+
     public static boolean hasAlpha(Image image) {
         // If buffered image, the color model is readily available
         if (image instanceof BufferedImage)
-            return ((BufferedImage)image).getColorModel().hasAlpha();
+            return ((BufferedImage) image).getColorModel().hasAlpha();
 
         // Use a pixel grabber to retrieve the image's color model;
         // grabbing a single pixel is usually sufficient
         PixelGrabber pg = new PixelGrabber(image, 0, 0, 1, 1, false);
         try {
             pg.grabPixels();
-        } catch (InterruptedException e) { }
+        } catch (InterruptedException e) {
+        }
 
         // Get the image's color model
         return pg.getColorModel().hasAlpha();

@@ -1,5 +1,11 @@
 package monitoringsystemturbo.model.app;
 
+import sun.awt.shell.ShellFolder;
+
+import javax.swing.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+
 public class Application {
     private String name;
     private String fullPath;
@@ -20,5 +26,16 @@ public class Application {
 
     public String getFullPath() {
         return this.fullPath;
+    }
+
+    public Icon findIcon() {
+        File file = new File(this.fullPath);
+        ShellFolder sf = null;
+        try {
+            sf = ShellFolder.getShellFolder(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return (new ImageIcon(sf.getIcon(true)));
     }
 }
