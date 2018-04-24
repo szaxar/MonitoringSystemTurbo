@@ -1,9 +1,11 @@
 package monitoringsystemturbo.presenter;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.model.TrackingService;
+
+import java.io.IOException;
 
 public class MainPresenter {
     private TrackingService trackingService;
@@ -33,7 +35,20 @@ public class MainPresenter {
 
     @FXML
     public void onExport() {
-        mainExporter.export(trackingService);
+        try {
+            mainExporter.export(trackingService);
+            Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+            successAlert.setTitle("Success!");
+            successAlert.setHeaderText(null);
+            successAlert.setContentText("Data exported successfully! ");
+            successAlert.showAndWait();
+        } catch (IOException e) {
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Error!");
+            errorAlert.setHeaderText(null);
+            errorAlert.setContentText("Error while exporting data.");
+            errorAlert.showAndWait();
+        }
     }
 
 }

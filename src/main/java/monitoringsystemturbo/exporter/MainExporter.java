@@ -13,15 +13,11 @@ import java.util.Map;
 public class MainExporter {
     private static final String REPORT = "report";
 
-    public void export(TrackingService trackingService) {
+    public void export(TrackingService trackingService) throws IOException{
         Exporter exporter = new Exporter(REPORT);
 
-        try {
-            addHistoricalComputerStatistics(exporter);
-            addHistoricalAppStatistics(exporter, trackingService);
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        }
+        addHistoricalComputerStatistics(exporter);
+        addHistoricalAppStatistics(exporter, trackingService);
         addCurrentStatistics(exporter, trackingService);
 
         exporter.exportGeneralInfo();
