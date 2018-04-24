@@ -6,6 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import monitoringsystemturbo.presenter.Legend?>
 <BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="monitoringsystemturbo.presenter.MainPresenter">
    <center>
       <VBox spacing="15.0" BorderPane.alignment="CENTER">
@@ -24,7 +25,7 @@
             </HBox>
             <VBox alignment="TOP_RIGHT">
                <children>
-                  <HBox fx:id="timelineLegend" alignment="TOP_RIGHT" spacing="5.0" />
+                  <Legend fx:id="timelineLegend" alignment="TOP_RIGHT" spacing="5.0" />
                </children>
             </VBox>
             <Pane fx:id="computerTimelineContainer" />

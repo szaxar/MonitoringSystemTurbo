@@ -1,4 +1,4 @@
-package monitoringsystemturbo.presenter;
+package monitoringsystemturbo.presenter.timeline;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.scene.Group;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static monitoringsystemturbo.presenter.PeriodColor.*;
+import static monitoringsystemturbo.presenter.timeline.PeriodColor.*;
 
 public class TimelineView extends Group {
 

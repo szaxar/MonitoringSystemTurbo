@@ -1,4 +1,4 @@
-package monitoringsystemturbo.presenter;
+package monitoringsystemturbo.presenter.timeline;
 
 import javafx.scene.paint.Color;
 

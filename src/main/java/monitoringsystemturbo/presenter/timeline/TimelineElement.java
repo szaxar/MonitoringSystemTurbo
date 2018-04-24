@@ -1,4 +1,4 @@
-package monitoringsystemturbo.presenter;
+package monitoringsystemturbo.presenter.timeline;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;

@@ -1,24 +1,21 @@
 package monitoringsystemturbo.presenter;
 
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import monitoringsystemturbo.history.StatisticsManager;
 import monitoringsystemturbo.model.timeline.Timeline;
+import monitoringsystemturbo.presenter.timeline.PeriodColor;
+import monitoringsystemturbo.presenter.timeline.TimelineElement;
 
 import java.util.List;
 
 public class MainPresenter {
 
     @FXML
-    private HBox timelineLegend;
+    private Legend timelineLegend;
 
     @FXML
     private Pane computerTimelineContainer;
@@ -38,18 +35,8 @@ public class MainPresenter {
     }
 
     private void renderTimelineLegend() {
-        addLegendElement(PeriodColor.runningColor, "Running");
-        addLegendElement(PeriodColor.activeColor, "Active");
-    }
-
-    private void addLegendElement(Color color, String name) {
-        Rectangle square = new Rectangle(15, 15);
-        square.setArcHeight(5);
-        square.setArcWidth(5);
-        square.setFill(color);
-        Label label = new Label(name);
-        label.setPadding(new Insets(0, 5, 0, 0));
-        timelineLegend.getChildren().addAll(square, label);
+        timelineLegend.addElement(PeriodColor.runningColor, "Running");
+        timelineLegend.addElement(PeriodColor.activeColor, "Active");
     }
 
     private void initializeTimelines() {
