@@ -61,7 +61,7 @@ public class Timeline {
     }
 
     public List<Period> getPeriods() {
-        return Collections.unmodifiableList(periods);
+        return periods;
     }
 
     public int getActiveTimeInSec() {
