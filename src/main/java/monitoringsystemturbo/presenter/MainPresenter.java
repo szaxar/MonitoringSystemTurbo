@@ -35,6 +35,8 @@ public class MainPresenter {
 
     @FXML
     public void onExport() {
+        ExportWindowHandler exportWindowHandler = new ExportWindowHandler();
+        exportWindowHandler.displayCheckingWindow(trackingService.getApplicationsNames());
         try {
             mainExporter.export(trackingService);
             Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
