@@ -48,7 +48,7 @@ public class Exporter {
         }
     }
 
-    public void exportGeneralInfo() {
+    public void exportGeneralInfo() throws IOException{
         CsvBuilder csvBuilder = new CsvBuilder();
         csvBuilder.writeRow("", "RunningTime", "ActiveTime");
         int runningTime = 0, activeTime;
@@ -67,7 +67,7 @@ public class Exporter {
         saveFile(getGeneralFilename(), csvBuilder.build());
     }
 
-    public void exportDetailInfo() {
+    public void exportDetailInfo() throws IOException{
         CsvBuilder csvBuilder = new CsvBuilder();
         csvBuilder.writeRow("Computer");
         csvBuilder.writeRow("SystemStartDatetime", "SystemCloseDatetime", "RunningTime");
@@ -130,14 +130,10 @@ public class Exporter {
         return this.filename + "-detail.csv";
     }
 
-    private void saveFile(String filename, String content) {
-        try {
+    private void saveFile(String filename, String content) throws IOException{
             Writer writer = new BufferedWriter(new FileWriter(filename, false));
             writer.write(content);
             writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
 }
