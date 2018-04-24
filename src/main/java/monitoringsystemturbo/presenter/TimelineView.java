@@ -2,26 +2,28 @@ package monitoringsystemturbo.presenter;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.scene.Group;
-import javafx.scene.paint.Color;
+import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
 import monitoringsystemturbo.model.timeline.ActivePeriod;
 import monitoringsystemturbo.model.timeline.Period;
 import monitoringsystemturbo.model.timeline.RunningPeriod;
 import monitoringsystemturbo.model.timeline.Timeline;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import static monitoringsystemturbo.presenter.PeriodColor.*;
 
 public class TimelineView extends Group {
 
     private final static int height = 35;
-    private final static Color notRunningColor = Color.web("0x696969");
-    private final static Color runningColor = Color.web("0x0084ff");
-    private final static Color activeColor = Color.web("0x65ff00");
-
     private final static long dayInMs = 24 * 60 * 60 * 1000;
 
     private Rectangle timelineBackground;
     private List<Timeline> timelineModels;
+    private HashMap<Integer, List<Node>> dayPeriodsMap = new HashMap<>();
+    private Integer currentDay = null;
 
     public TimelineView(List<Timeline> timelineModels) throws ClassNotFoundException {
         this.timelineModels = timelineModels;
@@ -40,12 +42,19 @@ public class TimelineView extends Group {
 
     private void renderPeriods(List<Period> periods) throws ClassNotFoundException {
         for (Period period : periods) {
-            Rectangle periodView = createPeriod(period);
-            getChildren().add(periodView);
+            long datetimeStart = period.getDatetimeStart().getTime();
+            long datetimeEnd = period.getDatetimeEnd().getTime();
+            for (int day = (int)(datetimeStart / dayInMs); day <= datetimeEnd / dayInMs; day++) {
+                Rectangle periodView = createPeriodView(period);
+                long datetimeStartInDay = Math.max(datetimeStart, day * dayInMs);
+                long datetimeEndInDay = Math.min(datetimeEnd, (day + 1) * dayInMs);
+                setPeriodViewWidthProperties(periodView, datetimeStartInDay, datetimeEndInDay);
+                addPeriodViewForDay(day, periodView);
+            }
         }
     }
 
-    private Rectangle createPeriod(Period period) throws ClassNotFoundException {
+    private Rectangle createPeriodView(Period period) throws ClassNotFoundException {
         Rectangle periodView = new Rectangle();
         if (period instanceof RunningPeriod) {
             periodView.setFill(runningColor);
@@ -55,15 +64,24 @@ public class TimelineView extends Group {
             throw new ClassNotFoundException("Unrecognized period instance");
         }
         periodView.heightProperty().bind(heightProperty());
+        return periodView;
+    }
 
-        double widthRatio = (double) period.getTimeInMs() / dayInMs;
-        double offsetRatio = (double) (period.getDatetimeStart().getTime() % dayInMs) / dayInMs;
+    private void setPeriodViewWidthProperties(Rectangle periodView, long datetimeStart, long datetimeEnd) {
+        double widthRatio = (double) (datetimeEnd - datetimeStart) / dayInMs;
+        double offsetRatio = (double) (datetimeStart % dayInMs) / dayInMs;
         widthProperty().addListener((observable, oldValue, newValue) -> {
             double timelineWidth = newValue.doubleValue();
             periodView.setWidth(timelineWidth * widthRatio);
             periodView.setTranslateX(timelineWidth * offsetRatio);
         });
-        return periodView;
+    }
+
+    private void addPeriodViewForDay(int day, Node periodView) {
+        if (!dayPeriodsMap.containsKey(day)) {
+            dayPeriodsMap.put(day, new ArrayList<>());
+        }
+        dayPeriodsMap.get(day).add(periodView);
     }
 
     public DoubleProperty widthProperty() {
@@ -72,6 +90,21 @@ public class TimelineView extends Group {
 
     public DoubleProperty heightProperty() {
         return timelineBackground.heightProperty();
+    }
+
+    public void showDay(Integer day) {
+        if (currentDay != null && currentDay.equals(day)) {
+            return;
+        }
+        if (currentDay != null) {
+            getChildren().removeAll(dayPeriodsMap.get(currentDay));
+        }
+        if (day == null || !dayPeriodsMap.containsKey(day)) {
+            currentDay = null;
+            return;
+        }
+        getChildren().addAll(dayPeriodsMap.get(day));
+        currentDay = day;
     }
 
 }

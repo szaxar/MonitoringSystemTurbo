@@ -24,7 +24,7 @@
             </HBox>
             <VBox alignment="TOP_RIGHT">
                <children>
-                  <Label text="Legenda timeline'ów" />
+                  <HBox fx:id="timelineLegend" alignment="TOP_RIGHT" spacing="5.0" />
                </children>
             </VBox>
             <Pane fx:id="computerTimelineContainer" />

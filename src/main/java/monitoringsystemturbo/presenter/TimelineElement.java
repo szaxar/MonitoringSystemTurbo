@@ -30,4 +30,8 @@ public class TimelineElement extends VBox {
         timelineView.widthProperty().bind(pane.widthProperty());
     }
 
+    public void showDay(Integer day) {
+        timelineView.showDay(day);
+    }
+
 }
