@@ -1,6 +1,7 @@
 package monitoringsystemturbo.model.timeline;
 
 import monitoringsystemturbo.model.app.ApplicationState;
+import monitoringsystemturbo.model.computer.ComputerStatistics;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,6 +22,23 @@ public class Timeline {
     public Timeline(Date datetimeStart, Date datetimeEnd) {
         this.datetimeStart = datetimeStart;
         this.datetimeEnd = datetimeEnd;
+    }
+
+    public Timeline(List<ComputerStatistics> computerStatistics) {
+        this.datetimeStart = computerStatistics.get(0).getSystemStartTime();
+        this.datetimeEnd = computerStatistics.get(0).getSystemCloseTime();
+        for (ComputerStatistics computerStatistic : computerStatistics) {
+            Date datetimeStart = computerStatistic.getSystemStartTime();
+            Date datetimeEnd = computerStatistic.getSystemCloseTime();
+            if (datetimeStart.getTime() < this.datetimeStart.getTime()) {
+                this.datetimeStart = computerStatistic.getSystemStartTime();
+            }
+            if (datetimeEnd.getTime() > this.datetimeEnd.getTime()) {
+                this.datetimeEnd = computerStatistic.getSystemCloseTime();
+            }
+            Period period = new RunningPeriod(datetimeStart, datetimeEnd);
+            periods.add(period);
+        }
     }
 
     public void update(Date datetime, ApplicationState state) {

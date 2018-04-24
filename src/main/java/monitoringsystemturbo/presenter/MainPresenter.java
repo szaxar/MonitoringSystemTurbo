@@ -6,10 +6,14 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import monitoringsystemturbo.history.StatisticsManager;
+import monitoringsystemturbo.model.computer.ComputerStatistics;
 import monitoringsystemturbo.model.timeline.Timeline;
 import monitoringsystemturbo.presenter.timeline.PeriodColor;
 import monitoringsystemturbo.presenter.timeline.TimelineElement;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MainPresenter {
@@ -42,13 +46,25 @@ public class MainPresenter {
     private void initializeTimelines() {
         appTimelineContainer.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
+        int day = 17645; // 24.04.2018
+
+        try {
+            List<ComputerStatistics> computerStatistics = StatisticsManager.loadComputerStats();
+            Timeline timeline = new Timeline(computerStatistics);
+            TimelineElement timelineElement = new TimelineElement("Computer", Arrays.asList(timeline));
+            timelineElement.setTimelineViewWidthByRegion(computerTimelineContainer);
+            computerTimelineContainer.getChildren().add(timelineElement);
+            timelineElement.showDay(day);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         try {
             List<Timeline> timelines = StatisticsManager.load("idea64");
-
             TimelineElement timelineElement = new TimelineElement("idea64", timelines);
-            timelineElement.setTimelineViewWidthByPane(appTimelineContainer);
+            timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
             appTimelineList.getChildren().add(timelineElement);
-            timelineElement.showDay(17645); // 24.04.2018
+            timelineElement.showDay(day);
         } catch (Exception e) {
             e.printStackTrace();
         }
