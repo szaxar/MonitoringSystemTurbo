@@ -3,7 +3,7 @@ package monitoringsystemturbo;
 import javafx.stage.Stage;
 import monitoringsystemturbo.exporter.Exporter;
 import monitoringsystemturbo.history.StatisticsManager;
-import monitoringsystemturbo.model.ConfigManager;
+import monitoringsystemturbo.config.ConfigManager;
 import monitoringsystemturbo.model.TrackingService;
 import monitoringsystemturbo.model.app.Application;
 import monitoringsystemturbo.model.computer.ComputerMonitor;
@@ -26,7 +26,7 @@ public class Presentation extends javafx.application.Application {
     public static void main(String[] args) {
 
         validateUserArguments(args);
-        saveProcessesToConfig(Arrays.copyOfRange(args, 0, args.length-1));
+        saveProcessesToConfig(Arrays.copyOfRange(args, 0, args.length - 1));
 
         System.out.println("Opening config file");
         List<Application> loadedApplications = null;
@@ -36,12 +36,12 @@ public class Presentation extends javafx.application.Application {
             //e.printStackTrace();
             System.out.println("Error occurred while reading from config file");
         }
-        if(loadedApplications == null){
+        if (loadedApplications == null) {
             System.out.println("Error occurred while reading from config file");
             System.exit(1);
         }
         List<String> programNames = new ArrayList<>();
-        for(Application application : loadedApplications){
+        for (Application application : loadedApplications) {
             programNames.add(application.getName());
         }
 
@@ -52,7 +52,7 @@ public class Presentation extends javafx.application.Application {
         computerMonitor.start();
         trackingService.start();
         try {
-            Thread.sleep(Integer.parseInt(args[args.length-1])*1000);
+            Thread.sleep(Integer.parseInt(args[args.length - 1]) * 1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -62,6 +62,8 @@ public class Presentation extends javafx.application.Application {
         System.out.println("Computer statistics saved...");
 
         printStatistics(programNames, trackingService);
+        saveStatistics(programNames, trackingService);
+        exportData(programNames, trackingService);
         try {
             StatisticsManager.save(computerStatistics);
             List<ComputerStatistics> computerStatisticsList = StatisticsManager.loadComputerStats();
@@ -75,33 +77,42 @@ public class Presentation extends javafx.application.Application {
 //        launch(args);
     }
 
-
-
     private static void printStatistics(List<String> programNames, TrackingService trackingService) {
-        Exporter exporter = new Exporter("report");
-        exporter.addComputerStatistics(trackingService.getComputerStatistics());
-        for(String name : programNames){
+        System.out.println("ComputerStatistics: " + trackingService.getComputerStatistics().toString());
+        for (String name : programNames) {
             Timeline statistics = trackingService.getStatisticsForApp(name);
-            System.out.println("ComputerStatistics: " + trackingService.getComputerStatistics().toString());
-            System.out.println(name+ " background time: " + statistics.getRunningTimeInSec());
-            System.out.println(name +" foreground time: " + statistics.getActiveTimeInSec());
+            System.out.println(name + " background time: " + statistics.getRunningTimeInSec());
+            System.out.println(name + " foreground time: " + statistics.getActiveTimeInSec());
+        }
+    }
 
+    private static void saveStatistics(List<String> programNames, TrackingService trackingService) {
+        for (String name : programNames) {
+            Timeline statistics = trackingService.getStatisticsForApp(name);
             try {
                 StatisticsManager.save(name, statistics);
                 //List<Timeline> timelines = StatisticsManager.load("chrome");
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+        System.out.println("All applications statistics saved...");
+    }
+
+    private static void exportData(List<String> programNames, TrackingService trackingService) {
+        Exporter exporter = new Exporter("report");
+        exporter.addComputerStatistics(trackingService.getComputerStatistics());
+        for (String name : programNames) {
+            Timeline statistics = trackingService.getStatisticsForApp(name);
             exporter.addApplicationStatistics(name, statistics);
         }
         exporter.exportGeneralInfo();
         exporter.exportDetailInfo();
-        System.out.println("All applications statistics saved...");
     }
 
     private static void saveProcessesToConfig(String[] processNames) {
         List<Application> listToSave = new ArrayList<Application>();
-        for(String processName : processNames){
+        for (String processName : processNames) {
             listToSave.add(new Application(processName, "C://"));
         }
         try {
@@ -113,13 +124,13 @@ public class Presentation extends javafx.application.Application {
     }
 
     private static void validateUserArguments(String[] args) {
-        if(args.length==0){
+        if (args.length == 0) {
             System.out.println("Usage: [name] [process1] [process2] ... [processN] [TimeToMonitor]");
             System.exit(1);
-        } else{
+        } else {
             try {
-                int parsedInt = Integer.parseInt(args[args.length-1]);
-            } catch(NumberFormatException e) {
+                int parsedInt = Integer.parseInt(args[args.length - 1]);
+            } catch (NumberFormatException e) {
                 System.out.println("Usage: [name] [process1] [process2] ... [processN] [TimeToMonitor]");
                 System.exit(1);
             }
