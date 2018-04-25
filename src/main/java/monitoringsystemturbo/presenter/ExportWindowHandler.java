@@ -14,8 +14,11 @@ import java.util.List;
 
 public class ExportWindowHandler {
     private List<String> applicationsToExport;
+    private boolean cancel = true;
 
     public List<String> displayCheckingWindow(List<String> applicationNames) {
+        applicationsToExport = new ArrayList<>();
+
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Export");
@@ -26,6 +29,7 @@ public class ExportWindowHandler {
         Button exportButton = new Button("Export");
         exportButton.setOnAction(e -> {
             setSelectedApplications(checkBoxes);
+            cancel = false;
             window.close();
         });
         VBox layout = new VBox(10);
@@ -50,10 +54,13 @@ public class ExportWindowHandler {
     }
 
     private void setSelectedApplications(List<CheckBox> checkBoxes) {
-        applicationsToExport = new ArrayList<>();
         for (CheckBox box : checkBoxes)
             if (box.isSelected()) {
                 applicationsToExport.add(box.getText());
             }
+    }
+
+    public boolean getCancelValue() {
+        return this.cancel;
     }
 }
