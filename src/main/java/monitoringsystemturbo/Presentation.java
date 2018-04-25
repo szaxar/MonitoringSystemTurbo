@@ -106,8 +106,12 @@ public class Presentation extends javafx.application.Application {
             Timeline statistics = trackingService.getStatisticsForApp(name);
             exporter.addApplicationStatistics(name, statistics);
         }
-        exporter.exportGeneralInfo();
-        exporter.exportDetailInfo();
+        try {
+            exporter.exportGeneralInfo();
+            exporter.exportDetailInfo();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void saveProcessesToConfig(String[] processNames) {
