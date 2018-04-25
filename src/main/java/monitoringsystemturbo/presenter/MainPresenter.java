@@ -28,7 +28,7 @@ public class MainPresenter {
     private ListView<Application> applicationList;
 
     @FXML
-    public void initialize() {
+    public void initialize(List<Application> loadedApplications) {
         mainExporter = new MainExporter();
 
         trackingService = new TrackingService();
