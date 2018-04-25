@@ -3,23 +3,21 @@ package monitoringsystemturbo.presenter;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import monitoringsystemturbo.model.app.Application;
-
-import java.util.List;
-
-import static monitoringsystemturbo.utils.IconConverter.iconToFxImage;
-import javafx.scene.control.*;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.model.TrackingService;
+import monitoringsystemturbo.model.app.Application;
 
 import java.io.IOException;
 import java.util.List;
+
+import static monitoringsystemturbo.utils.IconConverter.iconToFxImage;
 
 public class MainPresenter {
     private TrackingService trackingService;
