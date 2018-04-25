@@ -13,7 +13,7 @@ import java.util.List;
 public class MainController {
 
     private Stage primaryStage;
-    private List<Application> loadedApplications = null;
+    private List<Application> loadedApplications;
 
     public MainController(Stage primaryStage) {
         this.primaryStage = primaryStage;
