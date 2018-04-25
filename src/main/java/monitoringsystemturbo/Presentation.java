@@ -115,7 +115,7 @@ public class Presentation extends javafx.application.Application {
         }
     }
 
-    }
+
 
     private static void saveProcessesToConfig(String[] processNames) throws FileNotFoundException {
         List<Application> listToSave = new ArrayList<Application>();

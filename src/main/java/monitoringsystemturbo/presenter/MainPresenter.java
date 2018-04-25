@@ -55,19 +55,21 @@ public class MainPresenter {
     public void onExport() {
         ExportWindowHandler exportWindowHandler = new ExportWindowHandler();
         List<String> applicationsToExport = exportWindowHandler.displayCheckingWindow(trackingService.getApplicationsNames());
-        try {
-            mainExporter.export(trackingService, applicationsToExport);
-            Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-            successAlert.setTitle("Success!");
-            successAlert.setHeaderText(null);
-            successAlert.setContentText("Data exported successfully! ");
-            successAlert.showAndWait();
-        } catch (IOException e) {
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setTitle("Error!");
-            errorAlert.setHeaderText(null);
-            errorAlert.setContentText("Error occurred while exporting data.");
-            errorAlert.showAndWait();
+        if (!exportWindowHandler.getCancelValue()) {
+            try {
+                mainExporter.export(trackingService, applicationsToExport);
+                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                successAlert.setTitle("Success!");
+                successAlert.setHeaderText(null);
+                successAlert.setContentText("Data exported successfully! ");
+                successAlert.showAndWait();
+            } catch (IOException e) {
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                errorAlert.setTitle("Error!");
+                errorAlert.setHeaderText(null);
+                errorAlert.setContentText("Error occurred while exporting data.");
+                errorAlert.showAndWait();
+            }
         }
     }
 
