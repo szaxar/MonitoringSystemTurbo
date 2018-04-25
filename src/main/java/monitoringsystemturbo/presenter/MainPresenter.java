@@ -1,7 +1,6 @@
 package monitoringsystemturbo.presenter;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
@@ -13,7 +12,6 @@ import monitoringsystemturbo.model.timeline.Timeline;
 import monitoringsystemturbo.presenter.timeline.PeriodColor;
 import monitoringsystemturbo.presenter.timeline.TimelineElement;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,8 +59,8 @@ public class MainPresenter {
         }
 
         try {
-            List<Timeline> timelines = StatisticsManager.load("idea64");
-            TimelineElement timelineElement = new TimelineElement("idea64", timelines);
+            List<Timeline> timelines = StatisticsManager.load("chrome");
+            TimelineElement timelineElement = new TimelineElement("chrome", timelines);
             timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
             appTimelineList.getChildren().add(timelineElement);
             timelineElements.add(timelineElement);
@@ -78,7 +76,7 @@ public class MainPresenter {
             currentDay = day;
         });
         // TODO change to current day
-        datePicker.setValue(LocalDate.ofEpochDay(17645)); // 24.04.2018
+        datePicker.setValue(LocalDate.now()); // 24.04.2018
     }
 
     @FXML
