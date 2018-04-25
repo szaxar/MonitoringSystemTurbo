@@ -19,16 +19,16 @@ public class IconConverter {
         if (icon instanceof ImageIcon) {
             return ((ImageIcon) icon).getImage();
         } else {
-            int w = icon.getIconWidth();
-            int h = icon.getIconHeight();
-            GraphicsEnvironment ge =
+            int iconWidth = icon.getIconWidth();
+            int iconHeight = icon.getIconHeight();
+            GraphicsEnvironment graphicsEnvironment =
                     GraphicsEnvironment.getLocalGraphicsEnvironment();
-            GraphicsDevice gd = ge.getDefaultScreenDevice();
-            GraphicsConfiguration gc = gd.getDefaultConfiguration();
-            BufferedImage image = gc.createCompatibleImage(w, h);
-            Graphics2D g = image.createGraphics();
-            icon.paintIcon(null, g, 0, 0);
-            g.dispose();
+            GraphicsDevice graphicsDevice = graphicsEnvironment.getDefaultScreenDevice();
+            GraphicsConfiguration graphicsConfiguration = graphicsDevice.getDefaultConfiguration();
+            BufferedImage image = graphicsConfiguration.createCompatibleImage(iconWidth, iconHeight);
+            Graphics2D graphics = image.createGraphics();
+            icon.paintIcon(null, graphics, 0, 0);
+            graphics.dispose();
             return image;
         }
     }
@@ -45,9 +45,9 @@ public class IconConverter {
         boolean hasAlpha = hasAlpha(image);
 
         // Create a buffered image with a format that's compatible with the screen
-        BufferedImage bimage = null;
+        BufferedImage bufferedImage = null;
 
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
 
         try {
             // Determine the type of transparency of the new buffered image
@@ -57,31 +57,31 @@ public class IconConverter {
                 transparency = Transparency.BITMASK;
 
             // Create the buffered image
-            GraphicsDevice gs = ge.getDefaultScreenDevice();
-            GraphicsConfiguration gc = gs.getDefaultConfiguration();
+            GraphicsDevice graphicsDevice = graphicsEnvironment.getDefaultScreenDevice();
+            GraphicsConfiguration graphicsConfiguration = graphicsDevice.getDefaultConfiguration();
 
-            bimage = gc.createCompatibleImage(image.getWidth(null), image.getHeight(null), transparency);
+            bufferedImage = graphicsConfiguration.createCompatibleImage(image.getWidth(null), image.getHeight(null), transparency);
         } catch (HeadlessException e) {
         } //No screen
 
-        if (bimage == null) {
+        if (bufferedImage == null) {
             // Create a buffered image using the default color model
             int type = BufferedImage.TYPE_INT_RGB;
 
             if (hasAlpha == true) {
                 type = BufferedImage.TYPE_INT_ARGB;
             }
-            bimage = new BufferedImage(image.getWidth(null), image.getHeight(null), type);
+            bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), type);
         }
 
         // Copy image to buffered image
-        Graphics g = bimage.createGraphics();
+        Graphics graphics = bufferedImage.createGraphics();
 
         // Paint the image onto the buffered image
-        g.drawImage(image, 0, 0, null);
-        g.dispose();
+        graphics.drawImage(image, 0, 0, null);
+        graphics.dispose();
 
-        return bimage;
+        return bufferedImage;
     }
 
     public static boolean hasAlpha(Image image) {
@@ -91,13 +91,13 @@ public class IconConverter {
 
         // Use a pixel grabber to retrieve the image's color model;
         // grabbing a single pixel is usually sufficient
-        PixelGrabber pg = new PixelGrabber(image, 0, 0, 1, 1, false);
+        PixelGrabber pixelGrabber = new PixelGrabber(image, 0, 0, 1, 1, false);
         try {
-            pg.grabPixels();
+            pixelGrabber.grabPixels();
         } catch (InterruptedException e) {
         }
 
         // Get the image's color model
-        return pg.getColorModel().hasAlpha();
+        return pixelGrabber.getColorModel().hasAlpha();
     }
 }
