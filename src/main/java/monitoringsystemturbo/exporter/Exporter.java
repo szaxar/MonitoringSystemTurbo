@@ -1,11 +1,16 @@
 package monitoringsystemturbo.exporter;
+
 import monitoringsystemturbo.model.computer.ComputerStatistics;
 import monitoringsystemturbo.model.timeline.Timeline;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Exporter {
@@ -17,7 +22,7 @@ public class Exporter {
 
     private String filename;
     private ArrayList<ComputerStatistics> computerStatisticsList = new ArrayList<>();
-    private HashMap<String, ArrayList<Timeline>> applicationTimelinesMap = new HashMap<>();
+    private HashMap<String, List<Timeline>> applicationTimelinesMap = new HashMap<>();
 
     public Exporter(String filename) {
         this.filename = filename;
@@ -37,7 +42,13 @@ public class Exporter {
         applicationTimelinesMap.put(applicationName, timelines);
     }
 
-    public void exportGeneralInfo() {
+    void addApplicationsStatistics(Map<String, List<Timeline>> appStatistics) {
+        for (String appName : appStatistics.keySet()) {
+            applicationTimelinesMap.put(appName, appStatistics.get(appName));
+        }
+    }
+
+    public void exportGeneralInfo() throws IOException{
         CsvBuilder csvBuilder = new CsvBuilder();
         csvBuilder.writeRow("", "RunningTime", "ActiveTime");
         int runningTime = 0, activeTime;
@@ -45,7 +56,7 @@ public class Exporter {
             runningTime += computerStatistics.getRunningTimeInSec();
         }
         csvBuilder.writeRow("Computer", getDurationFormat(runningTime));
-        for (Map.Entry<String, ArrayList<Timeline>> entry : applicationTimelinesMap.entrySet()) {
+        for (Map.Entry<String, List<Timeline>> entry : applicationTimelinesMap.entrySet()) {
             runningTime = activeTime = 0;
             for (Timeline timeline : entry.getValue()) {
                 runningTime += timeline.getRunningTimeInSec();
@@ -56,7 +67,7 @@ public class Exporter {
         saveFile(getGeneralFilename(), csvBuilder.build());
     }
 
-    public void exportDetailInfo() {
+    public void exportDetailInfo() throws IOException{
         CsvBuilder csvBuilder = new CsvBuilder();
         csvBuilder.writeRow("Computer");
         csvBuilder.writeRow("SystemStartDatetime", "SystemCloseDatetime", "RunningTime");
@@ -67,7 +78,7 @@ public class Exporter {
                     getDurationFormat(computerStatistics.getRunningTimeInSec())
             );
         }
-        for (Map.Entry<String, ArrayList<Timeline>> entry : applicationTimelinesMap.entrySet()) {
+        for (Map.Entry<String, List<Timeline>> entry : applicationTimelinesMap.entrySet()) {
             csvBuilder.nextRow();
             csvBuilder.writeRow(entry.getKey());
             csvBuilder.writeRow("DatetimeStart", "DatetimeEnd", "RunningTime", "ActiveTime");
@@ -119,14 +130,10 @@ public class Exporter {
         return this.filename + "-detail.csv";
     }
 
-    private void saveFile(String filename, String content) {
-        try {
+    private void saveFile(String filename, String content) throws IOException{
             Writer writer = new BufferedWriter(new FileWriter(filename, false));
             writer.write(content);
             writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
 }
