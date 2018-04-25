@@ -13,12 +13,12 @@ import java.util.Map;
 public class MainExporter {
     private static final String REPORT = "report";
 
-    public void export(TrackingService trackingService) throws IOException{
+    public void export(TrackingService trackingService, List<String> applicationsToExport) throws IOException{
         Exporter exporter = new Exporter(REPORT);
 
         addHistoricalComputerStatistics(exporter);
-        addHistoricalAppStatistics(exporter, trackingService);
-        addCurrentStatistics(exporter, trackingService);
+        addHistoricalAppStatistics(exporter, applicationsToExport);
+        addCurrentStatistics(exporter, trackingService, applicationsToExport);
 
         exporter.exportGeneralInfo();
         exporter.exportDetailInfo();
@@ -30,17 +30,17 @@ public class MainExporter {
         }
     }
 
-    private void addHistoricalAppStatistics(Exporter exporter, TrackingService trackingService) throws IOException {
+    private void addHistoricalAppStatistics(Exporter exporter,  List<String> applicationsToExport) throws IOException {
         Map<String, List<Timeline>> appTimelines = new HashMap<>();
-        for (String appName : trackingService.getApplicationsNames()) {
+        for (String appName : applicationsToExport) {
             appTimelines.put(appName, StatisticsManager.load(appName));
         }
         exporter.addApplicationsStatistics(appTimelines);
     }
 
-    private void addCurrentStatistics(Exporter exporter, TrackingService trackingService) {
+    private void addCurrentStatistics(Exporter exporter, TrackingService trackingService,  List<String> applicationsToExport) {
         exporter.addComputerStatistics(trackingService.getComputerStatistics());
-        for (String name : trackingService.getApplicationsNames()) {
+        for (String name : applicationsToExport) {
             Timeline statistics = trackingService.getStatisticsForApp(name);
             exporter.addApplicationStatistics(name, statistics);
         }
