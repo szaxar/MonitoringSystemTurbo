@@ -2,59 +2,68 @@ package monitoringsystemturbo.presenter;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.DatePicker;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.history.StatisticsManager;
+import monitoringsystemturbo.model.TrackingService;
+import monitoringsystemturbo.model.app.Application;
 import monitoringsystemturbo.model.computer.ComputerStatistics;
 import monitoringsystemturbo.model.timeline.Timeline;
 import monitoringsystemturbo.presenter.timeline.PeriodColor;
 import monitoringsystemturbo.presenter.timeline.TimelineElement;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
-import monitoringsystemturbo.exporter.MainExporter;
-import monitoringsystemturbo.model.TrackingService;
-import monitoringsystemturbo.model.app.Application;
-
-import java.io.IOException;
 import java.util.List;
 
 import static monitoringsystemturbo.utils.IconConverter.iconToFxImage;
 
 public class MainPresenter {
-    private TrackingService trackingService;
-    private MainExporter mainExporter;
-
-    private List<Application> loadedApplications;
-    @FXML private DatePicker datePicker;
-    private Integer currentDay;
 
     @FXML private Legend timelineLegend;
     @FXML private Pane computerTimelineContainer;
     @FXML private ScrollPane appTimelineContainer;
     @FXML private VBox appTimelineList;
+    @FXML private DatePicker datePicker;
+
+    private TrackingService trackingService;
+    private MainExporter mainExporter;
+    private Integer currentDay;
+
     private List<TimelineElement> timelineElements;
+    private List<Application> loadedApplications;
 
     @FXML
     private ListView<Application> applicationList;
 
     @FXML
-    public void initialize() {
+    public void initialize(List<Application> loadedApplications) {
+
+        mainExporter = new MainExporter();
+        trackingService = new TrackingService();
+        this.loadedApplications = loadedApplications;
+        initializeAppsToMonitor();
+        trackingService.start();
+
+        applicationList.setItems(FXCollections.observableList(loadedApplications));
+        setCellFactory();
         renderTimelineLegend();
         initializeTimelines();
         initializeDatePicker();
+
+    }
+
+    private void initializeAppsToMonitor() {
+        for(Application application : loadedApplications){
+            trackingService.addAppToMonitor(application.getName());
+        }
     }
 
     private void renderTimelineLegend() {
@@ -104,20 +113,8 @@ public class MainPresenter {
 
     @FXML
     public void onNextDay() {
-        datePicker.setValue(LocalDate.ofEpochDay(currentDay + 1));
-    }
-    public void initialize(List<Application> loadedApplications) {
-        mainExporter = new MainExporter();
-
-        trackingService = new TrackingService();
-        trackingService.addAppToMonitor("idea64");  //just hardcoded for now, we'll change it
-        trackingService.addAppToMonitor("chrome");
-        trackingService.start();
-
-        this.loadedApplications = loadedApplications;
-        applicationList.setItems(FXCollections.observableList(loadedApplications));
-        setCellFactory();
-
+        if(!LocalDate.ofEpochDay(currentDay).equals(LocalDate.now()))
+            datePicker.setValue(LocalDate.ofEpochDay(currentDay + 1));
     }
 
     @FXML
