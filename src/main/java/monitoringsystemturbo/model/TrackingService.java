@@ -14,10 +14,25 @@ public class TrackingService {
     private ApplicationMonitor applicationMonitor;
     private ComputerMonitor computerMonitor;
 
+    public TrackingService() {
+    }
+
     public TrackingService(List<String> applicationNames) {
         for (String appName : applicationNames) {
             applicationServices.add(new ApplicationService(appName));
         }
+    }
+
+    public void addAppToMonitor(String appName) {
+        applicationServices.add(new ApplicationService(appName));
+    }
+
+    public List<String> getApplicationsNames() {
+        List<String> names = new ArrayList<>();
+        for (ApplicationService applicationService : applicationServices) {
+            names.add(applicationService.getApplicationName());
+        }
+        return names;
     }
 
     public void start() {
@@ -53,7 +68,7 @@ public class TrackingService {
                 return applicationService.getTimeline();
             }
         }
-        throw new IllegalStateException("You did not specify such an monitoringsystemturbo.model.app to monitor!");
+        throw new IllegalStateException("You did not specify such an app to monitor!");
     }
 
     public Map<String, Timeline> getAllApplicationsStatistics() {
