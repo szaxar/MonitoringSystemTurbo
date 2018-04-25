@@ -75,7 +75,6 @@ public class MainPresenter {
             timelineElements.forEach(timelineElement -> timelineElement.showDay(day));
             currentDay = day;
         });
-        // TODO change to current day
         datePicker.setValue(LocalDate.now()); // 24.04.2018
     }
 
