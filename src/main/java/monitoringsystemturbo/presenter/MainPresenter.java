@@ -6,6 +6,7 @@ import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.model.TrackingService;
 
 import java.io.IOException;
+import java.util.List;
 
 public class MainPresenter {
     private TrackingService trackingService;
@@ -36,9 +37,9 @@ public class MainPresenter {
     @FXML
     public void onExport() {
         ExportWindowHandler exportWindowHandler = new ExportWindowHandler();
-        exportWindowHandler.displayCheckingWindow(trackingService.getApplicationsNames());
+        List<String> applicationsToExport = exportWindowHandler.displayCheckingWindow(trackingService.getApplicationsNames());
         try {
-            mainExporter.export(trackingService);
+            mainExporter.export(trackingService, applicationsToExport);
             Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
             successAlert.setTitle("Success!");
             successAlert.setHeaderText(null);
@@ -48,7 +49,7 @@ public class MainPresenter {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setTitle("Error!");
             errorAlert.setHeaderText(null);
-            errorAlert.setContentText("Error while exporting data.");
+            errorAlert.setContentText("Error occurred while exporting data.");
             errorAlert.showAndWait();
         }
     }
