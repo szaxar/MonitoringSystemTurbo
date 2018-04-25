@@ -1,28 +1,44 @@
 package monitoringsystemturbo.presenter;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.model.TrackingService;
+import monitoringsystemturbo.model.app.Application;
 
 import java.io.IOException;
 import java.util.List;
+
+import static monitoringsystemturbo.utils.IconConverter.iconToFxImage;
 
 public class MainPresenter {
     private TrackingService trackingService;
     private MainExporter mainExporter;
 
+    private List<Application> loadedApplications;
     @FXML
-    private ListView applicationList;
+    private ListView<Application> applicationList;
 
     @FXML
-    public void initialize() {
+    public void initialize(List<Application> loadedApplications) {
         mainExporter = new MainExporter();
 
         trackingService = new TrackingService();
         trackingService.addAppToMonitor("idea64");  //just hardcoded for now, we'll change it
         trackingService.addAppToMonitor("chrome");
         trackingService.start();
+
+        this.loadedApplications = loadedApplications;
+        applicationList.setItems(FXCollections.observableList(loadedApplications));
+        setCellFactory();
+
     }
 
     @FXML
@@ -54,6 +70,32 @@ public class MainPresenter {
                 errorAlert.showAndWait();
             }
         }
+    }
+
+    private void setCellFactory() {
+        applicationList.setCellFactory(param -> new ListCell<Application>() {
+            private ImageView imageView = new ImageView();
+            private Label label = new Label();
+            private VBox vbox = new VBox();
+
+            @Override
+            public void updateItem(Application application, boolean empty) {
+                super.updateItem(application, empty);
+
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    Image image = iconToFxImage(application.findIcon());
+                    label.setText(application.getName());
+                    imageView.setImage(image);
+                    vbox.setAlignment(Pos.CENTER);
+                    vbox.getChildren().add(imageView);
+                    vbox.getChildren().add(label);
+                    setGraphic(vbox);
+                }
+            }
+        });
     }
 
 }
