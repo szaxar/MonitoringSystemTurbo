@@ -15,9 +15,9 @@
                <children>
                   <HBox HBox.hgrow="ALWAYS">
                      <children>
-                        <Button mnemonicParsing="false" text="&lt;" />
-                        <DatePicker />
-                        <Button mnemonicParsing="false" text="&gt;" />
+                        <Button onAction="#onPrevDay" mnemonicParsing="false" text="&lt;" />
+                        <DatePicker fx:id="datePicker"/>
+                        <Button onAction="#onNextDay" mnemonicParsing="false" text="&gt;" />
                      </children>
                   </HBox>
                   <Button mnemonicParsing="false" onAction="#onExport" text="Eksportuj" />
