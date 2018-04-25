@@ -4,7 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import monitoringsystemturbo.model.ConfigManager;
+import monitoringsystemturbo.config.ConfigManager;
 import monitoringsystemturbo.model.app.Application;
 import monitoringsystemturbo.presenter.MainPresenter;
 import java.io.IOException;
