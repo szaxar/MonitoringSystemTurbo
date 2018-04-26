@@ -29,7 +29,11 @@ public abstract class Period {
     }
 
     public int getTimeInSec() {
-        return (int) ((datetimeEnd.getTime() - datetimeStart.getTime()) / 1000);
+        return (int) (getTimeInMs() / 1000);
+    }
+
+    public long getTimeInMs() {
+        return datetimeEnd.getTime() - datetimeStart.getTime();
     }
 
     @Override

@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="monitoringsystemturbo.presenter.MainPresenter">
+<?import monitoringsystemturbo.presenter.Legend?>
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="monitoringsystemturbo.presenter.MainPresenter">
    <center>
       <VBox spacing="15.0" BorderPane.alignment="CENTER">
          <children>
@@ -13,9 +15,9 @@
                <children>
                   <HBox HBox.hgrow="ALWAYS">
                      <children>
-                        <Button mnemonicParsing="false" text="&lt;" />
-                        <DatePicker />
-                        <Button mnemonicParsing="false" text="&gt;" />
+                        <Button onAction="#onPrevDay" mnemonicParsing="false" text="&lt;" />
+                        <DatePicker fx:id="datePicker"/>
+                        <Button onAction="#onNextDay" mnemonicParsing="false" text="&gt;" />
                      </children>
                   </HBox>
                   <Button mnemonicParsing="false" onAction="#onExport" text="Eksportuj" />
@@ -23,17 +25,13 @@
             </HBox>
             <VBox alignment="TOP_RIGHT">
                <children>
-                  <Label text="Legenda timeline'ów" />
+                  <Legend fx:id="timelineLegend" alignment="TOP_RIGHT" spacing="5.0" />
                </children>
             </VBox>
-            <Pane>
-               <children>
-                  <Label text="Timeline komputera" />
-               </children>
-            </Pane>
-            <ScrollPane prefHeight="200.0" VBox.vgrow="ALWAYS">
+            <Pane fx:id="computerTimelineContainer" />
+            <ScrollPane fx:id="appTimelineContainer" VBox.vgrow="ALWAYS">
                <content>
-                  <Label text="Timeline'y aplikacji" />
+                  <VBox fx:id="appTimelineList" spacing="10.0" />
                </content>
             </ScrollPane>
          </children>

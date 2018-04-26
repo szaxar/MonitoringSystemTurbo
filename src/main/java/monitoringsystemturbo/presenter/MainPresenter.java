@@ -3,43 +3,118 @@ package monitoringsystemturbo.presenter;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import monitoringsystemturbo.exporter.MainExporter;
+import monitoringsystemturbo.history.StatisticsManager;
 import monitoringsystemturbo.model.TrackingService;
 import monitoringsystemturbo.model.app.Application;
+import monitoringsystemturbo.model.computer.ComputerStatistics;
+import monitoringsystemturbo.model.timeline.Timeline;
+import monitoringsystemturbo.presenter.timeline.PeriodColor;
+import monitoringsystemturbo.presenter.timeline.TimelineElement;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static monitoringsystemturbo.utils.IconConverter.iconToFxImage;
 
 public class MainPresenter {
+
+    @FXML private Legend timelineLegend;
+    @FXML private Pane computerTimelineContainer;
+    @FXML private ScrollPane appTimelineContainer;
+    @FXML private VBox appTimelineList;
+    @FXML private DatePicker datePicker;
+
     private TrackingService trackingService;
     private MainExporter mainExporter;
+    private Integer currentDay;
 
+    private List<TimelineElement> timelineElements;
     private List<Application> loadedApplications;
+
     @FXML
     private ListView<Application> applicationList;
 
     @FXML
     public void initialize(List<Application> loadedApplications) {
-        mainExporter = new MainExporter();
 
+        mainExporter = new MainExporter();
         trackingService = new TrackingService();
-        trackingService.addAppToMonitor("idea64");  //just hardcoded for now, we'll change it
-        trackingService.addAppToMonitor("chrome");
+        this.loadedApplications = loadedApplications;
+        initializeAppsToMonitor();
         trackingService.start();
 
-        this.loadedApplications = loadedApplications;
         applicationList.setItems(FXCollections.observableList(loadedApplications));
         setCellFactory();
+        renderTimelineLegend();
+        initializeTimelines();
+        initializeDatePicker();
 
+    }
+
+    private void initializeAppsToMonitor() {
+        for(Application application : loadedApplications){
+            trackingService.addAppToMonitor(application.getName());
+        }
+    }
+
+    private void renderTimelineLegend() {
+        timelineLegend.addElement(PeriodColor.runningColor, "Running");
+        timelineLegend.addElement(PeriodColor.activeColor, "Active");
+    }
+
+    private void initializeTimelines() {
+        timelineElements = new ArrayList<>();
+        appTimelineContainer.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
+        try {
+            List<ComputerStatistics> computerStatistics = StatisticsManager.loadComputerStats();
+            Timeline timeline = new Timeline(computerStatistics);
+            TimelineElement timelineElement = new TimelineElement("Computer", Arrays.asList(timeline));
+            timelineElement.setTimelineViewWidthByRegion(computerTimelineContainer);
+            computerTimelineContainer.getChildren().add(timelineElement);
+            timelineElements.add(timelineElement);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            List<Timeline> timelines = StatisticsManager.load("chrome");
+            TimelineElement timelineElement = new TimelineElement("chrome", timelines);
+            timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
+            appTimelineList.getChildren().add(timelineElement);
+            timelineElements.add(timelineElement);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void initializeDatePicker() {
+        datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
+            Integer day = (int) newValue.toEpochDay();
+            timelineElements.forEach(timelineElement -> timelineElement.showDay(day));
+            currentDay = day;
+        });
+        datePicker.setValue(LocalDate.now()); // 24.04.2018
+    }
+
+    @FXML
+    public void onPrevDay() {
+        datePicker.setValue(LocalDate.ofEpochDay(currentDay - 1));
+    }
+
+    @FXML
+    public void onNextDay() {
+        if(!LocalDate.ofEpochDay(currentDay).equals(LocalDate.now()))
+            datePicker.setValue(LocalDate.ofEpochDay(currentDay + 1));
     }
 
     @FXML
