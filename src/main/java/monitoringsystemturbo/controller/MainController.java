@@ -69,7 +69,10 @@ public class MainController {
         dialogStage.setScene(scene);
         dialogStage.showAndWait();
 
-        return addApplicationPresenter.onAdd();
+        Application application= addApplicationPresenter.onAdd();
+        Boolean isCancel=addApplicationPresenter.getCancel();
+        if(isCancel.equals(false)) return application;
+        else return null;
     }
 
 }

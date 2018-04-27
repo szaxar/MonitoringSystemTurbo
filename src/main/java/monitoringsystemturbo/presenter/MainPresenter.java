@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import monitoringsystemturbo.controller.MainController;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.history.StatisticsManager;
 import monitoringsystemturbo.model.TrackingService;
@@ -27,15 +28,21 @@ import static monitoringsystemturbo.utils.IconConverter.iconToFxImage;
 
 public class MainPresenter {
 
-    @FXML private Legend timelineLegend;
-    @FXML private Pane computerTimelineContainer;
-    @FXML private ScrollPane appTimelineContainer;
-    @FXML private VBox appTimelineList;
-    @FXML private DatePicker datePicker;
+    @FXML
+    private Legend timelineLegend;
+    @FXML
+    private Pane computerTimelineContainer;
+    @FXML
+    private ScrollPane appTimelineContainer;
+    @FXML
+    private VBox appTimelineList;
+    @FXML
+    private DatePicker datePicker;
 
     private TrackingService trackingService;
     private MainExporter mainExporter;
     private Integer currentDay;
+    private MainController mainController;
 
     private List<TimelineElement> timelineElements;
     private List<Application> loadedApplications;
@@ -61,7 +68,7 @@ public class MainPresenter {
     }
 
     private void initializeAppsToMonitor() {
-        for(Application application : loadedApplications){
+        for (Application application : loadedApplications) {
             trackingService.addAppToMonitor(application.getName());
         }
     }
@@ -113,12 +120,19 @@ public class MainPresenter {
 
     @FXML
     public void onNextDay() {
-        if(!LocalDate.ofEpochDay(currentDay).equals(LocalDate.now()))
+        if (!LocalDate.ofEpochDay(currentDay).equals(LocalDate.now()))
             datePicker.setValue(LocalDate.ofEpochDay(currentDay + 1));
     }
 
     @FXML
-    public void onAddApplication() {
+    public void onAddApplication() throws IOException {
+
+        Application application = mainController.showAddView();
+        if (application != null) {
+            loadedApplications.add(application);
+
+            applicationList.setItems(FXCollections.observableList(loadedApplications));
+        }
     }
 
     @FXML
@@ -150,13 +164,14 @@ public class MainPresenter {
 
     private void setCellFactory() {
         applicationList.setCellFactory(param -> new ListCell<Application>() {
-            private ImageView imageView = new ImageView();
-            private Label label = new Label();
-            private VBox vbox = new VBox();
 
             @Override
             public void updateItem(Application application, boolean empty) {
                 super.updateItem(application, empty);
+
+                ImageView imageView = new ImageView();
+                Label label = new Label();
+                VBox vbox = new VBox();
 
                 if (empty) {
                     setText(null);
@@ -174,4 +189,7 @@ public class MainPresenter {
         });
     }
 
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
+    }
 }
