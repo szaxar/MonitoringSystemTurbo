@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import monitoringsystemturbo.config.ConfigManager;
 import monitoringsystemturbo.controller.MainController;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.history.StatisticsManager;
@@ -132,6 +133,8 @@ public class MainPresenter {
             loadedApplications.add(application);
 
             applicationList.setItems(FXCollections.observableList(loadedApplications));
+
+            ConfigManager.save(loadedApplications);
         }
     }
 
