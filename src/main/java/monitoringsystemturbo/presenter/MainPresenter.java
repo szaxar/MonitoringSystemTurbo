@@ -95,11 +95,13 @@ public class MainPresenter {
         }
 
         try {
-            List<Timeline> timelines = StatisticsManager.load("chrome");
-            TimelineElement timelineElement = new TimelineElement("chrome", timelines);
-            timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
-            appTimelineList.getChildren().add(timelineElement);
-            timelineElements.add(timelineElement);
+            for(Application application : loadedApplications) {
+                List<Timeline> timelines = StatisticsManager.load(application.getName());
+                TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
+                timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
+                appTimelineList.getChildren().add(timelineElement);
+                timelineElements.add(timelineElement);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -126,7 +128,7 @@ public class MainPresenter {
     }
 
     @FXML
-    public void onAddApplication() throws IOException {
+    public void onAddApplication() throws IOException, ClassNotFoundException {
 
         Application application = mainController.showAddView();
         if (application != null) {
@@ -135,6 +137,13 @@ public class MainPresenter {
             applicationList.setItems(FXCollections.observableList(loadedApplications));
 
             ConfigManager.save(loadedApplications);
+
+            List<Timeline> timelines = StatisticsManager.load(application.getName());
+            TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
+            timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
+            appTimelineList.getChildren().add(timelineElement);
+            timelineElements.add(timelineElement);
+
         }
     }
 
