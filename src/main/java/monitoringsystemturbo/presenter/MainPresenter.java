@@ -32,38 +32,26 @@ public class MainPresenter {
     @FXML private ScrollPane appTimelineContainer;
     @FXML private VBox appTimelineList;
     @FXML private DatePicker datePicker;
+    private Integer currentDay;
 
     private TrackingService trackingService;
     private MainExporter mainExporter;
-    private Integer currentDay;
 
     private List<TimelineElement> timelineElements;
-    private List<Application> loadedApplications;
 
     @FXML
     private ListView<Application> applicationList;
 
     @FXML
-    public void initialize(List<Application> loadedApplications) {
-
-        mainExporter = new MainExporter();
-        trackingService = new TrackingService();
-        this.loadedApplications = loadedApplications;
-        initializeAppsToMonitor();
-        trackingService.start();
-
-        applicationList.setItems(FXCollections.observableList(loadedApplications));
+    public void initialize(TrackingService trackingService, MainExporter mainExporter, List<Application> loadedApplications) {
+        this.trackingService = trackingService;
+        this.mainExporter = mainExporter;
         setCellFactory();
+        applicationList.setItems(FXCollections.observableList(loadedApplications));
         renderTimelineLegend();
         initializeTimelines();
         initializeDatePicker();
 
-    }
-
-    private void initializeAppsToMonitor() {
-        for(Application application : loadedApplications){
-            trackingService.addAppToMonitor(application.getName());
-        }
     }
 
     private void renderTimelineLegend() {
@@ -103,7 +91,7 @@ public class MainPresenter {
             timelineElements.forEach(timelineElement -> timelineElement.showDay(day));
             currentDay = day;
         });
-        datePicker.setValue(LocalDate.now()); // 24.04.2018
+        datePicker.setValue(LocalDate.now());
     }
 
     @FXML
@@ -162,7 +150,7 @@ public class MainPresenter {
                     setText(null);
                     setGraphic(null);
                 } else {
-                    Image image = iconToFxImage(application.findIcon());
+                    Image image = iconToFxImage(application.getIcon());
                     label.setText(application.getName());
                     imageView.setImage(image);
                     vbox.setAlignment(Pos.CENTER);
