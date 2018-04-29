@@ -31,6 +31,8 @@ public class MainController {
         mainPresenter.setMainController(this);
         mainPresenter.initialize(loadedApplications);
 
+        AddApplicationController addApplicationController=new AddApplicationController(primaryStage);
+        mainPresenter.setAddApplicationController(addApplicationController);
         primaryStage.setScene(new Scene(rootLayout));
         primaryStage.show();
     }
@@ -48,31 +50,6 @@ public class MainController {
             System.out.println("Error occurred while reading from config file");
             System.exit(1);
         }
-    }
-
-    public Application showAddView() throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(this.getClass().getResource("/addView.fxml"));
-        Parent rootLayout = loader.load();
-
-
-
-        Stage dialogStage = new Stage();
-        dialogStage.setTitle("Add application");
-        dialogStage.initModality(Modality.WINDOW_MODAL);
-        dialogStage.initOwner(primaryStage);
-
-        AddApplicationPresenter addApplicationPresenter=loader.getController();
-        addApplicationPresenter.setPrimaryStage(dialogStage);
-
-        Scene scene=new Scene(rootLayout);
-        dialogStage.setScene(scene);
-        dialogStage.showAndWait();
-
-        Application application= addApplicationPresenter.onAdd();
-        Boolean isCancel=addApplicationPresenter.getCancel();
-        if(isCancel.equals(false)) return application;
-        else return null;
     }
 
 }

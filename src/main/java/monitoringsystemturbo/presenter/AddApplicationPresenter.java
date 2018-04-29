@@ -16,25 +16,23 @@ public class AddApplicationPresenter {
     private TextField nameApplication;
     @FXML
     private TextField fullPathApplication;
-    private Application application;
-    private Boolean isCancel=false;
+    private Application application=null;
+
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
 
-    public Application onAdd(){
+    public void onAdd(){
         application=new Application(nameApplication.getText(),fullPathApplication.getText());
         primaryStage.close();
-        return application;
     }
 
     public void onCancel(){
-        isCancel=true;
         primaryStage.close();
     }
 
-    public Boolean getCancel() {
-        return isCancel;
+    public Application getApplication() {
+        return application;
     }
 }
