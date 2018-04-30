@@ -28,10 +28,11 @@ public class Application {
         return this.fullPath;
     }
 
-    public Icon findIcon() {
+    public Icon loadIcon() {
         File file = new File(this.fullPath);
         ShellFolder sf = null;
         try {
+
             sf = ShellFolder.getShellFolder(file);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
