@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.101" xmlns:fx="http://javafx.com/fxml/1" fx:controller="monitoringsystemturbo.presenter.AddApplicationPresenter">
+<BorderPane prefWidth="300.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="monitoringsystemturbo.presenter.AddApplicationPresenter">
     <center>
         <GridPane hgap="5.0" vgap="5.0" BorderPane.alignment="CENTER">
             <columnConstraints>
@@ -33,12 +33,12 @@
                        <Insets bottom="0.0" left="5.0" right="5.0" top="5.0" />
                    </GridPane.margin>
                </Label>
-               <TextField fx:id="nameApplication" GridPane.columnIndex="1" GridPane.rowIndex="0">
+               <TextField fx:id="nameApplication" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="0">
                    <GridPane.margin>
                        <Insets bottom="0.0" left="5.0" right="5.0" top="5.0" />
                    </GridPane.margin>
                </TextField>
-               <TextField fx:id="fullPathApplication" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <TextField fx:id="fullPathApplication" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
                    <GridPane.margin>
                        <Insets bottom="0.0" left="5.0" right="5.0" top="5.0" />
                    </GridPane.margin>
@@ -54,7 +54,7 @@
                     <HBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </HBox.margin></Button>
-                <Button fx:id="addButton" mnemonicParsing="false" onAction="#onAdd" prefWidth="60.0" text="Add">
+                <Button fx:id="addButton" mnemonicParsing="false" disable="true" onAction="#onAdd" prefWidth="60.0" text="Add">
                     <HBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </HBox.margin></Button>

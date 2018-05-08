@@ -40,6 +40,7 @@ public class AddApplicationPresenter {
         if (selectedFile != null) {
             nameApplication.setText(FilenameUtils.getBaseName(selectedFile.getName()));
             fullPathApplication.setText(selectedFile.getAbsolutePath());
+            addButton.setDisable(false);
         }
 
     }
