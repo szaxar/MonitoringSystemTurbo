@@ -120,6 +120,7 @@ public class MainPresenter {
         addApplicationController.showAddView();
         Application application=addApplicationController.getNewApplication();
         if (application != null) {
+            application.createFileIfNeeded();
             loadedApplications.add(application);
 
             applicationList.setItems(FXCollections.observableList(loadedApplications));

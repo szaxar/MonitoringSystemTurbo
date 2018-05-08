@@ -2,10 +2,13 @@ package monitoringsystemturbo.presenter;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.commons.io.FilenameUtils;
 import monitoringsystemturbo.model.app.Application;
+
+import java.io.File;
 
 public class AddApplicationPresenter {
 
@@ -26,6 +29,17 @@ public class AddApplicationPresenter {
     public void onAdd(){
         application=new Application(nameApplication.getText(),fullPathApplication.getText());
         primaryStage.close();
+
+    }
+
+    public void onFind() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select EXE file");
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("EXE Files", "*.exe"));
+        File selectedFile = fileChooser.showOpenDialog(null);
+        nameApplication.setText(FilenameUtils.getBaseName(selectedFile.getName()));
+        fullPathApplication.setText(selectedFile.getAbsolutePath());
+
     }
 
     public void onCancel(){

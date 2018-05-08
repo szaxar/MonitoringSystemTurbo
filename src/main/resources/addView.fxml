@@ -58,6 +58,10 @@
                     <HBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </HBox.margin></Button>
+                <Button fx:id="findButton" mnemonicParsing="false" onAction="#onFind" prefWidth="60.0" text="Find">
+                    <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </HBox.margin></Button>
             </children>
             <BorderPane.margin>
                 <Insets bottom="0.0" left="5.0" right="5.0" top="5.0" />
