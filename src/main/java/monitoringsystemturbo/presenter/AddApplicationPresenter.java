@@ -19,15 +19,15 @@ public class AddApplicationPresenter {
     private TextField nameApplication;
     @FXML
     private TextField fullPathApplication;
-    private Application application=null;
+    private Application application = null;
 
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
 
-    public void onAdd(){
-        application=new Application(nameApplication.getText(),fullPathApplication.getText());
+    public void onAdd() {
+        application = new Application(nameApplication.getText(), fullPathApplication.getText());
         primaryStage.close();
 
     }
@@ -37,12 +37,14 @@ public class AddApplicationPresenter {
         fileChooser.setTitle("Select EXE file");
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("EXE Files", "*.exe"));
         File selectedFile = fileChooser.showOpenDialog(null);
-        nameApplication.setText(FilenameUtils.getBaseName(selectedFile.getName()));
-        fullPathApplication.setText(selectedFile.getAbsolutePath());
+        if (selectedFile != null) {
+            nameApplication.setText(FilenameUtils.getBaseName(selectedFile.getName()));
+            fullPathApplication.setText(selectedFile.getAbsolutePath());
+        }
 
     }
 
-    public void onCancel(){
+    public void onCancel() {
         primaryStage.close();
     }
 
