@@ -8,9 +8,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import monitoringsystemturbo.config.ConfigManager;
-import monitoringsystemturbo.controller.AddApplicationController;
-import monitoringsystemturbo.controller.MainController;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.history.StatisticsManager;
 import monitoringsystemturbo.model.TrackingService;
@@ -35,19 +32,16 @@ public class MainPresenter {
     @FXML private ScrollPane appTimelineContainer;
     @FXML private VBox appTimelineList;
     @FXML private DatePicker datePicker;
+    private Integer currentDay;
 
 
     private TrackingService trackingService;
     private MainExporter mainExporter;
-    private Integer currentDay;
 
     private List<TimelineElement> timelineElements;
-    private List<Application> loadedApplications;
 
     @FXML
     private ListView<Application> applicationList;
-    private MainController mainController;
-    private AddApplicationController addApplicationController;
 
     @FXML
     public void initialize(TrackingService trackingService, MainExporter mainExporter, List<Application> loadedApplications) {
@@ -55,11 +49,16 @@ public class MainPresenter {
         this.mainExporter = mainExporter;
         setCellFactory();
         applicationList.setItems(FXCollections.observableList(loadedApplications));
-        this.loadedApplications=loadedApplications;
         renderTimelineLegend();
         initializeTimelines();
         initializeDatePicker();
 
+    }
+
+    private void initializeAppsToMonitor() {
+        for(Application application : loadedApplications){
+            trackingService.addAppToMonitor(application.getName());
+        }
     }
 
     private void renderTimelineLegend() {
@@ -83,13 +82,11 @@ public class MainPresenter {
         }
 
         try {
-            for(Application application : loadedApplications) {
-                List<Timeline> timelines = StatisticsManager.load(application.getName());
-                TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
-                timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
-                appTimelineList.getChildren().add(timelineElement);
-                timelineElements.add(timelineElement);
-            }
+            List<Timeline> timelines = StatisticsManager.load("chrome");
+            TimelineElement timelineElement = new TimelineElement("chrome", timelines);
+            timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
+            appTimelineList.getChildren().add(timelineElement);
+            timelineElements.add(timelineElement);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -101,7 +98,7 @@ public class MainPresenter {
             timelineElements.forEach(timelineElement -> timelineElement.showDay(day));
             currentDay = day;
         });
-        datePicker.setValue(LocalDate.now());
+        datePicker.setValue(LocalDate.now()); // 24.04.2018
     }
 
     @FXML
@@ -165,13 +162,13 @@ public class MainPresenter {
 
     private void setCellFactory() {
         applicationList.setCellFactory(param -> new ListCell<Application>() {
+            private ImageView imageView = new ImageView();
+            private Label label = new Label();
+            private VBox vbox = new VBox();
 
             @Override
             public void updateItem(Application application, boolean empty) {
                 super.updateItem(application, empty);
-                ImageView imageView = new ImageView();
-                Label label = new Label();
-                VBox vbox = new VBox();
 
                 if (empty) {
                     setText(null);
@@ -189,11 +186,4 @@ public class MainPresenter {
         });
     }
 
-    public void setMainController(MainController mainController) {
-        this.mainController = mainController;
-    }
-
-    public void setAddApplicationController(AddApplicationController addApplicationController) {
-        this.addApplicationController = addApplicationController;
-    }
 }
