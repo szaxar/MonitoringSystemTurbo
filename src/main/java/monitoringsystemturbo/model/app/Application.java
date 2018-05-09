@@ -5,6 +5,7 @@ import sun.awt.shell.ShellFolder;
 import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class Application {
     private String name;
@@ -37,5 +38,16 @@ public class Application {
             e.printStackTrace();
         }
         return (new ImageIcon(sf.getIcon(true)));
+    }
+
+    public void createFileIfNeeded() {
+        File file = new File(this.name+".json");
+        if(!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

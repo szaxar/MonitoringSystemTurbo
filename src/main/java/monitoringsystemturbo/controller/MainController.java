@@ -5,6 +5,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import monitoringsystemturbo.config.ConfigManager;
+import monitoringsystemturbo.exporter.MainExporter;
+import monitoringsystemturbo.model.TrackingService;
 import monitoringsystemturbo.model.app.Application;
 import monitoringsystemturbo.presenter.MainPresenter;
 import java.io.IOException;
@@ -22,32 +24,21 @@ public class MainController {
         this.mainExporter = mainExporter;
     }
 
-    public void showMainWindow() throws IOException {
+    public void showMainWindow(List<Application> loadedApplications) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(this.getClass().getResource("/main.fxml"));
         Parent rootLayout = loader.load();
 
-        openConfig();
         MainPresenter mainPresenter=loader.getController();
         mainPresenter.initialize(trackingService, mainExporter, loadedApplications);
+
+        AddApplicationController addApplicationController=new AddApplicationController(primaryStage);
+        mainPresenter.setAddApplicationController(addApplicationController);
+        mainPresenter.setMainController(this);
 
         primaryStage.setScene(new Scene(rootLayout));
         primaryStage.show();
     }
 
 
-
-    private void openConfig(){
-        try {
-            loadedApplications = ConfigManager.load();
-        } catch (IOException e) {
-            //e.printStackTrace();
-            System.out.println("Error occurred while reading from config file");
-        }
-        if(loadedApplications == null){
-            System.out.println("Error occurred while reading from config file");
-            System.exit(1);
-        }
-
-    }
 }

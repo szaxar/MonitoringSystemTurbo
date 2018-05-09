@@ -8,6 +8,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import monitoringsystemturbo.config.ConfigManager;
+import monitoringsystemturbo.controller.AddApplicationController;
+import monitoringsystemturbo.controller.MainController;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.history.StatisticsManager;
 import monitoringsystemturbo.model.TrackingService;
@@ -37,16 +40,19 @@ public class MainPresenter {
 
     private TrackingService trackingService;
     private MainExporter mainExporter;
-
+    private List<Application> loadedApplications;
+    private AddApplicationController addApplicationController;
     private List<TimelineElement> timelineElements;
 
     @FXML
     private ListView<Application> applicationList;
+    private MainController mainController;
 
     @FXML
     public void initialize(TrackingService trackingService, MainExporter mainExporter, List<Application> loadedApplications) {
         this.trackingService = trackingService;
         this.mainExporter = mainExporter;
+        this.loadedApplications=loadedApplications;
         setCellFactory();
         applicationList.setItems(FXCollections.observableList(loadedApplications));
         renderTimelineLegend();
@@ -81,12 +87,15 @@ public class MainPresenter {
             e.printStackTrace();
         }
 
+
         try {
-            List<Timeline> timelines = StatisticsManager.load("chrome");
-            TimelineElement timelineElement = new TimelineElement("chrome", timelines);
-            timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
-            appTimelineList.getChildren().add(timelineElement);
-            timelineElements.add(timelineElement);
+            for(Application application : loadedApplications) {
+                List<Timeline> timelines = StatisticsManager.load(application.getName());
+                TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
+                timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
+                appTimelineList.getChildren().add(timelineElement);
+                timelineElements.add(timelineElement);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -114,6 +123,7 @@ public class MainPresenter {
 
     @FXML
     public void onAddApplication() throws IOException, ClassNotFoundException {
+
         addApplicationController.showAddView();
         Application application=addApplicationController.getNewApplication();
         if (application != null) {
@@ -162,19 +172,21 @@ public class MainPresenter {
 
     private void setCellFactory() {
         applicationList.setCellFactory(param -> new ListCell<Application>() {
-            private ImageView imageView = new ImageView();
-            private Label label = new Label();
-            private VBox vbox = new VBox();
+
 
             @Override
             public void updateItem(Application application, boolean empty) {
                 super.updateItem(application, empty);
 
+                 ImageView imageView = new ImageView();
+                 Label label = new Label();
+                 VBox vbox = new VBox();
+
                 if (empty) {
                     setText(null);
                     setGraphic(null);
                 } else {
-                    Image image = iconToFxImage(application.loadIcon());
+                    Image image = iconToFxImage(application.findIcon());
                     label.setText(application.getName());
                     imageView.setImage(image);
                     vbox.setAlignment(Pos.CENTER);
@@ -186,4 +198,12 @@ public class MainPresenter {
         });
     }
 
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
+    }
+
+    public void setAddApplicationController(AddApplicationController addApplicationController) {
+        this.addApplicationController = addApplicationController;
+    }
+    
 }
