@@ -4,6 +4,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
+import monitoringsystemturbo.model.OnTimeLineChangerListener;
 import monitoringsystemturbo.model.timeline.ActivePeriod;
 import monitoringsystemturbo.model.timeline.Period;
 import monitoringsystemturbo.model.timeline.RunningPeriod;
@@ -15,7 +16,7 @@ import java.util.List;
 
 import static monitoringsystemturbo.presenter.timeline.PeriodColor.*;
 
-public class TimelineView extends Group {
+public class TimelineView extends Group implements OnTimeLineChangerListener {
 
     private final static int height = 35;
     private final static long dayInMs = 24 * 60 * 60 * 1000;
@@ -40,11 +41,11 @@ public class TimelineView extends Group {
         getChildren().add(timelineBackground);
     }
 
-    private void renderPeriods(List<Period> periods) throws ClassNotFoundException {
+    public void renderPeriods(List<Period> periods) throws ClassNotFoundException {
         for (Period period : periods) {
             long datetimeStart = period.getDatetimeStart().getTime();
             long datetimeEnd = period.getDatetimeEnd().getTime();
-            for (int day = (int)(datetimeStart / dayInMs); day <= datetimeEnd / dayInMs; day++) {
+            for (int day = (int) (datetimeStart / dayInMs); day <= datetimeEnd / dayInMs; day++) {
                 Rectangle periodView = createPeriodView(period);
                 long datetimeStartInDay = Math.max(datetimeStart, day * dayInMs);
                 long datetimeEndInDay = Math.min(datetimeEnd, (day + 1) * dayInMs);
@@ -107,4 +108,8 @@ public class TimelineView extends Group {
         currentDay = day;
     }
 
+    @Override
+    public void onTimelineChange(List<Period> periods, String appName) {
+
+    }
 }

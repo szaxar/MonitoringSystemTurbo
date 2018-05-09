@@ -10,34 +10,39 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.history.StatisticsManager;
+import monitoringsystemturbo.model.OnTimeLineChangerListener;
 import monitoringsystemturbo.model.TrackingService;
 import monitoringsystemturbo.model.app.Application;
 import monitoringsystemturbo.model.computer.ComputerStatistics;
+import monitoringsystemturbo.model.timeline.Period;
 import monitoringsystemturbo.model.timeline.Timeline;
 import monitoringsystemturbo.presenter.timeline.PeriodColor;
 import monitoringsystemturbo.presenter.timeline.TimelineElement;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static monitoringsystemturbo.utils.IconConverter.iconToFxImage;
 
-public class MainPresenter {
+public class MainPresenter implements OnTimeLineChangerListener {
 
-    @FXML private Legend timelineLegend;
-    @FXML private Pane computerTimelineContainer;
-    @FXML private ScrollPane appTimelineContainer;
-    @FXML private VBox appTimelineList;
-    @FXML private DatePicker datePicker;
+    @FXML
+    private Legend timelineLegend;
+    @FXML
+    private Pane computerTimelineContainer;
+    @FXML
+    private ScrollPane appTimelineContainer;
+    @FXML
+    private VBox appTimelineList;
+    @FXML
+    private DatePicker datePicker;
 
     private TrackingService trackingService;
     private MainExporter mainExporter;
     private Integer currentDay;
 
-    private List<TimelineElement> timelineElements;
+    private Map<String, TimelineElement> timelineElements;
     private List<Application> loadedApplications;
 
     @FXML
@@ -47,7 +52,7 @@ public class MainPresenter {
     public void initialize(List<Application> loadedApplications) {
 
         mainExporter = new MainExporter();
-        trackingService = new TrackingService();
+        trackingService = new TrackingService(this);
         this.loadedApplications = loadedApplications;
         initializeAppsToMonitor();
         trackingService.start();
@@ -61,7 +66,7 @@ public class MainPresenter {
     }
 
     private void initializeAppsToMonitor() {
-        for(Application application : loadedApplications){
+        for (Application application : loadedApplications) {
             trackingService.addAppToMonitor(application.getName());
         }
     }
@@ -72,7 +77,7 @@ public class MainPresenter {
     }
 
     private void initializeTimelines() {
-        timelineElements = new ArrayList<>();
+        timelineElements = new HashMap<>();
         appTimelineContainer.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
         try {
@@ -81,7 +86,7 @@ public class MainPresenter {
             TimelineElement timelineElement = new TimelineElement("Computer", Arrays.asList(timeline));
             timelineElement.setTimelineViewWidthByRegion(computerTimelineContainer);
             computerTimelineContainer.getChildren().add(timelineElement);
-            timelineElements.add(timelineElement);
+            timelineElements.put("Computer", timelineElement);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -91,7 +96,7 @@ public class MainPresenter {
             TimelineElement timelineElement = new TimelineElement("chrome", timelines);
             timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
             appTimelineList.getChildren().add(timelineElement);
-            timelineElements.add(timelineElement);
+            timelineElements.put("chrome", timelineElement);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -100,10 +105,10 @@ public class MainPresenter {
     private void initializeDatePicker() {
         datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
             Integer day = (int) newValue.toEpochDay();
-            timelineElements.forEach(timelineElement -> timelineElement.showDay(day));
+            timelineElements.values().forEach(timelineElement -> timelineElement.showDay(day));
             currentDay = day;
         });
-        datePicker.setValue(LocalDate.now()); // 24.04.2018
+        datePicker.setValue(LocalDate.now());
     }
 
     @FXML
@@ -113,7 +118,7 @@ public class MainPresenter {
 
     @FXML
     public void onNextDay() {
-        if(!LocalDate.ofEpochDay(currentDay).equals(LocalDate.now()))
+        if (!LocalDate.ofEpochDay(currentDay).equals(LocalDate.now()))
             datePicker.setValue(LocalDate.ofEpochDay(currentDay + 1));
     }
 
@@ -174,4 +179,16 @@ public class MainPresenter {
         });
     }
 
+    @Override
+    public void onTimelineChange(List<Period> periods, String appName) {
+        if (timelineElements != null) {
+            System.out.println(periods + " " + appName);
+            TimelineElement element = timelineElements.get(appName);
+            try {
+                element.getTimeLineView().renderPeriods(periods);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

@@ -47,7 +47,7 @@ public class Presentation extends javafx.application.Application {
         }
 
         System.out.println("Starting monitoring...");
-        TrackingService trackingService = new TrackingService(programNames);
+        TrackingService trackingService = new TrackingService(programNames, null);
         ComputerStatistics computerStatistics = new ComputerStatistics(new Date());
         ComputerMonitor computerMonitor = new ComputerMonitor(computerStatistics);
         computerMonitor.start();

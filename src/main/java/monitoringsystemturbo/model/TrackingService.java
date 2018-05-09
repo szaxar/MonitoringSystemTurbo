@@ -1,10 +1,12 @@
 package monitoringsystemturbo.model;
 
+import monitoringsystemturbo.Main;
 import monitoringsystemturbo.model.app.ApplicationMonitor;
 import monitoringsystemturbo.model.app.ApplicationService;
 import monitoringsystemturbo.model.computer.ComputerMonitor;
 import monitoringsystemturbo.model.computer.ComputerStatistics;
 import monitoringsystemturbo.model.timeline.Timeline;
+import monitoringsystemturbo.presenter.MainPresenter;
 
 import java.util.*;
 
@@ -13,18 +15,21 @@ public class TrackingService {
     private ComputerStatistics computerStatistics;
     private ApplicationMonitor applicationMonitor;
     private ComputerMonitor computerMonitor;
+    private MainPresenter presenter;
 
-    public TrackingService() {
+    public TrackingService(MainPresenter presenter) {
+        this.presenter = presenter;
     }
 
-    public TrackingService(List<String> applicationNames) {
+    public TrackingService(List<String> applicationNames, MainPresenter presenter) {
+        this(presenter);
         for (String appName : applicationNames) {
-            applicationServices.add(new ApplicationService(appName));
+            applicationServices.add(new ApplicationService(appName, presenter));
         }
     }
 
     public void addAppToMonitor(String appName) {
-        applicationServices.add(new ApplicationService(appName));
+        applicationServices.add(new ApplicationService(appName, presenter));
     }
 
     public List<String> getApplicationsNames() {

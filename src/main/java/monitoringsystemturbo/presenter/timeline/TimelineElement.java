@@ -2,9 +2,10 @@ package monitoringsystemturbo.presenter.timeline;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import monitoringsystemturbo.model.OnTimeLineChangerListener;
+import monitoringsystemturbo.model.timeline.Period;
 import monitoringsystemturbo.model.timeline.Timeline;
 
 import java.util.List;
@@ -29,6 +30,10 @@ public class TimelineElement extends VBox {
 
     public void setTimelineViewWidthByRegion(Region region) {
         timelineView.widthProperty().bind(region.widthProperty());
+    }
+
+    public TimelineView getTimeLineView(){
+        return timelineView;
     }
 
     public void showDay(Integer day) {

@@ -1,5 +1,6 @@
 package monitoringsystemturbo.model.timeline;
 
+import monitoringsystemturbo.model.OnTimeLineChangerListener;
 import monitoringsystemturbo.model.app.ApplicationState;
 import monitoringsystemturbo.model.computer.ComputerStatistics;
 
