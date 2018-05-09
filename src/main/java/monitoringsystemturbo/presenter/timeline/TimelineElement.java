@@ -2,7 +2,6 @@ package monitoringsystemturbo.presenter.timeline;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import monitoringsystemturbo.model.timeline.Timeline;
@@ -35,4 +34,7 @@ public class TimelineElement extends VBox {
         timelineView.showDay(day);
     }
 
+    public String getName() {
+        return appNameLabel.getText();
+    }
 }

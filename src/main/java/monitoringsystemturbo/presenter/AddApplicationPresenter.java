@@ -26,12 +26,14 @@ public class AddApplicationPresenter {
         this.primaryStage = primaryStage;
     }
 
+    @FXML
     public void onAdd() {
         application = new Application(nameApplication.getText(), fullPathApplication.getText());
         primaryStage.close();
 
     }
 
+    @FXML
     public void onFind() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select EXE file");

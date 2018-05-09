@@ -30,11 +30,16 @@ import static monitoringsystemturbo.utils.IconConverter.iconToFxImage;
 
 public class MainPresenter {
 
-    @FXML private Legend timelineLegend;
-    @FXML private Pane computerTimelineContainer;
-    @FXML private ScrollPane appTimelineContainer;
-    @FXML private VBox appTimelineList;
-    @FXML private DatePicker datePicker;
+    @FXML
+    private Legend timelineLegend;
+    @FXML
+    private Pane computerTimelineContainer;
+    @FXML
+    private ScrollPane appTimelineContainer;
+    @FXML
+    private VBox appTimelineList;
+    @FXML
+    private DatePicker datePicker;
     private Integer currentDay;
 
 
@@ -52,7 +57,7 @@ public class MainPresenter {
     public void initialize(TrackingService trackingService, MainExporter mainExporter, List<Application> loadedApplications) {
         this.trackingService = trackingService;
         this.mainExporter = mainExporter;
-        this.loadedApplications=loadedApplications;
+        this.loadedApplications = loadedApplications;
         setCellFactory();
         applicationList.setItems(FXCollections.observableList(loadedApplications));
         renderTimelineLegend();
@@ -62,7 +67,7 @@ public class MainPresenter {
     }
 
     private void initializeAppsToMonitor() {
-        for(Application application : loadedApplications){
+        for (Application application : loadedApplications) {
             trackingService.addAppToMonitor(application.getName());
         }
     }
@@ -89,7 +94,7 @@ public class MainPresenter {
 
 
         try {
-            for(Application application : loadedApplications) {
+            for (Application application : loadedApplications) {
                 List<Timeline> timelines = StatisticsManager.load(application.getName());
                 TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
                 timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
@@ -117,7 +122,7 @@ public class MainPresenter {
 
     @FXML
     public void onNextDay() {
-        if(!LocalDate.ofEpochDay(currentDay).equals(LocalDate.now()))
+        if (!LocalDate.ofEpochDay(currentDay).equals(LocalDate.now()))
             datePicker.setValue(LocalDate.ofEpochDay(currentDay + 1));
     }
 
@@ -125,7 +130,7 @@ public class MainPresenter {
     public void onAddApplication() throws IOException, ClassNotFoundException {
 
         addApplicationController.showAddView();
-        Application application=addApplicationController.getNewApplication();
+        Application application = addApplicationController.getNewApplication();
         if (application != null) {
             application.createFileIfNeeded();
             loadedApplications.add(application);
@@ -139,13 +144,33 @@ public class MainPresenter {
             timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
             appTimelineList.getChildren().add(timelineElement);
             timelineElements.add(timelineElement);
-
         }
     }
 
     @FXML
-    public void onRemoveApplication() {
-        //pls remember to save statistics, otherwise data will be lost!
+    public void onRemoveApplication() throws IllegalStateException {
+        Application application = applicationList.getSelectionModel().getSelectedItem();
+        System.out.println(application.getName());
+        try {
+            StatisticsManager.save(application.getName(), trackingService.getStatisticsForApp(application.getName()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        loadedApplications.remove(application);
+
+        applicationList.setItems(FXCollections.observableList(loadedApplications));
+
+        //TODO remove form config.json
+
+        TimelineElement timelineElement = timelineElements.stream()
+                .filter(element -> element.getName().equals(application.getName()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Cannot delete app which are not in list"));
+
+        System.out.println("Timeline element " + timelineElement.getName());
+        timelineElements.remove(timelineElement);
+        appTimelineList.getChildren().remove(timelineElement);
     }
 
     @FXML
@@ -178,9 +203,9 @@ public class MainPresenter {
             public void updateItem(Application application, boolean empty) {
                 super.updateItem(application, empty);
 
-                 ImageView imageView = new ImageView();
-                 Label label = new Label();
-                 VBox vbox = new VBox();
+                ImageView imageView = new ImageView();
+                Label label = new Label();
+                VBox vbox = new VBox();
 
                 if (empty) {
                     setText(null);
@@ -205,5 +230,4 @@ public class MainPresenter {
     public void setAddApplicationController(AddApplicationController addApplicationController) {
         this.addApplicationController = addApplicationController;
     }
-    
 }
