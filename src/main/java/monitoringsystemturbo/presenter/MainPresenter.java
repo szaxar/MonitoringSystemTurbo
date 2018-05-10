@@ -92,9 +92,9 @@ public class MainPresenter {
             e.printStackTrace();
         }
 
-
         try {
             for (Application application : loadedApplications) {
+                application.createFileIfNeeded();
                 List<Timeline> timelines = StatisticsManager.load(application.getName());
                 TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
                 timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
@@ -144,31 +144,32 @@ public class MainPresenter {
             timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
             appTimelineList.getChildren().add(timelineElement);
             timelineElements.add(timelineElement);
+
+            trackingService.addAppToMonitor(application.getName());
         }
     }
 
     @FXML
     public void onRemoveApplication() throws IllegalStateException {
         Application application = applicationList.getSelectionModel().getSelectedItem();
-        System.out.println(application.getName());
         try {
             StatisticsManager.save(application.getName(), trackingService.getStatisticsForApp(application.getName()));
         } catch (IOException e) {
             e.printStackTrace();
         }
+        trackingService.stopAppMonitoring(application.getName());
 
         loadedApplications.remove(application);
 
         applicationList.setItems(FXCollections.observableList(loadedApplications));
 
-        //TODO remove form config.json
+        //TODO remove from config.json
 
         TimelineElement timelineElement = timelineElements.stream()
                 .filter(element -> element.getName().equals(application.getName()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("Cannot delete app which are not in list"));
 
-        System.out.println("Timeline element " + timelineElement.getName());
         timelineElements.remove(timelineElement);
         appTimelineList.getChildren().remove(timelineElement);
     }
@@ -197,8 +198,6 @@ public class MainPresenter {
 
     private void setCellFactory() {
         applicationList.setCellFactory(param -> new ListCell<Application>() {
-
-
             @Override
             public void updateItem(Application application, boolean empty) {
                 super.updateItem(application, empty);
