@@ -150,28 +150,31 @@ public class MainPresenter {
     }
 
     @FXML
-    public void onRemoveApplication() throws IllegalStateException {
+    public void onRemoveApplication() throws IllegalStateException, IOException {
         Application application = applicationList.getSelectionModel().getSelectedItem();
-        try {
-            StatisticsManager.save(application.getName(), trackingService.getStatisticsForApp(application.getName()));
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(application != null){
+            try {
+                StatisticsManager.save(application.getName(), trackingService.getStatisticsForApp(application.getName()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            trackingService.stopAppMonitoring(application.getName());
+
+            loadedApplications.remove(application);
+
+            applicationList.setItems(FXCollections.observableList(loadedApplications));
+
+            ConfigManager.save(loadedApplications);
+            //TODO remove from config.json
+
+            TimelineElement timelineElement = timelineElements.stream()
+                    .filter(element -> element.getName().equals(application.getName()))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException("Cannot delete app which are not in list"));
+
+            timelineElements.remove(timelineElement);
+            appTimelineList.getChildren().remove(timelineElement);
         }
-        trackingService.stopAppMonitoring(application.getName());
-
-        loadedApplications.remove(application);
-
-        applicationList.setItems(FXCollections.observableList(loadedApplications));
-
-        //TODO remove from config.json
-
-        TimelineElement timelineElement = timelineElements.stream()
-                .filter(element -> element.getName().equals(application.getName()))
-                .findFirst()
-                .orElseThrow(() -> new IllegalStateException("Cannot delete app which are not in list"));
-
-        timelineElements.remove(timelineElement);
-        appTimelineList.getChildren().remove(timelineElement);
     }
 
     @FXML
