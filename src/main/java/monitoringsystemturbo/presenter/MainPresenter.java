@@ -46,7 +46,7 @@ public class MainPresenter {
     private TrackingService trackingService;
     private MainExporter mainExporter;
     private List<Application> loadedApplications;
-    private ApplicationListController applicationListController;
+    private ApplicationListController addApplicationListController;
     private List<TimelineElement> timelineElements;
 
     @FXML
@@ -92,9 +92,9 @@ public class MainPresenter {
             e.printStackTrace();
         }
 
-
         try {
             for (Application application : loadedApplications) {
+                application.createFileIfNeeded();
                 List<Timeline> timelines = StatisticsManager.load(application.getName());
                 TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
                 timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
@@ -129,8 +129,8 @@ public class MainPresenter {
     @FXML
     public void onAddApplication() throws IOException, ClassNotFoundException {
 
-
-        Application application = applicationListController.showAddView();
+        addApplicationListController.showAddView();
+        Application application = addApplicationListController.getNewApplication();
         if (application != null) {
             application.createFileIfNeeded();
             loadedApplications.add(application); //TODO Service
@@ -145,12 +145,36 @@ public class MainPresenter {
             appTimelineList.getChildren().add(timelineElement);
             timelineElements.add(timelineElement);
 
+            trackingService.addAppToMonitor(application.getName());
         }
     }
 
     @FXML
-    public void onRemoveApplication() {
-        //pls remember to save statistics, otherwise data will be lost!
+    public void onRemoveApplication() throws IllegalStateException, IOException {
+        Application application = applicationList.getSelectionModel().getSelectedItem();
+        if(application != null){
+            try {
+                StatisticsManager.save(application.getName(), trackingService.getStatisticsForApp(application.getName()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            trackingService.stopAppMonitoring(application.getName());
+
+            loadedApplications.remove(application);
+
+            applicationList.setItems(FXCollections.observableList(loadedApplications));
+
+            ConfigManager.save(loadedApplications);
+            //TODO remove from config.json
+
+            TimelineElement timelineElement = timelineElements.stream()
+                    .filter(element -> element.getName().equals(application.getName()))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException("Cannot delete app which are not in list"));
+
+            timelineElements.remove(timelineElement);
+            appTimelineList.getChildren().remove(timelineElement);
+        }
     }
 
     @FXML
@@ -177,8 +201,6 @@ public class MainPresenter {
 
     private void setCellFactory() {
         applicationList.setCellFactory(param -> new ListCell<Application>() {
-
-
             @Override
             public void updateItem(Application application, boolean empty) {
                 super.updateItem(application, empty);
@@ -208,7 +230,7 @@ public class MainPresenter {
     }
 
     public void setApplicationListController(ApplicationListController applicationListController) {
-        this.applicationListController = applicationListController;
+        this.addApplicationListController = applicationListController;
     }
 
 }
