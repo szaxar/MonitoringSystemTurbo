@@ -1,5 +1,11 @@
 package monitoringsystemturbo.model.timeline;
 
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import monitoringsystemturbo.model.OnTimeLineChangerListener;
 import monitoringsystemturbo.model.app.ApplicationState;
 import monitoringsystemturbo.model.computer.ComputerStatistics;
@@ -14,13 +20,14 @@ public class Timeline {
     protected Date datetimeStart;
     protected Date datetimeEnd;
     private ApplicationState lastApplicationState = ApplicationState.NOT_RUNNING;
-    protected ArrayList<Period> periods = new ArrayList<>();
+    protected ListProperty<Period> periods = new SimpleListProperty<>();
 
     public Timeline() {
         this(new Date(), new Date());
     }
 
     public Timeline(Date datetimeStart, Date datetimeEnd) {
+        periods = new SimpleListProperty<>();
         this.datetimeStart = datetimeStart;
         this.datetimeEnd = datetimeEnd;
     }
