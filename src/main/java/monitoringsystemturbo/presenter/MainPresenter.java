@@ -51,7 +51,6 @@ public class MainPresenter {
 
     @FXML
     private ListView<Application> applicationList;
-    private MainController mainController;
 
     @FXML
     public void initialize(TrackingService trackingService, MainExporter mainExporter, List<Application> loadedApplications) {
@@ -127,24 +126,29 @@ public class MainPresenter {
     }
 
     @FXML
-    public void onAddApplication() throws IOException, ClassNotFoundException {
+    public void onAddApplication() {
+        try {
+            Application application = applicationListController.showAddView();
+            if (application != null) {
+                ConfigManager.createFileIfNeeded(application);
+                loadedApplications.add(application); //TODO Service
 
+                applicationList.setItems(FXCollections.observableList(loadedApplications));
 
-        Application application = applicationListController.showAddView();
-        if (application != null) {
-            application.createFileIfNeeded();
-            loadedApplications.add(application); //TODO Service
+                ConfigManager.save(loadedApplications);
 
-            applicationList.setItems(FXCollections.observableList(loadedApplications));
-
-            ConfigManager.save(loadedApplications);
-
-            List<Timeline> timelines = StatisticsManager.load(application.getName());
-            TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
-            timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
-            appTimelineList.getChildren().add(timelineElement);
-            timelineElements.add(timelineElement);
-
+                List<Timeline> timelines = StatisticsManager.load(application.getName());
+                TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
+                timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
+                appTimelineList.getChildren().add(timelineElement);
+                timelineElements.add(timelineElement);
+            }
+        } catch (Exception e) {
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Error!");
+            errorAlert.setHeaderText(null);
+            errorAlert.setContentText("Error occurred while adding application.");
+            errorAlert.showAndWait();
         }
     }
 
@@ -201,10 +205,6 @@ public class MainPresenter {
                 }
             }
         });
-    }
-
-    public void setMainController(MainController mainController) {
-        this.mainController = mainController;
     }
 
     public void setApplicationListController(ApplicationListController applicationListController) {

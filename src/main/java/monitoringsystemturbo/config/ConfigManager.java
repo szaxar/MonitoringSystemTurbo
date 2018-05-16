@@ -26,4 +26,15 @@ public class ConfigManager {
 		}
 		return new ArrayList<Application>();
 	}
+
+	public static void createFileIfNeeded(Application application) {
+		File file = new File(application.getName()+".json");
+		if(!file.exists()) {
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }

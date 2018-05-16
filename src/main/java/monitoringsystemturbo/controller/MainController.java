@@ -33,7 +33,6 @@ public class MainController {
 
         ApplicationListController applicationListController =new ApplicationListController(primaryStage);
         mainPresenter.setApplicationListController(applicationListController);
-        mainPresenter.setMainController(this);
 
         primaryStage.setScene(new Scene(rootLayout));
         primaryStage.show();
