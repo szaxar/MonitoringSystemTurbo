@@ -10,15 +10,15 @@ import monitoringsystemturbo.presenter.AddApplicationPresenter;
 
 import java.io.IOException;
 
-public class AddApplicationController {
+public class ApplicationListController {
 
     private Stage primaryStage;
     private AddApplicationPresenter addApplicationPresenter;
-    public AddApplicationController(Stage primaryStage) {
+    public ApplicationListController(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
 
-    public void showAddView() throws IOException {
+    public Application showAddView() throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(this.getClass().getResource("/addView.fxml"));
         Parent rootLayout = loader.load();
@@ -36,11 +36,11 @@ public class AddApplicationController {
         Scene scene=new Scene(rootLayout);
         dialogStage.setScene(scene);
         dialogStage.showAndWait();
-    }
 
-    public Application getNewApplication(){
         Application application= addApplicationPresenter.getApplication();
         return application;
+
     }
+
 
 }

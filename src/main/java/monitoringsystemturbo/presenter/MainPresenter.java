@@ -9,7 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import monitoringsystemturbo.config.ConfigManager;
-import monitoringsystemturbo.controller.AddApplicationController;
+import monitoringsystemturbo.controller.ApplicationListController;
 import monitoringsystemturbo.controller.MainController;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.history.StatisticsManager;
@@ -46,7 +46,7 @@ public class MainPresenter {
     private TrackingService trackingService;
     private MainExporter mainExporter;
     private List<Application> loadedApplications;
-    private AddApplicationController addApplicationController;
+    private ApplicationListController applicationListController;
     private List<TimelineElement> timelineElements;
 
     @FXML
@@ -129,11 +129,10 @@ public class MainPresenter {
     @FXML
     public void onAddApplication() throws IOException, ClassNotFoundException {
 
-        addApplicationController.showAddView();
-        Application application = addApplicationController.getNewApplication();
+        Application application = applicationListController.showAddView();
         if (application != null) {
             application.createFileIfNeeded();
-            loadedApplications.add(application);
+            loadedApplications.add(application); //TODO Service
 
             applicationList.setItems(FXCollections.observableList(loadedApplications));
 
@@ -228,7 +227,7 @@ public class MainPresenter {
         this.mainController = mainController;
     }
 
-    public void setAddApplicationController(AddApplicationController addApplicationController) {
-        this.addApplicationController = addApplicationController;
+    public void setApplicationListController(ApplicationListController applicationListController) {
+        this.applicationListController = applicationListController;
     }
 }
