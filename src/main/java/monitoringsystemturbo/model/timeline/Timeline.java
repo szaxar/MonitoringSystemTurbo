@@ -1,5 +1,6 @@
 package monitoringsystemturbo.model.timeline;
 
+import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
@@ -7,14 +8,12 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.util.Callback;
 import monitoringsystemturbo.model.OnTimeLineChangerListener;
 import monitoringsystemturbo.model.app.ApplicationState;
 import monitoringsystemturbo.model.computer.ComputerStatistics;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class Timeline {
 
@@ -28,14 +27,24 @@ public class Timeline {
     }
 
     public Timeline(Date datetimeStart, Date datetimeEnd) {
-        observableList = FXCollections.observableArrayList();
+        observableList = FXCollections.observableArrayList(new Callback<Period, Observable[]>() {
+            @Override
+            public Observable[] call(Period param) {
+                return new Observable[0];
+            }
+        });
 
         this.datetimeStart = datetimeStart;
         this.datetimeEnd = datetimeEnd;
     }
 
     public Timeline(List<ComputerStatistics> computerStatistics) {
-        observableList = FXCollections.observableArrayList();
+        observableList = FXCollections.observableArrayList(new Callback<Period, Observable[]>() {
+            @Override
+            public Observable[] call(Period param) {
+                return new Observable[0];
+            }
+        });
         this.datetimeStart = computerStatistics.get(0).getSystemStartTime();
         this.datetimeEnd = computerStatistics.get(0).getSystemCloseTime();
         for (ComputerStatistics computerStatistic : computerStatistics) {
@@ -53,7 +62,6 @@ public class Timeline {
     }
 
     public void update(Date datetime, ApplicationState state) {
-        System.out.println("BBB");
 
         if (!datetimeEnd.before(datetime)) {
             return;

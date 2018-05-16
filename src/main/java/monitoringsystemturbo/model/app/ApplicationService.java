@@ -29,7 +29,6 @@ public class ApplicationService {
     public void updateTimeline() {
         Date currentDate = new Date();
         timeline.update(currentDate, getApplicationState());
-        System.out.println("updateTimeline");
 //        Platform.runLater(() -> {
 //            if(listener!=null)
 //                listener.onTimelineChange(timeline.getPeriods(), appName);

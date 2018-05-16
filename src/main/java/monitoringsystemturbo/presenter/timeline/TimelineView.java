@@ -124,19 +124,18 @@ public class TimelineView extends Group implements OnTimeLineChangerListener {
 
     public void addTimeLine(Timeline timeLine) {
 
-                    timeLine.getPeriods().addListener(new ListChangeListener<Period>() {
-                    @Override
-                    public void onChanged(Change<? extends Period> c) {
-                        System.out.println("aaa");
-                        try {
-                            renderPeriods(new ArrayList<>(c.getList()));
-                        } catch (ClassNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-
-
+        timeLine.getPeriods().addListener(new ListChangeListener<Period>() {
+            @Override
+            public void onChanged(Change<? extends Period> c) {
+                System.out.println("aaa");
+                System.out.println(c.getList());
+                try {
+                    renderPeriods(new ArrayList<>(c.getList()));
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
 
 //        w ListChangeListener<Period>() {
