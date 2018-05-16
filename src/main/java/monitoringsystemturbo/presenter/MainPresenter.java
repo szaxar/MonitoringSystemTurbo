@@ -152,7 +152,7 @@ public class MainPresenter {
     @FXML
     public void onRemoveApplication() throws IllegalStateException, IOException {
         Application application = applicationList.getSelectionModel().getSelectedItem();
-        if(application != null){
+        if (application != null) {
             try {
                 StatisticsManager.save(application.getName(), trackingService.getStatisticsForApp(application.getName()));
             } catch (IOException e) {
@@ -165,7 +165,6 @@ public class MainPresenter {
             applicationList.setItems(FXCollections.observableList(loadedApplications));
 
             ConfigManager.save(loadedApplications);
-            //TODO remove from config.json
 
             TimelineElement timelineElement = timelineElements.stream()
                     .filter(element -> element.getName().equals(application.getName()))
