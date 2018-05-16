@@ -1,15 +1,18 @@
 package monitoringsystemturbo.model.timeline;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+
 import java.util.Date;
 
 public abstract class Period {
 
     protected Date datetimeStart;
-    protected Date datetimeEnd;
+    protected ObjectProperty<Date> datetimeEnd;
 
     public Period(Date datetimeStart, Date datetimeEnd) {
         this.datetimeStart = datetimeStart;
-        this.datetimeEnd = datetimeEnd;
+        this.datetimeEnd = new SimpleObjectProperty<>(datetimeEnd);
     }
 
     public Date getDatetimeStart() {
@@ -21,11 +24,11 @@ public abstract class Period {
     }
 
     public Date getDatetimeEnd() {
-        return datetimeEnd;
+        return datetimeEnd.get();
     }
 
     public void setDatetimeEnd(Date datetimeEnd) {
-        this.datetimeEnd = datetimeEnd;
+        this.datetimeEnd.setValue( datetimeEnd);
     }
 
     public int getTimeInSec() {
@@ -33,7 +36,11 @@ public abstract class Period {
     }
 
     public long getTimeInMs() {
-        return datetimeEnd.getTime() - datetimeStart.getTime();
+        return datetimeEnd.get().getTime() - datetimeStart.getTime();
+    }
+
+    public ObjectProperty<Date> getgetDatetimeEndProperty(){
+        return this.datetimeEnd;
     }
 
     @Override

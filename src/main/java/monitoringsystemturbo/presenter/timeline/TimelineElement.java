@@ -40,4 +40,7 @@ public class TimelineElement extends VBox {
         timelineView.showDay(day);
     }
 
+    public void addTimeLineModel(Timeline timeLine) {
+        timelineView.addTimeLine(timeLine);
+    }
 }

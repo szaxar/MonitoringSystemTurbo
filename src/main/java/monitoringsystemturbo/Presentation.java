@@ -47,7 +47,7 @@ public class Presentation extends javafx.application.Application {
         }
 
         System.out.println("Starting monitoring...");
-        TrackingService trackingService = new TrackingService(programNames, null);
+        TrackingService trackingService = new TrackingService(programNames);
         ComputerStatistics computerStatistics = new ComputerStatistics(new Date());
         ComputerMonitor computerMonitor = new ComputerMonitor(computerStatistics);
         computerMonitor.start();
@@ -120,7 +120,7 @@ public class Presentation extends javafx.application.Application {
     private static void saveProcessesToConfig(String[] processNames) throws FileNotFoundException {
         List<Application> listToSave = new ArrayList<Application>();
         for (String processName : processNames) {
-            listToSave.add(new Application(processName, "C://"));
+            listToSave.add(new Application(processName, "C://Users/kkal6/AppData/Local/Google/Chrome SxS/Application/chrome.exe"));
         }
         try {
             ConfigManager.save(listToSave);

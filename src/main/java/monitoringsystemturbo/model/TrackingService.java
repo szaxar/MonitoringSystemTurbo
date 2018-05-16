@@ -15,21 +15,19 @@ public class TrackingService {
     private ComputerStatistics computerStatistics;
     private ApplicationMonitor applicationMonitor;
     private ComputerMonitor computerMonitor;
-    private MainPresenter presenter;
 
-    public TrackingService(MainPresenter presenter) {
-        this.presenter = presenter;
+    public TrackingService() {
+
     }
 
-    public TrackingService(List<String> applicationNames, MainPresenter presenter) {
-        this(presenter);
+    public TrackingService(List<String> applicationNames) {
         for (String appName : applicationNames) {
-            applicationServices.add(new ApplicationService(appName, presenter));
+            applicationServices.add(new ApplicationService(appName));
         }
     }
 
     public void addAppToMonitor(String appName) {
-        applicationServices.add(new ApplicationService(appName, presenter));
+        applicationServices.add(new ApplicationService(appName));
     }
 
     public List<String> getApplicationsNames() {

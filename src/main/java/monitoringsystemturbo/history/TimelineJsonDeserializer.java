@@ -42,7 +42,7 @@ public class TimelineJsonDeserializer extends Timeline {
                 default:
                     throw new ClassNotFoundException("Period subclass not found (" + periodClassName + ")");
             }
-            periods.add(period);
+            observableList.add(period);
         }
     }
 

@@ -19,10 +19,9 @@ public class ApplicationService {
     private final String filename;
     private final String appName;
     private final Timeline timeline = new Timeline();
-    private OnTimeLineChangerListener listener;
 
-    public ApplicationService(String appName, MainPresenter presenter) {
-        this.listener = presenter;
+
+    public ApplicationService(String appName) {
         this.appName = appName;
         this.filename = String.format("%s.exe", appName);
     }
@@ -30,10 +29,11 @@ public class ApplicationService {
     public void updateTimeline() {
         Date currentDate = new Date();
         timeline.update(currentDate, getApplicationState());
-        Platform.runLater(() -> {
-            if(listener!=null)
-                listener.onTimelineChange(timeline.getPeriods(), appName);
-        });
+        System.out.println("updateTimeline");
+//        Platform.runLater(() -> {
+//            if(listener!=null)
+//                listener.onTimelineChange(timeline.getPeriods(), appName);
+//        });
 
     }
 

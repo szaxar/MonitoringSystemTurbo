@@ -1,6 +1,12 @@
 package monitoringsystemturbo.presenter.timeline;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
@@ -10,9 +16,12 @@ import monitoringsystemturbo.model.timeline.Period;
 import monitoringsystemturbo.model.timeline.RunningPeriod;
 import monitoringsystemturbo.model.timeline.Timeline;
 
+import java.net.BindException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static monitoringsystemturbo.presenter.timeline.PeriodColor.*;
 
@@ -110,6 +119,36 @@ public class TimelineView extends Group implements OnTimeLineChangerListener {
 
     @Override
     public void onTimelineChange(List<Period> periods, String appName) {
+
+    }
+
+    public void addTimeLine(Timeline timeLine) {
+
+                    timeLine.getPeriods().addListener(new ListChangeListener<Period>() {
+                    @Override
+                    public void onChanged(Change<? extends Period> c) {
+                        System.out.println("aaa");
+                        try {
+                            renderPeriods(new ArrayList<>(c.getList()));
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+
+
+
+//        w ListChangeListener<Period>() {
+//                    @Override
+//                    public void onChanged(Change<? extends Period> c) {
+//                        try {
+//
+//                        } catch (ClassNotFoundException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                });
 
     }
 }
