@@ -10,7 +10,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import monitoringsystemturbo.config.ConfigManager;
 import monitoringsystemturbo.controller.ApplicationListController;
-import monitoringsystemturbo.controller.MainController;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.history.StatisticsManager;
 import monitoringsystemturbo.model.TrackingService;
@@ -51,7 +50,6 @@ public class MainPresenter {
 
     @FXML
     private ListView<Application> applicationList;
-    private MainController mainController;
 
     @FXML
     public void initialize(TrackingService trackingService, MainExporter mainExporter, List<Application> loadedApplications) {
@@ -94,7 +92,7 @@ public class MainPresenter {
 
         try {
             for (Application application : loadedApplications) {
-                application.createFileIfNeeded();
+                ConfigManager.createFileIfNeeded(application);
                 List<Timeline> timelines = StatisticsManager.load(application.getName());
                 TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
                 timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
@@ -127,24 +125,29 @@ public class MainPresenter {
     }
 
     @FXML
-    public void onAddApplication() throws IOException, ClassNotFoundException {
+    public void onAddApplication() {
+        try {
+            Application application = applicationListController.showAddView();
+            if (application != null) {
+                ConfigManager.createFileIfNeeded(application);
+                loadedApplications.add(application); //TODO Service
 
-        Application application = applicationListController.showAddView();
-        if (application != null) {
-            application.createFileIfNeeded();
-            loadedApplications.add(application); //TODO Service
+                applicationList.setItems(FXCollections.observableList(loadedApplications));
 
-            applicationList.setItems(FXCollections.observableList(loadedApplications));
+                ConfigManager.save(loadedApplications);
 
-            ConfigManager.save(loadedApplications);
-
-            List<Timeline> timelines = StatisticsManager.load(application.getName());
-            TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
-            timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
-            appTimelineList.getChildren().add(timelineElement);
-            timelineElements.add(timelineElement);
-
-            trackingService.addAppToMonitor(application.getName());
+                List<Timeline> timelines = StatisticsManager.load(application.getName());
+                TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
+                timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
+                appTimelineList.getChildren().add(timelineElement);
+                timelineElements.add(timelineElement);
+            }
+        } catch (Exception e) {
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Error!");
+            errorAlert.setHeaderText(null);
+            errorAlert.setContentText("Error occurred while adding application.");
+            errorAlert.showAndWait();
         }
     }
 
@@ -221,10 +224,6 @@ public class MainPresenter {
                 }
             }
         });
-    }
-
-    public void setMainController(MainController mainController) {
-        this.mainController = mainController;
     }
 
     public void setApplicationListController(ApplicationListController applicationListController) {

@@ -40,14 +40,4 @@ public class Application {
         return (new ImageIcon(sf.getIcon(true)));
     }
 
-    public void createFileIfNeeded() {
-        File file = new File(this.name+".json");
-        if(!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 }

@@ -13,7 +13,7 @@ import java.io.IOException;
 public class ApplicationListController {
 
     private Stage primaryStage;
-    private AddApplicationPresenter addApplicationPresenter;
+
     public ApplicationListController(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
@@ -23,21 +23,21 @@ public class ApplicationListController {
         loader.setLocation(this.getClass().getResource("/addView.fxml"));
         Parent rootLayout = loader.load();
 
-
+        AddApplicationPresenter addApplicationPresenter;
 
         Stage dialogStage = new Stage();
         dialogStage.setTitle("Add application");
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.initOwner(primaryStage);
 
-        addApplicationPresenter=loader.getController();
+        addApplicationPresenter = loader.getController();
         addApplicationPresenter.setPrimaryStage(dialogStage);
 
-        Scene scene=new Scene(rootLayout);
+        Scene scene = new Scene(rootLayout);
         dialogStage.setScene(scene);
         dialogStage.showAndWait();
 
-        Application application= addApplicationPresenter.getApplication();
+        Application application = addApplicationPresenter.getApplication();
         return application;
 
     }
