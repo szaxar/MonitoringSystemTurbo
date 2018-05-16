@@ -10,65 +10,48 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.history.StatisticsManager;
-import monitoringsystemturbo.model.OnTimeLineChangerListener;
 import monitoringsystemturbo.model.TrackingService;
 import monitoringsystemturbo.model.app.Application;
 import monitoringsystemturbo.model.computer.ComputerStatistics;
-import monitoringsystemturbo.model.timeline.Period;
 import monitoringsystemturbo.model.timeline.Timeline;
 import monitoringsystemturbo.presenter.timeline.PeriodColor;
 import monitoringsystemturbo.presenter.timeline.TimelineElement;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static monitoringsystemturbo.utils.IconConverter.iconToFxImage;
 
-public class MainPresenter implements OnTimeLineChangerListener {
+public class MainPresenter {
 
-    @FXML
-    private Legend timelineLegend;
-    @FXML
-    private Pane computerTimelineContainer;
-    @FXML
-    private ScrollPane appTimelineContainer;
-    @FXML
-    private VBox appTimelineList;
-    @FXML
-    private DatePicker datePicker;
+    @FXML private Legend timelineLegend;
+    @FXML private Pane computerTimelineContainer;
+    @FXML private ScrollPane appTimelineContainer;
+    @FXML private VBox appTimelineList;
+    @FXML private DatePicker datePicker;
+    private Integer currentDay;
 
     private TrackingService trackingService;
     private MainExporter mainExporter;
-    private Integer currentDay;
 
-    private Map<String, TimelineElement> timelineElements;
-    private List<Application> loadedApplications;
+    private List<TimelineElement> timelineElements;
 
     @FXML
     private ListView<Application> applicationList;
 
     @FXML
-    public void initialize(List<Application> loadedApplications) {
-
-        mainExporter = new MainExporter();
-        trackingService = new TrackingService(this);
-        this.loadedApplications = loadedApplications;
-        initializeAppsToMonitor();
-        trackingService.start();
-
-        applicationList.setItems(FXCollections.observableList(loadedApplications));
+    public void initialize(TrackingService trackingService, MainExporter mainExporter, List<Application> loadedApplications) {
+        this.trackingService = trackingService;
+        this.mainExporter = mainExporter;
         setCellFactory();
+        applicationList.setItems(FXCollections.observableList(loadedApplications));
         renderTimelineLegend();
         initializeTimelines();
         initializeDatePicker();
 
-    }
-
-    private void initializeAppsToMonitor() {
-        for (Application application : loadedApplications) {
-            trackingService.addAppToMonitor(application.getName());
-        }
     }
 
     private void renderTimelineLegend() {
@@ -77,7 +60,7 @@ public class MainPresenter implements OnTimeLineChangerListener {
     }
 
     private void initializeTimelines() {
-        timelineElements = new HashMap<>();
+        timelineElements = new ArrayList<>();
         appTimelineContainer.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
         try {
@@ -86,7 +69,7 @@ public class MainPresenter implements OnTimeLineChangerListener {
             TimelineElement timelineElement = new TimelineElement("Computer", Arrays.asList(timeline));
             timelineElement.setTimelineViewWidthByRegion(computerTimelineContainer);
             computerTimelineContainer.getChildren().add(timelineElement);
-            timelineElements.put("Computer", timelineElement);
+            timelineElements.add(timelineElement);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -96,7 +79,7 @@ public class MainPresenter implements OnTimeLineChangerListener {
             TimelineElement timelineElement = new TimelineElement("chrome", timelines);
             timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
             appTimelineList.getChildren().add(timelineElement);
-            timelineElements.put("chrome", timelineElement);
+            timelineElements.add(timelineElement);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -105,7 +88,7 @@ public class MainPresenter implements OnTimeLineChangerListener {
     private void initializeDatePicker() {
         datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
             Integer day = (int) newValue.toEpochDay();
-            timelineElements.values().forEach(timelineElement -> timelineElement.showDay(day));
+            timelineElements.forEach(timelineElement -> timelineElement.showDay(day));
             currentDay = day;
         });
         datePicker.setValue(LocalDate.now());
@@ -118,7 +101,7 @@ public class MainPresenter implements OnTimeLineChangerListener {
 
     @FXML
     public void onNextDay() {
-        if (!LocalDate.ofEpochDay(currentDay).equals(LocalDate.now()))
+        if(!LocalDate.ofEpochDay(currentDay).equals(LocalDate.now()))
             datePicker.setValue(LocalDate.ofEpochDay(currentDay + 1));
     }
 
@@ -167,7 +150,7 @@ public class MainPresenter implements OnTimeLineChangerListener {
                     setText(null);
                     setGraphic(null);
                 } else {
-                    Image image = iconToFxImage(application.findIcon());
+                    Image image = iconToFxImage(application.getIcon());
                     label.setText(application.getName());
                     imageView.setImage(image);
                     vbox.setAlignment(Pos.CENTER);
@@ -179,16 +162,4 @@ public class MainPresenter implements OnTimeLineChangerListener {
         });
     }
 
-    @Override
-    public void onTimelineChange(List<Period> periods, String appName) {
-        if (timelineElements != null) {
-            System.out.println(periods + " " + appName);
-            TimelineElement element = timelineElements.get(appName);
-            try {
-                element.getTimeLineView().renderPeriods(periods);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 }

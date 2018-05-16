@@ -28,7 +28,7 @@ public class Application {
         return this.fullPath;
     }
 
-    public Icon findIcon() {
+    public Icon getIcon() {
         File file = new File(this.fullPath);
         ShellFolder sf = null;
         try {
