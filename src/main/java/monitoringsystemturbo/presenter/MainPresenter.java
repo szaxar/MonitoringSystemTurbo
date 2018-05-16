@@ -9,7 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import monitoringsystemturbo.config.ConfigManager;
-import monitoringsystemturbo.controller.AddApplicationController;
+import monitoringsystemturbo.controller.ApplicationListController;
 import monitoringsystemturbo.controller.MainController;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.history.StatisticsManager;
@@ -30,18 +30,23 @@ import static monitoringsystemturbo.utils.IconConverter.iconToFxImage;
 
 public class MainPresenter {
 
-    @FXML private Legend timelineLegend;
-    @FXML private Pane computerTimelineContainer;
-    @FXML private ScrollPane appTimelineContainer;
-    @FXML private VBox appTimelineList;
-    @FXML private DatePicker datePicker;
+    @FXML
+    private Legend timelineLegend;
+    @FXML
+    private Pane computerTimelineContainer;
+    @FXML
+    private ScrollPane appTimelineContainer;
+    @FXML
+    private VBox appTimelineList;
+    @FXML
+    private DatePicker datePicker;
     private Integer currentDay;
 
 
     private TrackingService trackingService;
     private MainExporter mainExporter;
     private List<Application> loadedApplications;
-    private AddApplicationController addApplicationController;
+    private ApplicationListController applicationListController;
     private List<TimelineElement> timelineElements;
 
     @FXML
@@ -52,7 +57,7 @@ public class MainPresenter {
     public void initialize(TrackingService trackingService, MainExporter mainExporter, List<Application> loadedApplications) {
         this.trackingService = trackingService;
         this.mainExporter = mainExporter;
-        this.loadedApplications=loadedApplications;
+        this.loadedApplications = loadedApplications;
         setCellFactory();
         applicationList.setItems(FXCollections.observableList(loadedApplications));
         renderTimelineLegend();
@@ -62,7 +67,7 @@ public class MainPresenter {
     }
 
     private void initializeAppsToMonitor() {
-        for(Application application : loadedApplications){
+        for (Application application : loadedApplications) {
             trackingService.addAppToMonitor(application.getName());
         }
     }
@@ -89,7 +94,7 @@ public class MainPresenter {
 
 
         try {
-            for(Application application : loadedApplications) {
+            for (Application application : loadedApplications) {
                 List<Timeline> timelines = StatisticsManager.load(application.getName());
                 TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
                 timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
@@ -117,18 +122,18 @@ public class MainPresenter {
 
     @FXML
     public void onNextDay() {
-        if(!LocalDate.ofEpochDay(currentDay).equals(LocalDate.now()))
+        if (!LocalDate.ofEpochDay(currentDay).equals(LocalDate.now()))
             datePicker.setValue(LocalDate.ofEpochDay(currentDay + 1));
     }
 
     @FXML
     public void onAddApplication() throws IOException, ClassNotFoundException {
 
-        addApplicationController.showAddView();
-        Application application=addApplicationController.getNewApplication();
+
+        Application application = applicationListController.showAddView();
         if (application != null) {
             application.createFileIfNeeded();
-            loadedApplications.add(application);
+            loadedApplications.add(application); //TODO Service
 
             applicationList.setItems(FXCollections.observableList(loadedApplications));
 
@@ -178,9 +183,9 @@ public class MainPresenter {
             public void updateItem(Application application, boolean empty) {
                 super.updateItem(application, empty);
 
-                 ImageView imageView = new ImageView();
-                 Label label = new Label();
-                 VBox vbox = new VBox();
+                ImageView imageView = new ImageView();
+                Label label = new Label();
+                VBox vbox = new VBox();
 
                 if (empty) {
                     setText(null);
@@ -202,8 +207,8 @@ public class MainPresenter {
         this.mainController = mainController;
     }
 
-    public void setAddApplicationController(AddApplicationController addApplicationController) {
-        this.addApplicationController = addApplicationController;
+    public void setApplicationListController(ApplicationListController applicationListController) {
+        this.applicationListController = applicationListController;
     }
-    
+
 }
