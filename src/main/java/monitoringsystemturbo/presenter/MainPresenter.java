@@ -129,8 +129,7 @@ public class MainPresenter {
     @FXML
     public void onAddApplication() throws IOException, ClassNotFoundException {
 
-        addApplicationListController.showAddView();
-        Application application = addApplicationListController.getNewApplication();
+        Application application = addApplicationListController.showAddView();
         if (application != null) {
             application.createFileIfNeeded();
             loadedApplications.add(application); //TODO Service
