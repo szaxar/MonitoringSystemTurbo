@@ -10,7 +10,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import monitoringsystemturbo.config.ConfigManager;
 import monitoringsystemturbo.controller.ApplicationListController;
-import monitoringsystemturbo.controller.MainController;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.history.StatisticsManager;
 import monitoringsystemturbo.model.TrackingService;
@@ -91,9 +90,9 @@ public class MainPresenter {
             e.printStackTrace();
         }
 
-
         try {
             for (Application application : loadedApplications) {
+                ConfigManager.createFileIfNeeded(application);
                 List<Timeline> timelines = StatisticsManager.load(application.getName());
                 TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
                 timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
@@ -153,8 +152,30 @@ public class MainPresenter {
     }
 
     @FXML
-    public void onRemoveApplication() {
-        //pls remember to save statistics, otherwise data will be lost!
+    public void onRemoveApplication() throws IllegalStateException, IOException {
+        Application application = applicationList.getSelectionModel().getSelectedItem();
+        if (application != null) {
+            try {
+                StatisticsManager.save(application.getName(), trackingService.getStatisticsForApp(application.getName()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            trackingService.stopAppMonitoring(application.getName());
+
+            loadedApplications.remove(application);
+
+            applicationList.setItems(FXCollections.observableList(loadedApplications));
+
+            ConfigManager.save(loadedApplications);
+
+            TimelineElement timelineElement = timelineElements.stream()
+                    .filter(element -> element.getName().equals(application.getName()))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException("Cannot delete app which are not in list"));
+
+            timelineElements.remove(timelineElement);
+            appTimelineList.getChildren().remove(timelineElement);
+        }
     }
 
     @FXML
@@ -181,8 +202,6 @@ public class MainPresenter {
 
     private void setCellFactory() {
         applicationList.setCellFactory(param -> new ListCell<Application>() {
-
-
             @Override
             public void updateItem(Application application, boolean empty) {
                 super.updateItem(application, empty);
@@ -210,5 +229,4 @@ public class MainPresenter {
     public void setApplicationListController(ApplicationListController applicationListController) {
         this.applicationListController = applicationListController;
     }
-
 }

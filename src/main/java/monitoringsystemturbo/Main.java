@@ -35,7 +35,7 @@ public class Main extends Application {
         MainController mainController = new MainController(primaryStage, trackingService, mainExporter);
         mainController.showMainWindow(loadedApplications);
 
-        trackingService.stop();
+//        trackingService.stop(); TODO move to shutdown hook or sth like this
     }
 
     private void initializeAppsToMonitor(List<monitoringsystemturbo.model.app.Application> loadedApplications) {
