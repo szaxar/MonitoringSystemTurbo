@@ -1,6 +1,8 @@
 package monitoringsystemturbo;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
+import javafx.stage.WindowEvent;
 import monitoringsystemturbo.config.ConfigManager;
 import monitoringsystemturbo.controller.ErrorController;
 import monitoringsystemturbo.controller.MainController;
@@ -35,7 +37,7 @@ public class Main extends Application {
         MainController mainController = new MainController(primaryStage, trackingService, mainExporter);
         mainController.showMainWindow(loadedApplications);
 
-//        trackingService.stop(); TODO move to shutdown hook or sth like this
+        primaryStage.setOnCloseRequest(event -> trackingService.stop());
     }
 
     private void initializeAppsToMonitor(List<monitoringsystemturbo.model.app.Application> loadedApplications) {
