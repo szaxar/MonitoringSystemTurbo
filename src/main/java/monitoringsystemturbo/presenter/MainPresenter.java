@@ -45,7 +45,7 @@ public class MainPresenter {
     private TrackingService trackingService;
     private MainExporter mainExporter;
     private List<Application> loadedApplications;
-    private ApplicationListController applicationListController;
+    private ApplicationListController addApplicationListController;
     private List<TimelineElement> timelineElements;
 
     @FXML
@@ -153,7 +153,7 @@ public class MainPresenter {
 
     @FXML
     public void onRemoveApplication() throws IllegalStateException, IOException {
-        Application application = applicationList.getSelectionModel().getSelectedItem();
+        Application application = applicationList.getSelectionModel().getSelectedItem()
         if (application != null) {
             try {
                 StatisticsManager.save(application.getName(), trackingService.getStatisticsForApp(application.getName()));
@@ -161,13 +161,9 @@ public class MainPresenter {
                 e.printStackTrace();
             }
             trackingService.stopAppMonitoring(application.getName());
-
             loadedApplications.remove(application);
-
-            applicationList.setItems(FXCollections.observableList(loadedApplications));
-
+            applicationList.setItems(FXCollections.observableList(loadedApplications))
             ConfigManager.save(loadedApplications);
-
             TimelineElement timelineElement = timelineElements.stream()
                     .filter(element -> element.getName().equals(application.getName()))
                     .findFirst()
@@ -227,6 +223,6 @@ public class MainPresenter {
     }
 
     public void setApplicationListController(ApplicationListController applicationListController) {
-        this.applicationListController = applicationListController;
+        this.addApplicationListController = applicationListController;
     }
 }
