@@ -130,8 +130,8 @@ public class MainPresenter {
             Application application = applicationListController.showAddView();
             if (application != null) {
                 ConfigManager.createFileIfNeeded(application);
-                loadedApplications.add(application); //TODO Service
-
+                loadedApplications.add(application);
+                trackingService.addAppToMonitor(application.getName());
                 applicationList.setItems(FXCollections.observableList(loadedApplications));
 
                 ConfigManager.save(loadedApplications);
