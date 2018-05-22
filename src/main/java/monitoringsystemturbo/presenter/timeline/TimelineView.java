@@ -59,6 +59,8 @@ public class TimelineView extends Group implements OnTimeLineChangerListener {
                 long datetimeStartInDay = Math.max(datetimeStart, day * dayInMs);
                 long datetimeEndInDay = Math.min(datetimeEnd, (day + 1) * dayInMs);
                 setPeriodViewWidthProperties(periodView, datetimeStartInDay, datetimeEndInDay);
+                System.out.println(periodView);
+
                 addPeriodViewForDay(day, periodView);
             }
         }
@@ -124,30 +126,35 @@ public class TimelineView extends Group implements OnTimeLineChangerListener {
 
     public void addTimeLine(Timeline timeLine) {
 
-        timeLine.getPeriods().addListener(new ListChangeListener<Period>() {
-            @Override
-            public void onChanged(Change<? extends Period> c) {
-                System.out.println("aaa");
-                System.out.println(c.getList());
-                try {
-                    renderPeriods(new ArrayList<>(c.getList()));
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
+        timeLine.getPeriods().addListener((ListChangeListener<Period>) c -> {
+            ObservableList<? extends Period> list = c.getList();
+            Period period = list.get(list.size()-1);
+            System.out.println(period);
+            long datetimeStart = period.getDatetimeStart().getTime();
+            long datetimeEnd = period.getDatetimeEnd().getTime();
+            try {
+                int day = (int) (datetimeStart / dayInMs);
+                Rectangle periodView = createPeriodView(period);
+                long datetimeStartInDay = Math.max(datetimeStart, day * dayInMs);
+                long datetimeEndInDay = Math.min(datetimeEnd, (day + 1) * dayInMs);
+                setPeriodViewWidthProperties(periodView, datetimeStartInDay, datetimeEndInDay);
+                addPeriodViewForDay(day, periodView);
+
+                period.getgetDatetimeEndProperty().addListener((observable, oldValue, newValue) -> {
+                    System.out.println(periodView);
+//                        System.out.println(dayPeriodsMap.get(periodView));
+////                        System.out.println(period.getDatetimeEnd());
+                    long datetimeEndInDay2 = Math.min(newValue.getTime(), (day + 1) * dayInMs);
+                    double widthRatio = (double) (datetimeEndInDay2 - datetimeStartInDay) / dayInMs;
+                    double offsetRatio = (double) (datetimeStartInDay % dayInMs) / dayInMs;
+                    double timelineWidth = widthProperty().getValue();
+                    periodView.setWidth(timelineWidth * widthRatio);
+                    periodView.setTranslateX(timelineWidth * offsetRatio);
+                });
+
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
             }
         });
-
-
-//        w ListChangeListener<Period>() {
-//                    @Override
-//                    public void onChanged(Change<? extends Period> c) {
-//                        try {
-//
-//                        } catch (ClassNotFoundException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                });
-
     }
 }

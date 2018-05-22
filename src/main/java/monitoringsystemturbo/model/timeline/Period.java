@@ -28,7 +28,7 @@ public abstract class Period {
     }
 
     public void setDatetimeEnd(Date datetimeEnd) {
-        this.datetimeEnd.setValue( datetimeEnd);
+        this.datetimeEnd.setValue(datetimeEnd);
     }
 
     public int getTimeInSec() {
@@ -39,12 +39,12 @@ public abstract class Period {
         return datetimeEnd.get().getTime() - datetimeStart.getTime();
     }
 
-    public ObjectProperty<Date> getgetDatetimeEndProperty(){
+    public ObjectProperty<Date> getgetDatetimeEndProperty() {
         return this.datetimeEnd;
     }
 
     @Override
     public String toString() {
-        return String.format("%s(%s, %s)", this.getClass().getSimpleName(), datetimeStart, datetimeEnd);
+        return String.format("%s(%s, %s)", this.getClass().getSimpleName(), datetimeStart, datetimeEnd.getValue());
     }
 }

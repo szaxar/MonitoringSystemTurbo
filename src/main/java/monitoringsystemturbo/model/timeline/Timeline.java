@@ -27,24 +27,14 @@ public class Timeline {
     }
 
     public Timeline(Date datetimeStart, Date datetimeEnd) {
-        observableList = FXCollections.observableArrayList(new Callback<Period, Observable[]>() {
-            @Override
-            public Observable[] call(Period param) {
-                return new Observable[0];
-            }
-        });
+        observableList = FXCollections.observableArrayList();
 
         this.datetimeStart = datetimeStart;
         this.datetimeEnd = datetimeEnd;
     }
 
     public Timeline(List<ComputerStatistics> computerStatistics) {
-        observableList = FXCollections.observableArrayList(new Callback<Period, Observable[]>() {
-            @Override
-            public Observable[] call(Period param) {
-                return new Observable[0];
-            }
-        });
+        observableList = FXCollections.observableArrayList();
         this.datetimeStart = computerStatistics.get(0).getSystemStartTime();
         this.datetimeEnd = computerStatistics.get(0).getSystemCloseTime();
         for (ComputerStatistics computerStatistic : computerStatistics) {

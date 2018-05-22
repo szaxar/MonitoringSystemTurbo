@@ -175,7 +175,7 @@ public class MainPresenter {
             loadedApplications.remove(application);
             applicationList.setItems(FXCollections.observableList(loadedApplications));
             ConfigManager.save(loadedApplications);
-            TimelineElement timelineElement = timelineElements.stream()
+            TimelineElement timelineElement = timelineElements.values().stream()
                     .filter(element -> element.getName().equals(application.getName()))
                     .findFirst()
                     .orElseThrow(() -> new IllegalStateException("Cannot delete app which are not in list"));
