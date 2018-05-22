@@ -26,8 +26,7 @@ dependencies {
     compile group: 'net.java.dev.jna', name: 'jna-platform', version: '4.5.1'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.5'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.5'
-
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.5'
+    compile group: 'commons-io', name: 'commons-io', version: '2.0.1'
 
     testImplementation 'junit:junit:4.12'
 }

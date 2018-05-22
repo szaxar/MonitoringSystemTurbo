@@ -4,7 +4,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import monitoringsystemturbo.config.ConfigManager;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.model.TrackingService;
 import monitoringsystemturbo.model.app.Application;
@@ -32,8 +31,12 @@ public class MainController {
         MainPresenter mainPresenter=loader.getController();
         mainPresenter.initialize(trackingService, mainExporter, loadedApplications);
 
+        ApplicationListController applicationListController =new ApplicationListController(primaryStage);
+        mainPresenter.setApplicationListController(applicationListController);
+
         primaryStage.setScene(new Scene(rootLayout));
         primaryStage.show();
     }
+
 
 }

@@ -9,30 +9,36 @@ import monitoringsystemturbo.model.timeline.Timeline;
 import monitoringsystemturbo.presenter.MainPresenter;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class TrackingService {
-    private List<ApplicationService> applicationServices = new ArrayList<>();
     private ComputerStatistics computerStatistics;
     private ApplicationMonitor applicationMonitor;
     private ComputerMonitor computerMonitor;
 
     public TrackingService() {
-
+        applicationMonitor = new ApplicationMonitor();
     }
 
     public TrackingService(List<String> applicationNames) {
-        for (String appName : applicationNames) {
-            applicationServices.add(new ApplicationService(appName));
-        }
+        List<ApplicationService> appServices = applicationNames.stream()
+                .map(ApplicationService::new)
+                .collect(Collectors.toList());
+
+        applicationMonitor = new ApplicationMonitor(appServices);
     }
 
     public void addAppToMonitor(String appName) {
-        applicationServices.add(new ApplicationService(appName));
+        applicationMonitor.startMonitoring(appName);
+    }
+
+    public void stopAppMonitoring(String appName) {
+        applicationMonitor.stopMonitoring(appName);
     }
 
     public List<String> getApplicationsNames() {
         List<String> names = new ArrayList<>();
-        for (ApplicationService applicationService : applicationServices) {
+        for (ApplicationService applicationService : applicationMonitor.getAppServices()) {
             names.add(applicationService.getApplicationName());
         }
         return names;
@@ -42,7 +48,6 @@ public class TrackingService {
         computerStatistics = new ComputerStatistics(new Date());
         computerMonitor = new ComputerMonitor(computerStatistics);
         computerMonitor.start();
-        applicationMonitor = new ApplicationMonitor(applicationServices);
         applicationMonitor.start();
     }
 
@@ -66,7 +71,7 @@ public class TrackingService {
     }
 
     public Timeline getStatisticsForApp(String applicationName) {
-        for (ApplicationService applicationService : applicationServices) {
+        for (ApplicationService applicationService : applicationMonitor.getAppServices()) {
             if (applicationService.getApplicationName().equals(applicationName)) {
                 return applicationService.getTimeline();
             }
@@ -76,7 +81,7 @@ public class TrackingService {
 
     public Map<String, Timeline> getAllApplicationsStatistics() {
         Map<String, Timeline> appMap = new HashMap<>();
-        for (ApplicationService applicationService : applicationServices) {
+        for (ApplicationService applicationService : applicationMonitor.getAppServices()) {
             appMap.put(applicationService.getApplicationName(), applicationService.getTimeline());
         }
         return appMap;

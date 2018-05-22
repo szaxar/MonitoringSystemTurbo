@@ -43,4 +43,7 @@ public class TimelineElement extends VBox {
     public void addTimeLineModel(Timeline timeLine) {
         timelineView.addTimeLine(timeLine);
     }
+    public String getName() {
+        return appNameLabel.getText();
+    }
 }

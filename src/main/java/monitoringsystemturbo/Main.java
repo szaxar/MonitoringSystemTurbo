@@ -1,11 +1,14 @@
 package monitoringsystemturbo;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
+import javafx.stage.WindowEvent;
 import monitoringsystemturbo.config.ConfigManager;
 import monitoringsystemturbo.controller.ErrorController;
 import monitoringsystemturbo.controller.MainController;
 import javafx.stage.Stage;
 import monitoringsystemturbo.exporter.MainExporter;
+import monitoringsystemturbo.history.StatisticsManager;
 import monitoringsystemturbo.model.TrackingService;
 
 import java.io.IOException;
@@ -35,7 +38,17 @@ public class Main extends Application {
         MainController mainController = new MainController(primaryStage, trackingService, mainExporter);
         mainController.showMainWindow(loadedApplications);
 
-       // trackingService.stop();
+        primaryStage.setOnCloseRequest(event -> {
+            trackingService.stop();
+            for (String appName : trackingService.getApplicationsNames()) {
+                try {
+                    StatisticsManager.save(appName, trackingService.getStatisticsForApp(appName));
+                } catch (IOException e) {}
+            }
+            try {
+                StatisticsManager.save(trackingService.getComputerStatistics());
+            } catch (IOException e) {}
+        });
     }
 
     private void initializeAppsToMonitor(List<monitoringsystemturbo.model.app.Application> loadedApplications) {

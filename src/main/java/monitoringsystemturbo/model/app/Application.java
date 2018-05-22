@@ -5,6 +5,7 @@ import sun.awt.shell.ShellFolder;
 import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class Application {
     private String name;
@@ -28,7 +29,7 @@ public class Application {
         return this.fullPath;
     }
 
-    public Icon getIcon() {
+    public Icon findIcon() {
         File file = new File(this.fullPath);
         ShellFolder sf = null;
         try {
@@ -38,4 +39,5 @@ public class Application {
         }
         return (new ImageIcon(sf.getIcon(true)));
     }
+
 }

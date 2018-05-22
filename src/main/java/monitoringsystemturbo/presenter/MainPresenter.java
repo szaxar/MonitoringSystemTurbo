@@ -8,6 +8,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import monitoringsystemturbo.config.ConfigManager;
+import monitoringsystemturbo.controller.ApplicationListController;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.history.StatisticsManager;
 import monitoringsystemturbo.model.TrackingService;
@@ -25,17 +27,25 @@ import static monitoringsystemturbo.utils.IconConverter.iconToFxImage;
 
 public class MainPresenter {
 
-    @FXML private Legend timelineLegend;
-    @FXML private Pane computerTimelineContainer;
-    @FXML private ScrollPane appTimelineContainer;
-    @FXML private VBox appTimelineList;
-    @FXML private DatePicker datePicker;
+    @FXML
+    private Legend timelineLegend;
+    @FXML
+    private Pane computerTimelineContainer;
+    @FXML
+    private ScrollPane appTimelineContainer;
+    @FXML
+    private VBox appTimelineList;
+    @FXML
+    private DatePicker datePicker;
     private Integer currentDay;
+
 
     private TrackingService trackingService;
     private MainExporter mainExporter;
 
     private Map<String, TimelineElement> timelineElements;
+    private List<Application> loadedApplications;
+    private ApplicationListController applicationListController;
 
     @FXML
     private ListView<Application> applicationList;
@@ -44,6 +54,7 @@ public class MainPresenter {
     public void initialize(TrackingService trackingService, MainExporter mainExporter, List<Application> loadedApplications) {
         this.trackingService = trackingService;
         this.mainExporter = mainExporter;
+        this.loadedApplications = loadedApplications;
         setCellFactory();
         applicationList.setItems(FXCollections.observableList(loadedApplications));
         renderTimelineLegend();
@@ -61,6 +72,12 @@ public class MainPresenter {
             if(allApplicationsStatistics.get(appname)!=null){
                 timelineElement.addTimeLineModel(allApplicationsStatistics.get(appname));
             }
+        }
+    }
+
+    private void initializeAppsToMonitor() {
+        for (Application application : loadedApplications) {
+            trackingService.addAppToMonitor(application.getName());
         }
     }
 
@@ -85,11 +102,14 @@ public class MainPresenter {
         }
 
         try {
-            List<Timeline> timelines = StatisticsManager.load("chrome");
-            TimelineElement timelineElement = new TimelineElement("chrome", timelines);
-            timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
-            appTimelineList.getChildren().add(timelineElement);
-            timelineElements.put("chrome",timelineElement);
+            for (Application application : loadedApplications) {
+                ConfigManager.createFileIfNeeded(application);
+                List<Timeline> timelines = StatisticsManager.load(application.getName());
+                TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
+                timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
+                appTimelineList.getChildren().add(timelineElement);
+                timelineElements.put(application.getName(), timelineElement);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -111,17 +131,58 @@ public class MainPresenter {
 
     @FXML
     public void onNextDay() {
-        if(!LocalDate.ofEpochDay(currentDay).equals(LocalDate.now()))
+        if (!LocalDate.ofEpochDay(currentDay).equals(LocalDate.now()))
             datePicker.setValue(LocalDate.ofEpochDay(currentDay + 1));
     }
 
     @FXML
     public void onAddApplication() {
+        try {
+            Application application = applicationListController.showAddView();
+            if (application != null) {
+                ConfigManager.createFileIfNeeded(application);
+                loadedApplications.add(application);
+                trackingService.addAppToMonitor(application.getName());
+                applicationList.setItems(FXCollections.observableList(loadedApplications));
+
+                ConfigManager.save(loadedApplications);
+
+                List<Timeline> timelines = StatisticsManager.load(application.getName());
+                TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
+                timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
+                appTimelineList.getChildren().add(timelineElement);
+                timelineElements.put(application.getName(),timelineElement);
+            }
+        } catch (Exception e) {
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Error!");
+            errorAlert.setHeaderText(null);
+            errorAlert.setContentText("Error occurred while adding application.");
+            errorAlert.showAndWait();
+        }
     }
 
     @FXML
-    public void onRemoveApplication() {
-        //pls remember to save statistics, otherwise data will be lost!
+    public void onRemoveApplication() throws IllegalStateException, IOException {
+        Application application = applicationList.getSelectionModel().getSelectedItem();
+        if (application != null) {
+            try {
+                StatisticsManager.save(application.getName(), trackingService.getStatisticsForApp(application.getName()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            trackingService.stopAppMonitoring(application.getName());
+            loadedApplications.remove(application);
+            applicationList.setItems(FXCollections.observableList(loadedApplications));
+            ConfigManager.save(loadedApplications);
+            TimelineElement timelineElement = timelineElements.stream()
+                    .filter(element -> element.getName().equals(application.getName()))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException("Cannot delete app which are not in list"));
+
+            timelineElements.remove(timelineElement);
+            appTimelineList.getChildren().remove(timelineElement);
+        }
     }
 
     @FXML
@@ -148,19 +209,19 @@ public class MainPresenter {
 
     private void setCellFactory() {
         applicationList.setCellFactory(param -> new ListCell<Application>() {
-            private ImageView imageView = new ImageView();
-            private Label label = new Label();
-            private VBox vbox = new VBox();
-
             @Override
             public void updateItem(Application application, boolean empty) {
                 super.updateItem(application, empty);
+
+                ImageView imageView = new ImageView();
+                Label label = new Label();
+                VBox vbox = new VBox();
 
                 if (empty) {
                     setText(null);
                     setGraphic(null);
                 } else {
-                    Image image = iconToFxImage(application.getIcon());
+                    Image image = iconToFxImage(application.findIcon());
                     label.setText(application.getName());
                     imageView.setImage(image);
                     vbox.setAlignment(Pos.CENTER);
@@ -172,4 +233,7 @@ public class MainPresenter {
         });
     }
 
+    public void setApplicationListController(ApplicationListController applicationListController) {
+        this.applicationListController = applicationListController;
+    }
 }

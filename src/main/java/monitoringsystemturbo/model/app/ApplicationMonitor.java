@@ -16,21 +16,29 @@ public class ApplicationMonitor extends Thread {
         appServicesToMonitor = new ArrayList<>();
     }
 
-    public void startMonitoring(ApplicationService appService) {
+    public void startMonitoring(String appName) {
         synchronized (appServicesToMonitor) {
-            appServicesToMonitor.add(appService);
+            appServicesToMonitor.add(new ApplicationService(appName));
         }
     }
 
-    public void stopMonitoring(ApplicationService appService) {
+    public void stopMonitoring(String appName) throws IllegalStateException {
         synchronized (appServicesToMonitor) {
-            appServicesToMonitor.remove(appService);
+            ApplicationService service = appServicesToMonitor.stream()
+                    .filter(applicationService -> applicationService.getApplicationName().equals(appName))
+                    .findFirst()
+                    .orElseThrow(() ->
+                            new IllegalStateException("Try to stop monitoring app which was not added before"));
+            appServicesToMonitor.remove(service);
         }
     }
 
     @Override
     public void run() {
         while (isRunning) {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {}
             synchronized (appServicesToMonitor) {
                 for (ApplicationService appService : appServicesToMonitor) {
                     appService.updateTimeline();
@@ -44,5 +52,11 @@ public class ApplicationMonitor extends Thread {
     public void interrupt() {
         isRunning = false;
         super.interrupt();
+    }
+
+    public List<ApplicationService> getAppServices() {
+        synchronized (appServicesToMonitor) {
+            return appServicesToMonitor;
+        }
     }
 }
