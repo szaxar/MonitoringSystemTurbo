@@ -63,13 +63,13 @@ public class MainPresenter {
         addCurrentTimeline();
     }
 
-    private void addCurrentTimeline(){
+    private void addCurrentTimeline() {
         final Map<String, Timeline> allApplicationsStatistics = trackingService.getAllApplicationsStatistics();
-        for(String appname : this.timelineElements.keySet()){
+        for (String appname : this.timelineElements.keySet()) {
             TimelineElement timelineElement = this.timelineElements.get(appname);
             System.out.println(allApplicationsStatistics.keySet());
             System.out.println(allApplicationsStatistics.values());
-            if(allApplicationsStatistics.get(appname)!=null){
+            if (allApplicationsStatistics.get(appname) != null) {
                 timelineElement.addTimeLineModel(allApplicationsStatistics.get(appname));
             }
         }
@@ -96,7 +96,7 @@ public class MainPresenter {
             TimelineElement timelineElement = new TimelineElement("Computer", Arrays.asList(timeline));
             timelineElement.setTimelineViewWidthByRegion(computerTimelineContainer);
             computerTimelineContainer.getChildren().add(timelineElement);
-            timelineElements.put("Computer",timelineElement);
+            timelineElements.put("Computer", timelineElement);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -151,7 +151,7 @@ public class MainPresenter {
                 TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
                 timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
                 appTimelineList.getChildren().add(timelineElement);
-                timelineElements.put(application.getName(),timelineElement);
+                timelineElements.put(application.getName(), timelineElement);
             }
         } catch (Exception e) {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);

@@ -4,8 +4,6 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import monitoringsystemturbo.model.OnTimeLineChangerListener;
-import monitoringsystemturbo.model.timeline.Period;
 import monitoringsystemturbo.model.timeline.Timeline;
 
 import java.util.List;

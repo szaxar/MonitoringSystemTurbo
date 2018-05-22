@@ -1,15 +1,7 @@
 package monitoringsystemturbo.model.timeline;
 
-import javafx.beans.Observable;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.util.Callback;
-import monitoringsystemturbo.model.OnTimeLineChangerListener;
 import monitoringsystemturbo.model.app.ApplicationState;
 import monitoringsystemturbo.model.computer.ComputerStatistics;
 

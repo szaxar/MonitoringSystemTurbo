@@ -3,11 +3,7 @@ package monitoringsystemturbo.model.app;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef.HWND;
 import com.sun.jna.ptr.IntByReference;
-import javafx.application.Platform;
-import monitoringsystemturbo.model.OnTimeLineChangerListener;
 import monitoringsystemturbo.model.timeline.Timeline;
-import monitoringsystemturbo.presenter.MainPresenter;
-import monitoringsystemturbo.presenter.timeline.TimelineElement;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,7 +16,6 @@ public class ApplicationService {
     private final String appName;
     private final Timeline timeline = new Timeline();
 
-
     public ApplicationService(String appName) {
         this.appName = appName;
         this.filename = String.format("%s.exe", appName);
@@ -29,11 +24,6 @@ public class ApplicationService {
     public void updateTimeline() {
         Date currentDate = new Date();
         timeline.update(currentDate, getApplicationState());
-//        Platform.runLater(() -> {
-//            if(listener!=null)
-//                listener.onTimelineChange(timeline.getPeriods(), appName);
-//        });
-
     }
 
     public Timeline getTimeline() {
