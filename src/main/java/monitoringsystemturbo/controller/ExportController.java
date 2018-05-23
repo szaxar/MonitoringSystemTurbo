@@ -27,12 +27,12 @@ public class ExportController {
 
 
         Stage dialogStage = new Stage();
-        dialogStage.setTitle("Add application");
+        dialogStage.setTitle("Export");
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.initOwner(primaryStage);
 
         ExportPresenter exportPresenter=loader.getController();
-        exportPresenter.setPrimaryStage(primaryStage);
+        exportPresenter.setPrimaryStage(dialogStage);
         exportPresenter.setMainExporter(mainExporter);
         exportPresenter.setTrackingService(trackingService);
 
