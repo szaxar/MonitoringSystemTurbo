@@ -47,6 +47,7 @@ public class MainPresenter {
     private MainExporter mainExporter;
     private List<Application> loadedApplications;
     private ApplicationListController applicationListController;
+    private ExportController exportController;
     private List<TimelineElement> timelineElements;
 
     @FXML
@@ -178,23 +179,10 @@ public class MainPresenter {
 
     @FXML
     public void onExport() {
-        ExportWindowHandler exportWindowHandler = new ExportWindowHandler();
-        List<String> applicationsToExport = exportWindowHandler.displayCheckingWindow(trackingService.getApplicationsNames());
-        if (!exportWindowHandler.getCancelValue()) {
-            try {
-                mainExporter.export(trackingService, applicationsToExport);
-                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                successAlert.setTitle("Success!");
-                successAlert.setHeaderText(null);
-                successAlert.setContentText("Data exported successfully! ");
-                successAlert.showAndWait();
-            } catch (IOException e) {
-                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                errorAlert.setTitle("Error!");
-                errorAlert.setHeaderText(null);
-                errorAlert.setContentText("Error occurred while exporting data.");
-                errorAlert.showAndWait();
-            }
+        try {
+            exportController.showExportView(mainExporter,trackingService);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -226,5 +214,9 @@ public class MainPresenter {
 
     public void setApplicationListController(ApplicationListController applicationListController) {
         this.applicationListController = applicationListController;
+    }
+
+    public void setExportController(ExportController exportController) {
+        this.exportController = exportController;
     }
 }
