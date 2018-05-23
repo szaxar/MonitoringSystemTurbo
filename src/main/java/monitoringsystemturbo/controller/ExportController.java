@@ -14,8 +14,6 @@ import java.io.IOException;
 public class ExportController {
 
     private Stage primaryStage;
-    private MainExporter mainExporter;
-    private TrackingService trackingService;
 
     public ExportController(Stage primaryStage) {
         this.primaryStage = primaryStage;
