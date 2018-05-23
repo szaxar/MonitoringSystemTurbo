@@ -44,6 +44,8 @@ public class ExportPresenter {
     public void initialize(){
         fromDatePicker.setValue(LocalDate.now());
         toDatePicker.setValue(LocalDate.now());
+        fromHoursPicker.setValue(LocalTime.of(0,0));
+        toHoursPicker.setValue(LocalTime.of(23,59));
     }
 
 
