@@ -1,5 +1,7 @@
 package monitoringsystemturbo.presenter;
 
+import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXTimePicker;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
@@ -10,6 +12,8 @@ import monitoringsystemturbo.model.TrackingService;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 public class ExportPresenter {
@@ -21,10 +25,17 @@ public class ExportPresenter {
 
 
     @FXML
-    private DatePicker fromDatePicker;
+    private JFXDatePicker fromDatePicker;
 
     @FXML
-    private DatePicker toDatePicker;
+    private JFXDatePicker toDatePicker;
+
+    @FXML
+    private JFXTimePicker toHoursPicker;
+
+    @FXML
+    private JFXTimePicker fromHoursPicker;
+
 
     @FXML
     private CheckBox allTimeCheckBox;
@@ -38,8 +49,11 @@ public class ExportPresenter {
 
     public void onConfirm() {
 
-        LocalDate fromDate=fromDatePicker.getValue();
-        LocalDate toDate=toDatePicker.getValue();
+
+        LocalDateTime fromTime=fromDatePicker.getValue().atTime(fromHoursPicker.getValue().getHour(),fromHoursPicker.getValue().getMinute());
+        LocalDateTime toTime=toDatePicker.getValue().atTime(toHoursPicker.getValue().getHour(),toHoursPicker.getValue().getMinute());
+
+
 
         ExportWindowHandler exportWindowHandler = new ExportWindowHandler();
         List<String> applicationsToExport = exportWindowHandler.displayCheckingWindow(trackingService.getApplicationsNames());
@@ -50,7 +64,7 @@ public class ExportPresenter {
                     mainExporter.export(trackingService, applicationsToExport);
                 }
                 else{
-                    mainExporter.export(trackingService, applicationsToExport,fromDate,toDate);
+                    mainExporter.export(trackingService, applicationsToExport,fromTime,toTime);
                 }
                 Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
                 successAlert.setTitle("Success!");

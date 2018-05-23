@@ -7,6 +7,7 @@ import monitoringsystemturbo.model.timeline.Timeline;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
@@ -27,7 +28,7 @@ public class MainExporter {
         exporter.exportDetailInfo();
     }
 
-    public void export(TrackingService trackingService, List<String> applicationsToExport, LocalDate fromDate , LocalDate toDate) throws IOException{
+    public void export(TrackingService trackingService, List<String> applicationsToExport, LocalDateTime fromTime , LocalDateTime toTime) throws IOException{
         Exporter exporter = new Exporter(REPORT);
 
         addHistoricalComputerStatistics(exporter);
@@ -35,7 +36,8 @@ public class MainExporter {
         addCurrentStatistics(exporter, trackingService, applicationsToExport);
 
         exporter.exportGeneralInfo();
-        exporter.exportDetailInfo(Date.from(fromDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()), Date.from(toDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+        //TODO fromTime.toLocalDate() przeksztalcic by pobieral jeszcze czas
+        exporter.exportDetailInfo(Date.from(fromTime.toLocalDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()), Date.from(toTime.toLocalDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
     }
 
 
