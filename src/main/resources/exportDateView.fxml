@@ -6,15 +6,17 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="267.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="monitoringsystemturbo.presenter.ExportPresenter">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="230.0"
+            prefWidth="306.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="monitoringsystemturbo.presenter.ExportPresenter">
    <children>
-      <Label layoutX="139.0" layoutY="33.0" prefHeight="44.0" prefWidth="125.0" text="Please select time" />
-      <DatePicker fx:id="fromDatePicker" layoutX="93.0" layoutY="94.0" promptText="From Date Picker" />
-      <DatePicker fx:id="toDatePicker" layoutX="93.0" layoutY="166.0" promptText="To Date Picker" />
-      <Label layoutX="39.0" layoutY="99.0" text="From" />
-      <Label layoutX="39.0" layoutY="171.0" text="To" />
-      <Button layoutX="374.0" layoutY="211.0" mnemonicParsing="false" onAction="#onConfirm" text="Confirm" />
-      <Button layoutX="298.0" layoutY="211.0" mnemonicParsing="false" onAction="#onCancel" text="Cancel" />
-      <CheckBox fx:id="allTimeCheckBox" layoutX="28.0" layoutY="216.0" mnemonicParsing="false" text="All time" />
+      <Label layoutX="172.0" layoutY="19.0" prefHeight="44.0" prefWidth="125.0" text="Please select time"/>
+      <DatePicker fx:id="fromDatePicker" layoutX="93.0" layoutY="65.0" promptText="From Date Picker"/>
+      <DatePicker fx:id="toDatePicker" layoutX="93.0" layoutY="122.0" promptText="To Date Picker"/>
+      <Label layoutX="39.0" layoutY="68.0" text="From"/>
+      <Label layoutX="39.0" layoutY="126.0" text="To"/>
+      <Button layoutX="146.0" layoutY="184.0" mnemonicParsing="false" onAction="#onConfirm" text="Confirm"/>
+      <Button layoutX="215.0" layoutY="184.0" mnemonicParsing="false" onAction="#onCancel" text="Cancel"/>
+      <CheckBox fx:id="allTimeCheckBox" layoutX="28.0" layoutY="188.0" mnemonicParsing="false" text="All time"/>
    </children>
 </AnchorPane>

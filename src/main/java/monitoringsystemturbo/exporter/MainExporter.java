@@ -7,6 +7,8 @@ import monitoringsystemturbo.model.timeline.Timeline;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,15 +28,14 @@ public class MainExporter {
     }
 
     public void export(TrackingService trackingService, List<String> applicationsToExport, LocalDate fromDate , LocalDate toDate) throws IOException{
-            //TODO  Export by date
-///        Exporter exporter = new Exporter(REPORT);
-//
-//        addHistoricalComputerStatistics(exporter);
-//        addHistoricalAppStatistics(exporter, applicationsToExport);
-//        addCurrentStatistics(exporter, trackingService, applicationsToExport);
-//
-//        exporter.exportGeneralInfo();
-//        exporter.exportDetailInfo();
+        Exporter exporter = new Exporter(REPORT);
+
+        addHistoricalComputerStatistics(exporter);
+        addHistoricalAppStatistics(exporter, applicationsToExport);
+        addCurrentStatistics(exporter, trackingService, applicationsToExport);
+
+        exporter.exportGeneralInfo();
+        exporter.exportDetailInfo(Date.from(fromDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()), Date.from(toDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
     }
 
 

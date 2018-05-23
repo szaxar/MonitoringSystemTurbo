@@ -7,11 +7,10 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.util.*;
 
 public class Exporter {
 
@@ -67,7 +66,10 @@ public class Exporter {
         saveFile(getGeneralFilename(), csvBuilder.build());
     }
 
-    public void exportDetailInfo() throws IOException{
+
+    public void exportDetailInfo(Date... dates) throws IOException {
+        String datetimeStart;
+        String datetimeEnd;
         CsvBuilder csvBuilder = new CsvBuilder();
         csvBuilder.writeRow("Computer");
         csvBuilder.writeRow("SystemStartDatetime", "SystemCloseDatetime", "RunningTime");
@@ -83,15 +85,36 @@ public class Exporter {
             csvBuilder.writeRow(entry.getKey());
             csvBuilder.writeRow("DatetimeStart", "DatetimeEnd", "RunningTime", "ActiveTime");
             for (Timeline timeline : entry.getValue()) {
-                csvBuilder.writeRow(
-                        datetimeFormat.format(timeline.getDatetimeStart()),
-                        datetimeFormat.format(timeline.getDatetimeEnd()),
-                        getDurationFormat(timeline.getRunningTimeInSec()),
-                        getDurationFormat(timeline.getActiveTimeInSec())
-                );
+                datetimeStart = datetimeFormat.format(timeline.getDatetimeStart());
+                datetimeEnd = datetimeFormat.format(timeline.getDatetimeEnd());
+                if (dates.length > 0) {
+                    String fromDate = datetimeFormat.format(dates[0]);
+                    String toDate = datetimeFormat.format(dates[1]);
+                    if (areDatesInInterval(fromDate, toDate, datetimeStart, datetimeEnd))
+                        csvBuilder.writeRow(
+                                datetimeStart,
+                                datetimeEnd,
+                                getDurationFormat(timeline.getRunningTimeInSec()),
+                                getDurationFormat(timeline.getActiveTimeInSec())
+                        );
+                } else {
+                    csvBuilder.writeRow(
+                            datetimeStart,
+                            datetimeEnd,
+                            getDurationFormat(timeline.getRunningTimeInSec()),
+                            getDurationFormat(timeline.getActiveTimeInSec())
+                    );
+                }
+
             }
         }
         saveFile(getDetailFilename(), csvBuilder.build());
+    }
+
+    private boolean areDatesInInterval(String fromDate, String toDate, String startDate, String endDate) {
+        boolean startDateInInterval = (startDate.compareTo(fromDate) >= 0 && startDate.compareTo(toDate) <= 0);
+        boolean endDateInInterval = (endDate.compareTo(fromDate) >= 0 && endDate.compareTo(toDate) <= 0);
+        return (startDateInInterval && endDateInInterval);
     }
 
     private String getDurationFormat(int duration) {
