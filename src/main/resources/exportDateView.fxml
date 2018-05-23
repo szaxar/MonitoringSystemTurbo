@@ -17,7 +17,7 @@
       <Button layoutX="428.0" layoutY="183.0" mnemonicParsing="false" onAction="#onConfirm" text="Confirm" />
       <Button layoutX="502.0" layoutY="183.0" mnemonicParsing="false" onAction="#onCancel" text="Cancel" />
       <CheckBox fx:id="allTimeCheckBox" layoutX="28.0" layoutY="188.0" mnemonicParsing="false" text="All time" />
-      <JFXTimePicker fx:id="fromHoursPicker" defaultColor="BLACK" layoutX="363.0" layoutY="65.0" promptText="From Hours Picker" />
-      <JFXTimePicker fx:id="toHoursPicker" defaultColor="BLACK" layoutX="361.0" layoutY="122.0" promptText="To Hours Picker" />
+      <JFXTimePicker fx:id="fromTimePicker" defaultColor="BLACK" layoutX="363.0" layoutY="65.0" promptText="From Time Picker" />
+      <JFXTimePicker fx:id="toTimePicker" defaultColor="BLACK" layoutX="361.0" layoutY="122.0" promptText="To Time Picker" />
    </children>
 </AnchorPane>

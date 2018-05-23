@@ -31,10 +31,10 @@ public class ExportPresenter {
     private JFXDatePicker toDatePicker;
 
     @FXML
-    private JFXTimePicker toHoursPicker;
+    private JFXTimePicker toTimePicker;
 
     @FXML
-    private JFXTimePicker fromHoursPicker;
+    private JFXTimePicker fromTimePicker;
 
 
     @FXML
@@ -44,16 +44,16 @@ public class ExportPresenter {
     public void initialize(){
         fromDatePicker.setValue(LocalDate.now());
         toDatePicker.setValue(LocalDate.now());
-        fromHoursPicker.setValue(LocalTime.of(0,0));
-        toHoursPicker.setValue(LocalTime.of(23,59));
+        fromTimePicker.setValue(LocalTime.of(0,0));
+        toTimePicker.setValue(LocalTime.of(23,59));
     }
 
 
     public void onConfirm() {
 
 
-        LocalDateTime fromTime=fromDatePicker.getValue().atTime(fromHoursPicker.getValue().getHour(),fromHoursPicker.getValue().getMinute());
-        LocalDateTime toTime=toDatePicker.getValue().atTime(toHoursPicker.getValue().getHour(),toHoursPicker.getValue().getMinute());
+        LocalDateTime fromTime=fromDatePicker.getValue().atTime(fromTimePicker.getValue().getHour(),fromTimePicker.getValue().getMinute());
+        LocalDateTime toTime=toDatePicker.getValue().atTime(toTimePicker.getValue().getHour(),toTimePicker.getValue().getMinute());
 
 
 
