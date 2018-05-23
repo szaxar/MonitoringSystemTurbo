@@ -6,6 +6,7 @@ import monitoringsystemturbo.model.computer.ComputerStatistics;
 import monitoringsystemturbo.model.timeline.Timeline;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,19 @@ public class MainExporter {
         exporter.exportGeneralInfo();
         exporter.exportDetailInfo();
     }
+
+    public void export(TrackingService trackingService, List<String> applicationsToExport, LocalDate fromDate , LocalDate toDate) throws IOException{
+            //TODO  Export by date
+///        Exporter exporter = new Exporter(REPORT);
+//
+//        addHistoricalComputerStatistics(exporter);
+//        addHistoricalAppStatistics(exporter, applicationsToExport);
+//        addCurrentStatistics(exporter, trackingService, applicationsToExport);
+//
+//        exporter.exportGeneralInfo();
+//        exporter.exportDetailInfo();
+    }
+
 
     private void addHistoricalComputerStatistics(Exporter exporter) throws IOException {
         for (ComputerStatistics statistics : StatisticsManager.loadComputerStats()) {
