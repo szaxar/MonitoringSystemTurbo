@@ -67,8 +67,6 @@ public class MainPresenter {
         final Map<String, Timeline> allApplicationsStatistics = trackingService.getAllApplicationsStatistics();
         for (String appname : this.timelineElements.keySet()) {
             TimelineElement timelineElement = this.timelineElements.get(appname);
-            System.out.println(allApplicationsStatistics.keySet());
-            System.out.println(allApplicationsStatistics.values());
             if (allApplicationsStatistics.get(appname) != null) {
                 timelineElement.addTimeLineModel(allApplicationsStatistics.get(appname));
             }
@@ -149,6 +147,7 @@ public class MainPresenter {
 
                 List<Timeline> timelines = StatisticsManager.load(application.getName());
                 TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
+                timelineElement.addTimeLineModel(trackingService.getStatisticsForApp(application.getName()));
                 timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
                 appTimelineList.getChildren().add(timelineElement);
                 timelineElements.put(application.getName(), timelineElement);
@@ -215,6 +214,7 @@ public class MainPresenter {
 
                 ImageView imageView = new ImageView();
                 Label label = new Label();
+
                 VBox vbox = new VBox();
 
                 if (empty) {

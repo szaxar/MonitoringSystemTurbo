@@ -18,7 +18,7 @@ import java.util.List;
 
 import static monitoringsystemturbo.presenter.timeline.PeriodColor.*;
 
-public class TimelineView extends Group{
+public class TimelineView extends Group {
 
     private final static int height = 35;
     private final static long dayInMs = 24 * 60 * 60 * 1000;
@@ -50,7 +50,7 @@ public class TimelineView extends Group{
         }
     }
 
-    private void renderPeriod(Period period) throws ClassNotFoundException{
+    private void renderPeriod(Period period) throws ClassNotFoundException {
         long datetimeStart = period.getDatetimeStart().getTime();
         long datetimeEnd = period.getDatetimeEnd().getTime();
         for (int day = (int) (datetimeStart / dayInMs); day <= datetimeEnd / dayInMs; day++) {
@@ -105,6 +105,7 @@ public class TimelineView extends Group{
         if (currentDay != null && currentDay.equals(day)) {
             return;
         }
+
         if (currentDay != null) {
             getChildren().removeAll(dayPeriodsMap.get(currentDay));
         }
@@ -118,45 +119,41 @@ public class TimelineView extends Group{
 
     public void addTimeLine(Timeline timeLine) {
 
-//        try {
-//            renderPeriod(timeLine.getPeriods().get(timeLine.getPeriods().size()));
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
+        if (!timeLine.getPeriods().isEmpty()) {
+            try {
+                Period period = timeLine.getPeriods().get(timeLine.getPeriods().size() - 1);
+                renderPeriod(period);
+                initLintener(period);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
 
         timeLine.getPeriods().addListener((ListChangeListener<Period>) c -> {
             ObservableList<? extends Period> list = c.getList();
-            Period period = list.get(list.size()-1);
+            Period period = list.get(list.size() - 1);
             System.out.println(period);
 
             try {
                 renderPeriod(period);
-                period.getgetDatetimeEndProperty().addListener((observable, oldValue, newValue) -> {
-                    System.out.println(period.getDatetimeStart());
-                    System.out.println(newValue);
-                    double widthRatio = (double) (newValue.getTime() - period.getDatetimeStart().getTime()) / dayInMs;
-                    double offsetRatio = (double) (period.getDatetimeStart().getTime() % dayInMs) / dayInMs;
-                    double timelineWidth = widthProperty().getValue();
-                    currentPeriodView.setWidth(timelineWidth * widthRatio);
-                    currentPeriodView.setTranslateX(timelineWidth * offsetRatio);
-                });
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-            long datetimeStart = period.getDatetimeStart().getTime();
-            long datetimeEnd = period.getDatetimeEnd().getTime();
-//            try {
-//                int day = (int) (datetimeStart / dayInMs);
-//                Rectangle periodView = createPeriodView(period);
-//                long datetimeStartInDay = Math.max(datetimeStart, day * dayInMs);
-//                long datetimeEndInDay = Math.min(datetimeEnd, (day + 1) * dayInMs);
-//                setPeriodViewWidthProperties(periodView, datetimeStartInDay, datetimeEndInDay);
-//                addPeriodViewForDay(day, periodView);
-//
-//
-//            } catch (ClassNotFoundException e) {
-//                e.printStackTrace();
-//            }
+
+            initLintener(period);
+
+        });
+    }
+
+    private void initLintener(Period period) {
+        period.getgetDatetimeEndProperty().addListener((observable, oldValue, newValue) -> {
+            System.out.println(period.getDatetimeStart());
+            System.out.println(newValue);
+            double widthRatio = (double) (newValue.getTime() - period.getDatetimeStart().getTime()) / dayInMs;
+            double offsetRatio = (double) (period.getDatetimeStart().getTime() % dayInMs) / dayInMs;
+            double timelineWidth = widthProperty().getValue();
+            currentPeriodView.setWidth(timelineWidth * widthRatio);
+            currentPeriodView.setTranslateX(timelineWidth * offsetRatio);
         });
     }
 }
