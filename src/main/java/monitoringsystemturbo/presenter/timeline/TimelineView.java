@@ -1,6 +1,5 @@
 package monitoringsystemturbo.presenter.timeline;
 
-import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -29,7 +28,7 @@ public class TimelineView extends Group {
     private Integer currentDay = null;
     private Rectangle currentPeriodView;
 
-    public TimelineView(List<Timeline> timelineModels) throws ClassNotFoundException {
+    TimelineView(List<Timeline> timelineModels) throws ClassNotFoundException {
         this.timelineModels = timelineModels;
         setTimelineBackground();
         for (Timeline timeline : timelineModels) {
@@ -44,7 +43,7 @@ public class TimelineView extends Group {
         getChildren().add(timelineBackground);
     }
 
-    public void renderPeriods(List<Period> periods) throws ClassNotFoundException {
+    private void renderPeriods(List<Period> periods) throws ClassNotFoundException {
         for (Period period : periods) {
             renderPeriod(period);
         }
@@ -93,15 +92,15 @@ public class TimelineView extends Group {
         dayPeriodsMap.get(day).add(periodView);
     }
 
-    public DoubleProperty widthProperty() {
+    DoubleProperty widthProperty() {
         return timelineBackground.widthProperty();
     }
 
-    public DoubleProperty heightProperty() {
+    private DoubleProperty heightProperty() {
         return timelineBackground.heightProperty();
     }
 
-    public void showDay(Integer day) {
+    void showDay(Integer day) {
         if (currentDay != null && currentDay.equals(day)) {
             return;
         }
@@ -117,13 +116,13 @@ public class TimelineView extends Group {
         currentDay = day;
     }
 
-    public void addTimeLine(Timeline timeLine) {
+    void addTimeLine(Timeline timeLine) {
 
         if (!timeLine.getPeriods().isEmpty()) {
             try {
                 Period period = timeLine.getPeriods().get(timeLine.getPeriods().size() - 1);
                 renderPeriod(period);
-                initLintener(period);
+                setListenerForPeriod(period);
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
@@ -140,12 +139,12 @@ public class TimelineView extends Group {
                 e.printStackTrace();
             }
 
-            initLintener(period);
+            setListenerForPeriod(period);
 
         });
     }
 
-    private void initLintener(Period period) {
+    private void setListenerForPeriod(Period period) {
         period.getgetDatetimeEndProperty().addListener((observable, oldValue, newValue) -> {
             System.out.println(period.getDatetimeStart());
             System.out.println(newValue);

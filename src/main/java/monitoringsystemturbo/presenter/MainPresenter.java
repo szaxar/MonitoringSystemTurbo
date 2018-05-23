@@ -59,10 +59,16 @@ public class MainPresenter {
         applicationList.setItems(FXCollections.observableList(loadedApplications));
         renderTimelineLegend();
         initializeTimelines();
-        initializeDatePicker();
         addCurrentTimeline();
+        addCurrentTimelineForComputer();
+        initializeDatePicker();
     }
 
+    private void addCurrentTimelineForComputer() {
+        ComputerStatistics computerStatistics = trackingService.getComputerStatistics();
+    }
+
+    @FXML
     private void addCurrentTimeline() {
         final Map<String, Timeline> allApplicationsStatistics = trackingService.getAllApplicationsStatistics();
         for (String appname : this.timelineElements.keySet()) {
