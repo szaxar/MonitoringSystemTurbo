@@ -1,5 +1,6 @@
 package monitoringsystemturbo.presenter;
 
+import com.jfoenix.controls.JFXDatePicker;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -39,7 +40,7 @@ public class MainPresenter {
     @FXML
     private VBox appTimelineList;
     @FXML
-    private DatePicker datePicker;
+    private JFXDatePicker datePicker;
     private Integer currentDay;
 
 
