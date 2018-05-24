@@ -38,7 +38,7 @@ public class MainPresenter {
     @FXML
     private DatePicker datePicker;
     private Integer currentDay;
-    
+
     private TrackingService trackingService;
     private MainExporter mainExporter;
 
@@ -48,8 +48,6 @@ public class MainPresenter {
 
     @FXML
     private ListView<Application> applicationList;
-
-    Timeline computerTimeline;
 
     @FXML
     public void initialize(TrackingService trackingService, MainExporter mainExporter, List<Application> loadedApplications) {
@@ -67,7 +65,7 @@ public class MainPresenter {
 
     private void addCurrentTimelineForComputer() {
         TimelineElement timelineElement = this.timelineElements.get("Computer");
-        computerTimeline= new Timeline(trackingService.getComputerStatistics());
+        Timeline computerTimeline = new Timeline(trackingService.getComputerStatistics());
         timelineElement.addTimeLineModel(computerTimeline);
     }
 

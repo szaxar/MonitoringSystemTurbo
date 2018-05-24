@@ -119,10 +119,6 @@ public class TimelineView extends Group {
         currentDay = day;
     }
 
-    void addCmps(ComputerStatistics statistics){
-
-    }
-
     void addTimeLine(Timeline timeLine) {
 
         System.out.println(timeLine);
