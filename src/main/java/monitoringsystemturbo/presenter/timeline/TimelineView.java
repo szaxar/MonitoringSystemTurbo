@@ -7,7 +7,6 @@ import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
-import monitoringsystemturbo.model.computer.ComputerStatistics;
 import monitoringsystemturbo.model.timeline.ActivePeriod;
 import monitoringsystemturbo.model.timeline.Period;
 import monitoringsystemturbo.model.timeline.RunningPeriod;
@@ -121,7 +120,6 @@ public class TimelineView extends Group {
 
     void addTimeLine(Timeline timeLine) {
 
-        System.out.println(timeLine);
         if (!timeLine.getPeriods().isEmpty()) {
             try {
                 Period period = timeLine.getPeriods().get(timeLine.getPeriods().size() - 1);
@@ -132,7 +130,7 @@ public class TimelineView extends Group {
             }
         }
 
-        timeLine.getPeriods().addListener((ListChangeListener<Period>) this::onChanged);
+        timeLine.getPeriods().addListener((ListChangeListener<Period>) this::onNewPeriodAdded);
 
     }
 
@@ -146,7 +144,7 @@ public class TimelineView extends Group {
         });
     }
 
-    private void onChanged(ListChangeListener.Change<? extends Period> c) {
+    private void onNewPeriodAdded(ListChangeListener.Change<? extends Period> c) {
         Integer todayInMilis = (int) LocalDate.now().toEpochDay();
         if (currentDay != null && currentDay.equals(todayInMilis)) {
             Platform.runLater(() -> {
