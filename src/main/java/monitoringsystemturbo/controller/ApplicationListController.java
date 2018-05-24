@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import monitoringsystemturbo.model.app.Application;
+import monitoringsystemturbo.presenter.AddActivityPresenter;
 import monitoringsystemturbo.presenter.AddApplicationPresenter;
 
 import java.io.IOException;
@@ -42,5 +43,23 @@ public class ApplicationListController {
 
     }
 
+    public void showActivityView() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(this.getClass().getResource("/addActivity.fxml"));
+        Parent rootLayout = loader.load();
+
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Add activity");
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.initOwner(primaryStage);
+
+        AddActivityPresenter addActivityPresenter = loader.getController();
+        addActivityPresenter.setPrimaryStage(dialogStage);
+
+        Scene scene = new Scene(rootLayout);
+        dialogStage.setScene(scene);
+        dialogStage.showAndWait();
+
+    }
 
 }

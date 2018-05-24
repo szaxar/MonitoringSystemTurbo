@@ -152,6 +152,15 @@ public class MainPresenter {
     }
 
     @FXML
+    public void onAddActivity() {
+        try {
+            applicationListController.showActivityView();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     public void onRemoveApplication() throws IllegalStateException, IOException {
         Application application = applicationList.getSelectionModel().getSelectedItem();
         if (application != null) {
