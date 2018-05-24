@@ -86,6 +86,7 @@ public class ExportPresenter {
                     successAlert.setHeaderText(null);
                     successAlert.setContentText("Data exported successfully! ");
                     successAlert.showAndWait();
+                    primaryStage.close();
                 } catch (IOException e) {
                     Alert errorAlert = new Alert(Alert.AlertType.ERROR);
                     errorAlert.setTitle("Error!");
