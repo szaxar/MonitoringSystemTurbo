@@ -47,19 +47,44 @@ public class Exporter {
         }
     }
 
-    public void exportGeneralInfo() throws IOException{
+    public void exportGeneralInfo(Date... dates) throws IOException {
+        String datetimeStart;
+        String datetimeEnd;
+        String fromDate = null;
+        String toDate = null;
+        if (dates.length > 0) {
+            fromDate = datetimeFormat.format(dates[0]);
+            toDate = datetimeFormat.format(dates[1]);
+        }
         CsvBuilder csvBuilder = new CsvBuilder();
         csvBuilder.writeRow("", "RunningTime", "ActiveTime");
         int runningTime = 0, activeTime;
         for (ComputerStatistics computerStatistics : computerStatisticsList) {
-            runningTime += computerStatistics.getRunningTimeInSec();
+            if (dates.length > 0) {
+                datetimeStart = datetimeFormat.format(computerStatistics.getSystemStartTime());
+                datetimeEnd = datetimeFormat.format(computerStatistics.getSystemCloseTime());
+                if (areDatesInInterval(fromDate, toDate, datetimeStart, datetimeEnd))
+                    runningTime += computerStatistics.getRunningTimeInSec();
+            } else {
+                runningTime += computerStatistics.getRunningTimeInSec();
+            }
+
         }
         csvBuilder.writeRow("Computer", getDurationFormat(runningTime));
         for (Map.Entry<String, List<Timeline>> entry : applicationTimelinesMap.entrySet()) {
             runningTime = activeTime = 0;
             for (Timeline timeline : entry.getValue()) {
-                runningTime += timeline.getRunningTimeInSec();
-                activeTime += timeline.getActiveTimeInSec();
+                if (dates.length > 0) {
+                    datetimeStart = datetimeFormat.format(timeline.getDatetimeStart());
+                    datetimeEnd = datetimeFormat.format(timeline.getDatetimeEnd());
+                    if (areDatesInInterval(fromDate, toDate, datetimeStart, datetimeEnd)) {
+                        runningTime += timeline.getRunningTimeInSec();
+                        activeTime += timeline.getActiveTimeInSec();
+                    }
+                } else {
+                    runningTime += timeline.getRunningTimeInSec();
+                    activeTime += timeline.getActiveTimeInSec();
+                }
             }
             csvBuilder.writeRow(entry.getKey(), getDurationFormat(runningTime), getDurationFormat(activeTime));
         }
@@ -74,11 +99,24 @@ public class Exporter {
         csvBuilder.writeRow("Computer");
         csvBuilder.writeRow("SystemStartDatetime", "SystemCloseDatetime", "RunningTime");
         for (ComputerStatistics computerStatistics : computerStatisticsList) {
-            csvBuilder.writeRow(
-                    datetimeFormat.format(computerStatistics.getSystemStartTime()),
-                    datetimeFormat.format(computerStatistics.getSystemCloseTime()),
-                    getDurationFormat(computerStatistics.getRunningTimeInSec())
-            );
+            if (dates.length > 0) {
+                datetimeStart = datetimeFormat.format(computerStatistics.getSystemStartTime());
+                datetimeEnd = datetimeFormat.format(computerStatistics.getSystemCloseTime());
+                String fromDate = datetimeFormat.format(dates[0]);
+                String toDate = datetimeFormat.format(dates[1]);
+                if (areDatesInInterval(fromDate, toDate, datetimeStart, datetimeEnd))
+                    csvBuilder.writeRow(
+                            datetimeFormat.format(computerStatistics.getSystemStartTime()),
+                            datetimeFormat.format(computerStatistics.getSystemCloseTime()),
+                            getDurationFormat(computerStatistics.getRunningTimeInSec())
+                    );
+            } else {
+                csvBuilder.writeRow(
+                        datetimeFormat.format(computerStatistics.getSystemStartTime()),
+                        datetimeFormat.format(computerStatistics.getSystemCloseTime()),
+                        getDurationFormat(computerStatistics.getRunningTimeInSec())
+                );
+            }
         }
         for (Map.Entry<String, List<Timeline>> entry : applicationTimelinesMap.entrySet()) {
             csvBuilder.nextRow();
@@ -153,10 +191,10 @@ public class Exporter {
         return this.filename + "-detail.csv";
     }
 
-    private void saveFile(String filename, String content) throws IOException{
-            Writer writer = new BufferedWriter(new FileWriter(filename, false));
-            writer.write(content);
-            writer.close();
+    private void saveFile(String filename, String content) throws IOException {
+        Writer writer = new BufferedWriter(new FileWriter(filename, false));
+        writer.write(content);
+        writer.close();
     }
 
 }
