@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
+import monitoringsystemturbo.model.computer.ComputerStatistics;
 import monitoringsystemturbo.model.timeline.ActivePeriod;
 import monitoringsystemturbo.model.timeline.Period;
 import monitoringsystemturbo.model.timeline.RunningPeriod;
@@ -118,8 +119,13 @@ public class TimelineView extends Group {
         currentDay = day;
     }
 
+    void addCmps(ComputerStatistics statistics){
+
+    }
+
     void addTimeLine(Timeline timeLine) {
 
+        System.out.println(timeLine);
         if (!timeLine.getPeriods().isEmpty()) {
             try {
                 Period period = timeLine.getPeriods().get(timeLine.getPeriods().size() - 1);

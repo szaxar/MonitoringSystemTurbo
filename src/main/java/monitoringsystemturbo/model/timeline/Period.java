@@ -15,6 +15,11 @@ public abstract class Period {
         this.datetimeEnd = new SimpleObjectProperty<>(datetimeEnd);
     }
 
+    public Period(Date datetimeStart, ObjectProperty<Date> datetimeEnd) {
+        this.datetimeStart = datetimeStart;
+        this.datetimeEnd = datetimeEnd;
+    }
+
     public Date getDatetimeStart() {
         return datetimeStart;
     }
