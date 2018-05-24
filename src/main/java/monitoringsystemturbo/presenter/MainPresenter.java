@@ -38,8 +38,7 @@ public class MainPresenter {
     @FXML
     private DatePicker datePicker;
     private Integer currentDay;
-
-
+    
     private TrackingService trackingService;
     private MainExporter mainExporter;
 
@@ -65,7 +64,7 @@ public class MainPresenter {
     }
 
     private void addCurrentTimelineForComputer() {
-        ComputerStatistics computerStatistics = trackingService.getComputerStatistics();
+//        ComputerStatistics computerStatistics = trackingService.getComputerStatistics().get
     }
 
     @FXML
