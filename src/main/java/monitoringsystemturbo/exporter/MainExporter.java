@@ -34,10 +34,8 @@ public class MainExporter {
         addHistoricalComputerStatistics(exporter);
         addHistoricalAppStatistics(exporter, applicationsToExport);
         addCurrentStatistics(exporter, trackingService, applicationsToExport);
-
         exporter.exportGeneralInfo();
-        //TODO fromTime.toLocalDate() przeksztalcic by pobieral jeszcze czas
-        exporter.exportDetailInfo(Date.from(fromTime.toLocalDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()), Date.from(toTime.toLocalDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+        exporter.exportDetailInfo(Date.from(fromTime.atZone(ZoneId.systemDefault()).toInstant()), Date.from(toTime.atZone(ZoneId.systemDefault()).toInstant()));
     }
 
 
