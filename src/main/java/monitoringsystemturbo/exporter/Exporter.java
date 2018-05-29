@@ -2,6 +2,7 @@ package monitoringsystemturbo.exporter;
 
 import monitoringsystemturbo.model.computer.ComputerStatistics;
 import monitoringsystemturbo.model.timeline.Timeline;
+import monitoringsystemturbo.utils.DateFormats;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -15,7 +16,6 @@ import java.util.Map;
 
 public class Exporter {
 
-    private static final SimpleDateFormat datetimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static final String hourSummary = "h";
     private static final String minuteSummary = "min";
     private static final String secondSummary = "s";
@@ -73,8 +73,8 @@ public class Exporter {
         csvBuilder.writeRow("SystemStartDatetime", "SystemCloseDatetime", "RunningTime");
         for (ComputerStatistics computerStatistics : computerStatisticsList) {
             csvBuilder.writeRow(
-                    datetimeFormat.format(computerStatistics.getSystemStartTime()),
-                    datetimeFormat.format(computerStatistics.getSystemCloseTime()),
+                    DateFormats.datetimeFormat.format(computerStatistics.getSystemStartTime()),
+                    DateFormats.datetimeFormat.format(computerStatistics.getSystemCloseTime()),
                     getDurationFormat(computerStatistics.getRunningTimeInSec())
             );
         }
@@ -84,8 +84,8 @@ public class Exporter {
             csvBuilder.writeRow("DatetimeStart", "DatetimeEnd", "RunningTime", "ActiveTime");
             for (Timeline timeline : entry.getValue()) {
                 csvBuilder.writeRow(
-                        datetimeFormat.format(timeline.getDatetimeStart()),
-                        datetimeFormat.format(timeline.getDatetimeEnd()),
+                        DateFormats.datetimeFormat.format(timeline.getDatetimeStart()),
+                        DateFormats.datetimeFormat.format(timeline.getDatetimeEnd()),
                         getDurationFormat(timeline.getRunningTimeInSec()),
                         getDurationFormat(timeline.getActiveTimeInSec())
                 );
