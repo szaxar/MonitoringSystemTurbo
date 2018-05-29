@@ -2,20 +2,19 @@ package monitoringsystemturbo.exporter;
 
 import monitoringsystemturbo.model.computer.ComputerStatistics;
 import monitoringsystemturbo.model.timeline.Timeline;
-import monitoringsystemturbo.utils.DateFormats;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.util.*;
 
 public class Exporter {
 
+    private static final SimpleDateFormat datetimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static final String hourSummary = "h";
     private static final String minuteSummary = "min";
     private static final String secondSummary = "s";
@@ -48,50 +47,112 @@ public class Exporter {
         }
     }
 
-    public void exportGeneralInfo() throws IOException{
+    public void exportGeneralInfo(Date... dates) throws IOException {
+        String datetimeStart;
+        String datetimeEnd;
+        String fromDate = null;
+        String toDate = null;
+        if (dates.length > 0) {
+            fromDate = datetimeFormat.format(dates[0]);
+            toDate = datetimeFormat.format(dates[1]);
+        }
         CsvBuilder csvBuilder = new CsvBuilder();
         csvBuilder.writeRow("", "RunningTime", "ActiveTime");
         int runningTime = 0, activeTime;
         for (ComputerStatistics computerStatistics : computerStatisticsList) {
-            runningTime += computerStatistics.getRunningTimeInSec();
+            if (dates.length > 0) {
+                datetimeStart = datetimeFormat.format(computerStatistics.getSystemStartTime());
+                datetimeEnd = datetimeFormat.format(computerStatistics.getSystemCloseTime());
+                if (areDatesInInterval(fromDate, toDate, datetimeStart, datetimeEnd))
+                    runningTime += computerStatistics.getRunningTimeInSec();
+            } else {
+                runningTime += computerStatistics.getRunningTimeInSec();
+            }
+
         }
         csvBuilder.writeRow("Computer", getDurationFormat(runningTime));
         for (Map.Entry<String, List<Timeline>> entry : applicationTimelinesMap.entrySet()) {
             runningTime = activeTime = 0;
             for (Timeline timeline : entry.getValue()) {
-                runningTime += timeline.getRunningTimeInSec();
-                activeTime += timeline.getActiveTimeInSec();
+                if (dates.length > 0) {
+                    datetimeStart = datetimeFormat.format(timeline.getDatetimeStart());
+                    datetimeEnd = datetimeFormat.format(timeline.getDatetimeEnd());
+                    if (areDatesInInterval(fromDate, toDate, datetimeStart, datetimeEnd)) {
+                        runningTime += timeline.getRunningTimeInSec();
+                        activeTime += timeline.getActiveTimeInSec();
+                    }
+                } else {
+                    runningTime += timeline.getRunningTimeInSec();
+                    activeTime += timeline.getActiveTimeInSec();
+                }
             }
             csvBuilder.writeRow(entry.getKey(), getDurationFormat(runningTime), getDurationFormat(activeTime));
         }
         saveFile(getGeneralFilename(), csvBuilder.build());
     }
 
-    public void exportDetailInfo() throws IOException{
+
+    public void exportDetailInfo(Date... dates) throws IOException {
+        String datetimeStart;
+        String datetimeEnd;
         CsvBuilder csvBuilder = new CsvBuilder();
         csvBuilder.writeRow("Computer");
         csvBuilder.writeRow("SystemStartDatetime", "SystemCloseDatetime", "RunningTime");
         for (ComputerStatistics computerStatistics : computerStatisticsList) {
-            csvBuilder.writeRow(
-                    DateFormats.datetimeFormat.format(computerStatistics.getSystemStartTime()),
-                    DateFormats.datetimeFormat.format(computerStatistics.getSystemCloseTime()),
-                    getDurationFormat(computerStatistics.getRunningTimeInSec())
-            );
+            if (dates.length > 0) {
+                datetimeStart = datetimeFormat.format(computerStatistics.getSystemStartTime());
+                datetimeEnd = datetimeFormat.format(computerStatistics.getSystemCloseTime());
+                String fromDate = datetimeFormat.format(dates[0]);
+                String toDate = datetimeFormat.format(dates[1]);
+                if (areDatesInInterval(fromDate, toDate, datetimeStart, datetimeEnd))
+                    csvBuilder.writeRow(
+                            datetimeFormat.format(computerStatistics.getSystemStartTime()),
+                            datetimeFormat.format(computerStatistics.getSystemCloseTime()),
+                            getDurationFormat(computerStatistics.getRunningTimeInSec())
+                    );
+            } else {
+                csvBuilder.writeRow(
+                        datetimeFormat.format(computerStatistics.getSystemStartTime()),
+                        datetimeFormat.format(computerStatistics.getSystemCloseTime()),
+                        getDurationFormat(computerStatistics.getRunningTimeInSec())
+                );
+            }
         }
         for (Map.Entry<String, List<Timeline>> entry : applicationTimelinesMap.entrySet()) {
             csvBuilder.nextRow();
             csvBuilder.writeRow(entry.getKey());
             csvBuilder.writeRow("DatetimeStart", "DatetimeEnd", "RunningTime", "ActiveTime");
             for (Timeline timeline : entry.getValue()) {
-                csvBuilder.writeRow(
-                        DateFormats.datetimeFormat.format(timeline.getDatetimeStart()),
-                        DateFormats.datetimeFormat.format(timeline.getDatetimeEnd()),
-                        getDurationFormat(timeline.getRunningTimeInSec()),
-                        getDurationFormat(timeline.getActiveTimeInSec())
-                );
+                datetimeStart = datetimeFormat.format(timeline.getDatetimeStart());
+                datetimeEnd = datetimeFormat.format(timeline.getDatetimeEnd());
+                if (dates.length > 0) {
+                    String fromDate = datetimeFormat.format(dates[0]);
+                    String toDate = datetimeFormat.format(dates[1]);
+                    if (areDatesInInterval(fromDate, toDate, datetimeStart, datetimeEnd))
+                        csvBuilder.writeRow(
+                                datetimeStart,
+                                datetimeEnd,
+                                getDurationFormat(timeline.getRunningTimeInSec()),
+                                getDurationFormat(timeline.getActiveTimeInSec())
+                        );
+                } else {
+                    csvBuilder.writeRow(
+                            datetimeStart,
+                            datetimeEnd,
+                            getDurationFormat(timeline.getRunningTimeInSec()),
+                            getDurationFormat(timeline.getActiveTimeInSec())
+                    );
+                }
+
             }
         }
         saveFile(getDetailFilename(), csvBuilder.build());
+    }
+
+    private boolean areDatesInInterval(String fromDate, String toDate, String startDate, String endDate) {
+        boolean startDateInInterval = (startDate.compareTo(fromDate) >= 0 && startDate.compareTo(toDate) <= 0);
+        boolean endDateInInterval = (endDate.compareTo(fromDate) >= 0 && endDate.compareTo(toDate) <= 0);
+        return (startDateInInterval && endDateInInterval);
     }
 
     private String getDurationFormat(int duration) {
@@ -130,10 +191,10 @@ public class Exporter {
         return this.filename + "-detail.csv";
     }
 
-    private void saveFile(String filename, String content) throws IOException{
-            Writer writer = new BufferedWriter(new FileWriter(filename, false));
-            writer.write(content);
-            writer.close();
+    private void saveFile(String filename, String content) throws IOException {
+        Writer writer = new BufferedWriter(new FileWriter(filename, false));
+        writer.write(content);
+        writer.close();
     }
 
 }
