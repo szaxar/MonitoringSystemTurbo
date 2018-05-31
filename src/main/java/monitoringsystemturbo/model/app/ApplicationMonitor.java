@@ -45,7 +45,6 @@ public class ApplicationMonitor extends Thread {
                 }
             }
         }
-
     }
 
     @Override
