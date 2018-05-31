@@ -100,7 +100,13 @@ public class MainPresenter {
 
         try {
             List<ComputerStatistics> computerStatistics = StatisticsManager.loadComputerStats();
-            Timeline timeline = new Timeline(computerStatistics);
+            Timeline timeline;
+            if(computerStatistics.isEmpty()){
+                timeline = new Timeline();
+            } else {
+                timeline = new Timeline(computerStatistics);
+            }
+
             TimelineElement timelineElement = new TimelineElement("Computer", Arrays.asList(timeline));
             timelineElement.setTimelineViewWidthByRegion(computerTimelineContainer);
             computerTimelineContainer.getChildren().add(timelineElement);
