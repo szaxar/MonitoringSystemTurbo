@@ -16,9 +16,9 @@ public class ApplicationService {
     private final String appName;
     private final Timeline timeline = new Timeline();
 
-    public ApplicationService(String applicationName) {
-        this.appName = applicationName;
-        this.filename = String.format("%s.exe", applicationName);
+    public ApplicationService(String appName) {
+        this.appName = appName;
+        this.filename = String.format("%s.exe", appName);
     }
 
     public void updateTimeline() {

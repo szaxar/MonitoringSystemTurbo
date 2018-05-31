@@ -1,10 +1,12 @@
 package monitoringsystemturbo.model;
 
+import monitoringsystemturbo.Main;
 import monitoringsystemturbo.model.app.ApplicationMonitor;
 import monitoringsystemturbo.model.app.ApplicationService;
 import monitoringsystemturbo.model.computer.ComputerMonitor;
 import monitoringsystemturbo.model.computer.ComputerStatistics;
 import monitoringsystemturbo.model.timeline.Timeline;
+import monitoringsystemturbo.presenter.MainPresenter;
 
 import java.util.*;
 import java.util.stream.Collectors;

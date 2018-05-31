@@ -1,6 +1,9 @@
 package monitoringsystemturbo.presenter.timeline;
 
+import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Tooltip;
@@ -12,6 +15,7 @@ import monitoringsystemturbo.model.timeline.Timeline;
 import monitoringsystemturbo.utils.DateFormats;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -27,9 +31,10 @@ public class TimelineView extends Group {
     private Rectangle timelineBackground;
     private List<Timeline> timelineModels;
     private HashMap<Integer, List<Node>> dayPeriodsMap = new HashMap<>();
-    private Integer currentDay = null;
+    private Integer currentDay;
+    private Rectangle currentPeriodView;
 
-    public TimelineView(List<Timeline> timelineModels) throws ClassNotFoundException {
+    TimelineView(List<Timeline> timelineModels) throws ClassNotFoundException {
         this.timelineModels = timelineModels;
         setTimelineBackground();
         for (Timeline timeline : timelineModels) {
@@ -46,15 +51,20 @@ public class TimelineView extends Group {
 
     private void renderPeriods(List<Period> periods) throws ClassNotFoundException {
         for (Period period : periods) {
-            long datetimeStart = period.getDatetimeStart().getTime();
-            long datetimeEnd = period.getDatetimeEnd().getTime();
-            for (int day = (int)(datetimeStart / dayInMs); day <= datetimeEnd / dayInMs; day++) {
-                Rectangle periodView = createPeriodView(period);
-                long datetimeStartInDay = Math.max(datetimeStart, day * dayInMs);
-                long datetimeEndInDay = Math.min(datetimeEnd, (day + 1) * dayInMs);
-                setPeriodViewWidthProperties(periodView, datetimeStartInDay, datetimeEndInDay);
-                addPeriodViewForDay(day, periodView);
-            }
+            renderPeriod(period);
+        }
+    }
+
+    private void renderPeriod(Period period) throws ClassNotFoundException {
+        long datetimeStart = period.getDatetimeStart().getTime();
+        long datetimeEnd = period.getDatetimeEnd().getTime();
+        for (int day = (int) (datetimeStart / dayInMs); day <= datetimeEnd / dayInMs; day++) {
+            Rectangle periodView = createPeriodView(period);
+            this.currentPeriodView = periodView;
+            long datetimeStartInDay = Math.max(datetimeStart, day * dayInMs);
+            long datetimeEndInDay = Math.min(datetimeEnd, (day + 1) * dayInMs);
+            setPeriodViewWidthProperties(periodView, datetimeStartInDay, datetimeEndInDay);
+            addPeriodViewForDay(day, periodView);
         }
     }
 
@@ -107,18 +117,19 @@ public class TimelineView extends Group {
         dayPeriodsMap.get(day).add(periodView);
     }
 
-    public DoubleProperty widthProperty() {
+    DoubleProperty widthProperty() {
         return timelineBackground.widthProperty();
     }
 
-    public DoubleProperty heightProperty() {
+    private DoubleProperty heightProperty() {
         return timelineBackground.heightProperty();
     }
 
-    public void showDay(Integer day) {
+    void showDay(Integer day) {
         if (currentDay != null && currentDay.equals(day)) {
             return;
         }
+
         if (currentDay != null) {
             getChildren().removeAll(dayPeriodsMap.get(currentDay));
         }
@@ -130,4 +141,47 @@ public class TimelineView extends Group {
         currentDay = day;
     }
 
+    void addTimeLine(Timeline timeLine) {
+        if (!timeLine.getPeriods().isEmpty()) {
+            try {
+                Period period = timeLine.getPeriods().get(timeLine.getPeriods().size() - 1);
+                renderPeriod(period);
+                setListenerForPeriod(period);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        timeLine.getPeriods().addListener((ListChangeListener<Period>) this::onNewPeriodAdded);
+    }
+
+    private void setListenerForPeriod(Period period) {
+        period.getgetDatetimeEndProperty().addListener((observable, oldValue, newValue) -> {
+            double widthRatio = (double) (newValue.getTime() - period.getDatetimeStart().getTime()) / dayInMs;
+            double offsetRatio = (double) (period.getDatetimeStart().getTime() % dayInMs) / dayInMs;
+            double timelineWidth = widthProperty().getValue();
+            currentPeriodView.setWidth(timelineWidth * widthRatio);
+            currentPeriodView.setTranslateX(timelineWidth * offsetRatio);
+        });
+    }
+
+    private void onNewPeriodAdded(ListChangeListener.Change<? extends Period> change) {
+        Integer todayInMilis = (int) LocalDate.now().toEpochDay();
+        if (currentDay != null && currentDay.equals(todayInMilis)) {
+            Platform.runLater(() -> {
+                getChildren().removeAll(dayPeriodsMap.get(currentDay));
+                getChildren().addAll(dayPeriodsMap.get(todayInMilis));
+            });
+        }
+        ObservableList<? extends Period> list = change.getList();
+        Period period = list.get(list.size() - 1);
+
+        try {
+            renderPeriod(period);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        setListenerForPeriod(period);
+    }
 }
