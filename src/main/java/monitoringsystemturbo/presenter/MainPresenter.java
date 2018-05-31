@@ -48,7 +48,6 @@ public class MainPresenter {
     private List<Application> loadedApplications;
     private ApplicationListController applicationListController;
     private ExportController exportController;
-    private List<TimelineElement> timelineElements;
 
     @FXML
     private ListView<Application> applicationList;
