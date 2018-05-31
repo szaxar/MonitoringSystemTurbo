@@ -45,13 +45,11 @@ public class Timeline {
 
     public Timeline(ComputerStatistics computerStatistic) {
         observablePeriodList = FXCollections.observableArrayList();
-
         this.datetimeStart = computerStatistic.getSystemStartTime();
         this.datetimeEnd = computerStatistic.getSystemCloseTime();
 
         Period period = new RunningPeriod(datetimeStart, computerStatistic.getSystemCloseTimeProperty());
         observablePeriodList.add(period);
-
     }
 
     public void update(Date datetime, ApplicationState state) {
