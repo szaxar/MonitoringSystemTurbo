@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import monitoringsystemturbo.presenter.Legend?>
-<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="monitoringsystemturbo.presenter.MainPresenter">
+
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="main.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="monitoringsystemturbo.presenter.MainPresenter">
    <center>
       <VBox spacing="15.0" BorderPane.alignment="CENTER">
          <children>
@@ -15,9 +19,9 @@
                <children>
                   <HBox HBox.hgrow="ALWAYS">
                      <children>
-                        <Button onAction="#onPrevDay" mnemonicParsing="false" text="&lt;" />
-                        <DatePicker fx:id="datePicker"/>
-                        <Button onAction="#onNextDay" mnemonicParsing="false" text="&gt;" />
+                        <Button mnemonicParsing="false" onAction="#onPrevDay" text="&lt;" />
+                        <JFXDatePicker fx:id="datePicker" defaultColor="BLACK" />
+                        <Button mnemonicParsing="false" onAction="#onNextDay" text="&gt;" />
                      </children>
                   </HBox>
                   <Button mnemonicParsing="false" onAction="#onExport" text="Eksportuj" />

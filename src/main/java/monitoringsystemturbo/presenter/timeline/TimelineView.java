@@ -6,14 +6,18 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.Tooltip;
 import javafx.scene.shape.Rectangle;
 import monitoringsystemturbo.model.timeline.ActivePeriod;
 import monitoringsystemturbo.model.timeline.Period;
 import monitoringsystemturbo.model.timeline.RunningPeriod;
 import monitoringsystemturbo.model.timeline.Timeline;
+import monitoringsystemturbo.utils.DateFormats;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -66,6 +70,13 @@ public class TimelineView extends Group {
 
     private Rectangle createPeriodView(Period period) throws ClassNotFoundException {
         Rectangle periodView = new Rectangle();
+        setPeriodColor(periodView, period);
+        periodView.heightProperty().bind(heightProperty());
+        setPeriodTooltip(periodView, period);
+        return periodView;
+    }
+
+    private void setPeriodColor(Rectangle periodView, Period period) throws ClassNotFoundException {
         if (period instanceof RunningPeriod) {
             periodView.setFill(runningColor);
         } else if (period instanceof ActivePeriod) {
@@ -73,8 +84,20 @@ public class TimelineView extends Group {
         } else {
             throw new ClassNotFoundException("Unrecognized period instance");
         }
-        periodView.heightProperty().bind(heightProperty());
-        return periodView;
+    }
+
+    private void setPeriodTooltip(Rectangle periodView, Period period) {
+        StringBuilder tooltipContent = new StringBuilder();
+        tooltipContent
+                .append(DateFormats.datetimeFormat.format(period.getDatetimeStart()))
+                .append(" - ");
+        if (period.getDatetimeStart().getTime() / dayInMs == period.getDatetimeEnd().getTime() / dayInMs) {
+            tooltipContent.append(DateFormats.timeFormat.format(period.getDatetimeEnd()));
+        } else {
+            tooltipContent.append(DateFormats.datetimeFormat.format(period.getDatetimeEnd()));
+        }
+        Tooltip tooltip = new Tooltip(tooltipContent.toString());
+        Tooltip.install(periodView, tooltip);
     }
 
     private void setPeriodViewWidthProperties(Rectangle periodView, long datetimeStart, long datetimeEnd) {

@@ -1,5 +1,6 @@
 package monitoringsystemturbo.presenter;
 
+import com.jfoenix.controls.JFXDatePicker;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -10,6 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import monitoringsystemturbo.config.ConfigManager;
 import monitoringsystemturbo.controller.ApplicationListController;
+import monitoringsystemturbo.controller.ExportController;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.history.StatisticsManager;
 import monitoringsystemturbo.model.TrackingService;
@@ -36,7 +38,7 @@ public class MainPresenter {
     @FXML
     private VBox appTimelineList;
     @FXML
-    private DatePicker datePicker;
+    private JFXDatePicker datePicker;
     private Integer currentDay;
 
     private TrackingService trackingService;
@@ -45,6 +47,8 @@ public class MainPresenter {
     private Map<String, TimelineElement> timelineElements;
     private List<Application> loadedApplications;
     private ApplicationListController applicationListController;
+    private ExportController exportController;
+    private List<TimelineElement> timelineElements;
 
     @FXML
     private ListView<Application> applicationList;
@@ -148,6 +152,7 @@ public class MainPresenter {
                 ConfigManager.createFileIfNeeded(application);
                 loadedApplications.add(application);
                 trackingService.addAppToMonitor(application.getName());
+
                 applicationList.setItems(FXCollections.observableList(loadedApplications));
 
                 ConfigManager.save(loadedApplications);
@@ -193,23 +198,10 @@ public class MainPresenter {
 
     @FXML
     public void onExport() {
-        ExportWindowHandler exportWindowHandler = new ExportWindowHandler();
-        List<String> applicationsToExport = exportWindowHandler.displayCheckingWindow(trackingService.getApplicationsNames());
-        if (!exportWindowHandler.getCancelValue()) {
-            try {
-                mainExporter.export(trackingService, applicationsToExport);
-                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                successAlert.setTitle("Success!");
-                successAlert.setHeaderText(null);
-                successAlert.setContentText("Data exported successfully! ");
-                successAlert.showAndWait();
-            } catch (IOException e) {
-                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                errorAlert.setTitle("Error!");
-                errorAlert.setHeaderText(null);
-                errorAlert.setContentText("Error occurred while exporting data.");
-                errorAlert.showAndWait();
-            }
+        try {
+            exportController.showExportView(mainExporter,trackingService);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -242,5 +234,9 @@ public class MainPresenter {
 
     public void setApplicationListController(ApplicationListController applicationListController) {
         this.applicationListController = applicationListController;
+    }
+
+    public void setExportController(ExportController exportController) {
+        this.exportController = exportController;
     }
 }

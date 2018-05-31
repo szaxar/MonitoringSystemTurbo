@@ -34,6 +34,9 @@ public class MainController {
         ApplicationListController applicationListController =new ApplicationListController(primaryStage);
         mainPresenter.setApplicationListController(applicationListController);
 
+        ExportController exportController =new ExportController(primaryStage);
+        mainPresenter.setExportController(exportController);
+
         primaryStage.setScene(new Scene(rootLayout));
         primaryStage.show();
     }
