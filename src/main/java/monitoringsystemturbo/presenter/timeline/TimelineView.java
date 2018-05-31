@@ -119,7 +119,6 @@ public class TimelineView extends Group {
     }
 
     void addTimeLine(Timeline timeLine) {
-
         if (!timeLine.getPeriods().isEmpty()) {
             try {
                 Period period = timeLine.getPeriods().get(timeLine.getPeriods().size() - 1);
@@ -131,7 +130,6 @@ public class TimelineView extends Group {
         }
 
         timeLine.getPeriods().addListener((ListChangeListener<Period>) this::onNewPeriodAdded);
-
     }
 
     private void setListenerForPeriod(Period period) {
@@ -144,7 +142,7 @@ public class TimelineView extends Group {
         });
     }
 
-    private void onNewPeriodAdded(ListChangeListener.Change<? extends Period> c) {
+    private void onNewPeriodAdded(ListChangeListener.Change<? extends Period> change) {
         Integer todayInMilis = (int) LocalDate.now().toEpochDay();
         if (currentDay != null && currentDay.equals(todayInMilis)) {
             Platform.runLater(() -> {
@@ -152,7 +150,7 @@ public class TimelineView extends Group {
                 getChildren().addAll(dayPeriodsMap.get(todayInMilis));
             });
         }
-        ObservableList<? extends Period> list = c.getList();
+        ObservableList<? extends Period> list = change.getList();
         Period period = list.get(list.size() - 1);
 
         try {
