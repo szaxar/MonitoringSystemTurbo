@@ -12,21 +12,21 @@ public class Timeline {
     protected Date datetimeStart;
     protected Date datetimeEnd;
     private ApplicationState lastApplicationState = ApplicationState.NOT_RUNNING;
-    protected ObservableList<Period> observableList;
+    protected ObservableList<Period> observablePeriodList;
 
     public Timeline() {
         this(new Date(), new Date());
     }
 
     public Timeline(Date datetimeStart, Date datetimeEnd) {
-        observableList = FXCollections.observableArrayList();
+        observablePeriodList = FXCollections.observableArrayList();
 
         this.datetimeStart = datetimeStart;
         this.datetimeEnd = datetimeEnd;
     }
 
     public Timeline(List<ComputerStatistics> computerStatistics) {
-        observableList = FXCollections.observableArrayList();
+        observablePeriodList = FXCollections.observableArrayList();
         this.datetimeStart = computerStatistics.get(0).getSystemStartTime();
         this.datetimeEnd = computerStatistics.get(0).getSystemCloseTime();
         for (ComputerStatistics computerStatistic : computerStatistics) {
@@ -39,18 +39,18 @@ public class Timeline {
                 this.datetimeEnd = computerStatistic.getSystemCloseTime();
             }
             Period period = new RunningPeriod(datetimeStart, datetimeEnd);
-            observableList.add(period);
+            observablePeriodList.add(period);
         }
     }
 
     public Timeline(ComputerStatistics computerStatistic) {
-        observableList = FXCollections.observableArrayList();
+        observablePeriodList = FXCollections.observableArrayList();
 
         this.datetimeStart = computerStatistic.getSystemStartTime();
         this.datetimeEnd = computerStatistic.getSystemCloseTime();
 
         Period period = new RunningPeriod(datetimeStart, computerStatistic.getSystemCloseTimeProperty());
-        observableList.add(period);
+        observablePeriodList.add(period);
 
     }
 
@@ -76,11 +76,11 @@ public class Timeline {
                 default:
                     return;
             }
-            observableList.add(period);
+            observablePeriodList.add(period);
             lastApplicationState = state;
             return;
         }
-        Period lastPeriod = observableList.get(observableList.size() - 1);
+        Period lastPeriod = observablePeriodList.get(observablePeriodList.size() - 1);
         lastPeriod.setDatetimeEnd(datetime);
     }
 
@@ -93,12 +93,12 @@ public class Timeline {
     }
 
     public ObservableList<Period> getPeriods() {
-        return observableList;
+        return observablePeriodList;
     }
 
     public int getActiveTimeInSec() {
         int timeInSec = 0;
-        for (Period period : observableList) {
+        for (Period period : observablePeriodList) {
             if (period instanceof ActivePeriod) {
                 timeInSec += period.getTimeInSec();
             }
@@ -108,7 +108,7 @@ public class Timeline {
 
     public int getRunningTimeInSec() {
         int timeInSec = 0;
-        for (Period period : observableList) {
+        for (Period period : observablePeriodList) {
             if (period instanceof RunningPeriod) {
                 timeInSec += period.getTimeInSec();
             }
@@ -118,6 +118,6 @@ public class Timeline {
 
     @Override
     public String toString() {
-        return String.format("Timeline(%s, %s, %s)", datetimeStart, datetimeEnd, observableList);
+        return String.format("Timeline(%s, %s, %s)", datetimeStart, datetimeEnd, observablePeriodList);
     }
 }
