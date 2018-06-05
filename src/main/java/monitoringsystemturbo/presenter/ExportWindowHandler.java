@@ -48,6 +48,7 @@ public class ExportWindowHandler {
         List<CheckBox> checkBoxes = new ArrayList<>();
         for (String app : applicationNames) {
             CheckBox option = new CheckBox(app);
+            option.setSelected(true);
             checkBoxes.add(option);
         }
         return checkBoxes;

@@ -30,8 +30,16 @@ public class TimelineElement extends VBox {
         timelineView.widthProperty().bind(region.widthProperty());
     }
 
+    public TimelineView getTimeLineView(){
+        return timelineView;
+    }
+
     public void showDay(Integer day) {
         timelineView.showDay(day);
+    }
+
+    public void addTimeLineModel(Timeline timeLine) {
+        timelineView.addTimeLine(timeLine);
     }
 
     public String getName() {

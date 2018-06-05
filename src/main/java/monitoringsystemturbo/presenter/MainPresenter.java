@@ -1,5 +1,6 @@
 package monitoringsystemturbo.presenter;
 
+import com.jfoenix.controls.JFXDatePicker;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -10,6 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import monitoringsystemturbo.config.ConfigManager;
 import monitoringsystemturbo.controller.ApplicationListController;
+import monitoringsystemturbo.controller.ExportController;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.history.StatisticsManager;
 import monitoringsystemturbo.model.TrackingService;
@@ -21,9 +23,7 @@ import monitoringsystemturbo.presenter.timeline.TimelineElement;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static monitoringsystemturbo.utils.IconConverter.iconToFxImage;
 
@@ -38,15 +38,16 @@ public class MainPresenter {
     @FXML
     private VBox appTimelineList;
     @FXML
-    private DatePicker datePicker;
+    private JFXDatePicker datePicker;
     private Integer currentDay;
-
 
     private TrackingService trackingService;
     private MainExporter mainExporter;
+
+    private Map<String, TimelineElement> timelineElements;
     private List<Application> loadedApplications;
     private ApplicationListController applicationListController;
-    private List<TimelineElement> timelineElements;
+    private ExportController exportController;
 
     @FXML
     private ListView<Application> applicationList;
@@ -60,8 +61,26 @@ public class MainPresenter {
         applicationList.setItems(FXCollections.observableList(loadedApplications));
         renderTimelineLegend();
         initializeTimelines();
+        addCurrentTimeline();
+        addCurrentTimelineForComputer();
         initializeDatePicker();
+    }
 
+    private void addCurrentTimelineForComputer() {
+        TimelineElement timelineElement = this.timelineElements.get("Computer");
+        Timeline computerTimeline = new Timeline(trackingService.getComputerStatistics());
+        timelineElement.addTimeLineModel(computerTimeline);
+    }
+
+    @FXML
+    private void addCurrentTimeline() {
+        final Map<String, Timeline> allApplicationsStatistics = trackingService.getAllApplicationsStatistics();
+        for (String appname : this.timelineElements.keySet()) {
+            TimelineElement timelineElement = this.timelineElements.get(appname);
+            if (allApplicationsStatistics.get(appname) != null) {
+                timelineElement.addTimeLineModel(allApplicationsStatistics.get(appname));
+            }
+        }
     }
 
     private void initializeAppsToMonitor() {
@@ -76,16 +95,22 @@ public class MainPresenter {
     }
 
     private void initializeTimelines() {
-        timelineElements = new ArrayList<>();
+        timelineElements = new HashMap<>();
         appTimelineContainer.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
         try {
             List<ComputerStatistics> computerStatistics = StatisticsManager.loadComputerStats();
-            Timeline timeline = new Timeline(computerStatistics);
+            Timeline timeline;
+            if(computerStatistics.isEmpty()){
+                timeline = new Timeline();
+            } else {
+                timeline = new Timeline(computerStatistics);
+            }
+
             TimelineElement timelineElement = new TimelineElement("Computer", Arrays.asList(timeline));
             timelineElement.setTimelineViewWidthByRegion(computerTimelineContainer);
             computerTimelineContainer.getChildren().add(timelineElement);
-            timelineElements.add(timelineElement);
+            timelineElements.put("Computer", timelineElement);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -97,7 +122,7 @@ public class MainPresenter {
                 TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
                 timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
                 appTimelineList.getChildren().add(timelineElement);
-                timelineElements.add(timelineElement);
+                timelineElements.put(application.getName(), timelineElement);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -107,10 +132,10 @@ public class MainPresenter {
     private void initializeDatePicker() {
         datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
             Integer day = (int) newValue.toEpochDay();
-            timelineElements.forEach(timelineElement -> timelineElement.showDay(day));
+            timelineElements.values().forEach(timelineElement -> timelineElement.showDay(day));
             currentDay = day;
         });
-        datePicker.setValue(LocalDate.now()); // 24.04.2018
+        datePicker.setValue(LocalDate.now());
     }
 
     @FXML
@@ -132,15 +157,17 @@ public class MainPresenter {
                 ConfigManager.createFileIfNeeded(application);
                 loadedApplications.add(application);
                 trackingService.addAppToMonitor(application.getName());
+
                 applicationList.setItems(FXCollections.observableList(loadedApplications));
 
                 ConfigManager.save(loadedApplications);
 
                 List<Timeline> timelines = StatisticsManager.load(application.getName());
                 TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
+                timelineElement.addTimeLineModel(trackingService.getStatisticsForApp(application.getName()));
                 timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
                 appTimelineList.getChildren().add(timelineElement);
-                timelineElements.add(timelineElement);
+                timelineElements.put(application.getName(), timelineElement);
             }
         } catch (Exception e) {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
@@ -173,7 +200,7 @@ public class MainPresenter {
             loadedApplications.remove(application);
             applicationList.setItems(FXCollections.observableList(loadedApplications));
             ConfigManager.save(loadedApplications);
-            TimelineElement timelineElement = timelineElements.stream()
+            TimelineElement timelineElement = timelineElements.values().stream()
                     .filter(element -> element.getName().equals(application.getName()))
                     .findFirst()
                     .orElseThrow(() -> new IllegalStateException("Cannot delete app which are not in list"));
@@ -185,23 +212,10 @@ public class MainPresenter {
 
     @FXML
     public void onExport() {
-        ExportWindowHandler exportWindowHandler = new ExportWindowHandler();
-        List<String> applicationsToExport = exportWindowHandler.displayCheckingWindow(trackingService.getApplicationsNames());
-        if (!exportWindowHandler.getCancelValue()) {
-            try {
-                mainExporter.export(trackingService, applicationsToExport);
-                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                successAlert.setTitle("Success!");
-                successAlert.setHeaderText(null);
-                successAlert.setContentText("Data exported successfully! ");
-                successAlert.showAndWait();
-            } catch (IOException e) {
-                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                errorAlert.setTitle("Error!");
-                errorAlert.setHeaderText(null);
-                errorAlert.setContentText("Error occurred while exporting data.");
-                errorAlert.showAndWait();
-            }
+        try {
+            exportController.showExportView(mainExporter,trackingService);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -213,6 +227,7 @@ public class MainPresenter {
 
                 ImageView imageView = new ImageView();
                 Label label = new Label();
+
                 VBox vbox = new VBox();
 
                 if (empty) {
@@ -233,5 +248,9 @@ public class MainPresenter {
 
     public void setApplicationListController(ApplicationListController applicationListController) {
         this.applicationListController = applicationListController;
+    }
+
+    public void setExportController(ExportController exportController) {
+        this.exportController = exportController;
     }
 }

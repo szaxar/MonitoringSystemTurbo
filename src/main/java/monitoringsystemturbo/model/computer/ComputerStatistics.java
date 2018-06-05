@@ -1,5 +1,10 @@
 package monitoringsystemturbo.model.computer;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+
+import monitoringsystemturbo.utils.DateFormats;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -7,10 +12,12 @@ public class ComputerStatistics {
 
     protected Date systemStartTime;
     protected Date systemCloseTime;
+    protected ObjectProperty<Date> systemCloseTimeProperty;
     private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 
     public ComputerStatistics(Date systemStartTime) {
         this.systemStartTime = systemStartTime;
+        systemCloseTimeProperty = new SimpleObjectProperty<>(systemStartTime);
     }
 
     public Date getSystemStartTime() {
@@ -23,10 +30,15 @@ public class ComputerStatistics {
 
     void setSystemCloseTime(Date systemCloseTime) {
         this.systemCloseTime = systemCloseTime;
+        this.systemCloseTimeProperty.setValue(systemCloseTime);
+    }
+
+    public ObjectProperty<Date> getSystemCloseTimeProperty() {
+        return systemCloseTimeProperty;
     }
 
     public String getSystemStartTimeString(){
-        return sdf.format(systemStartTime.getTime());
+        return DateFormats.timeFormat.format(systemStartTime.getTime());
     }
 
     public int getRunningTimeInSec() {
@@ -36,8 +48,8 @@ public class ComputerStatistics {
     @Override
     public String toString() {
         return "monitoringsystemturbo.model.computer.ComputerStatistics{" +
-                "systemStartTime=" + sdf.format(systemStartTime.getTime()) +
-                ", systemCloseTime=" + sdf.format(systemCloseTime.getTime()) +
+                "systemStartTime=" + DateFormats.timeFormat.format(systemStartTime.getTime()) +
+                ", systemCloseTime=" + DateFormats.timeFormat.format(systemCloseTime.getTime()) +
                 '}';
     }
 }
