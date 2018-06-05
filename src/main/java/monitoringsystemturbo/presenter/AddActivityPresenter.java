@@ -42,6 +42,7 @@ public class AddActivityPresenter {
     private Application application;
     private Date fromDate;
     private Date toDate;
+    private Activity activity;
 
     @FXML
     public void initialize() {

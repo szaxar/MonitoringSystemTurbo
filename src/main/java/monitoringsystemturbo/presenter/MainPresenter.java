@@ -185,16 +185,17 @@ public class MainPresenter {
             if (application != null) {
                 ConfigManager.createFileIfNeeded(application);
                 loadedApplications.add(application);
-                //trackingService.addAppToMonitor(application.getName());
                 applicationList.setItems(FXCollections.observableList(loadedApplications));
                 ConfigManager.save(loadedApplications);
 
                 List<Timeline> timelines = StatisticsManager.load(application.getName());
                 TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
-             //   timelineElement.addTimeLineModel(trackingService.getStatisticsForApp(application.getName()));
+              //  timelineElement.addTimeLineModel(trackingService.getStatisticsForApp(application.getName()));
                 timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
                 appTimelineList.getChildren().add(timelineElement);
                 timelineElements.put(application.getName(), timelineElement);
+                datePicker.setValue(LocalDate.ofEpochDay(currentDay));
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -212,21 +213,33 @@ public class MainPresenter {
         if (application != null) {
             try {
                 StatisticsManager.save(application.getName(), trackingService.getStatisticsForApp(application.getName()));
-            } catch (IOException e) {
+            } catch (IllegalStateException e) {
+                removeApplicationFromList(application);
+                return;
+            }
+            catch (IOException e) {
                 e.printStackTrace();
             }
             trackingService.stopAppMonitoring(application.getName());
-            loadedApplications.remove(application);
-            applicationList.setItems(FXCollections.observableList(loadedApplications));
-            ConfigManager.save(loadedApplications);
-            TimelineElement timelineElement = timelineElements.values().stream()
-                    .filter(element -> element.getName().equals(application.getName()))
-                    .findFirst()
-                    .orElseThrow(() -> new IllegalStateException("Cannot delete app which are not in list"));
-
-            timelineElements.remove(timelineElement);
-            appTimelineList.getChildren().remove(timelineElement);
+            removeApplicationFromList(application);
         }
+    }
+
+    private void removeApplicationFromList(Application application) {
+        loadedApplications.remove(application);
+        applicationList.setItems(FXCollections.observableList(loadedApplications));
+        try {
+            ConfigManager.save(loadedApplications);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        TimelineElement timelineElement = timelineElements.values().stream()
+                .filter(element -> element.getName().equals(application.getName()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Cannot delete app which are not in list"));
+
+        timelineElements.remove(timelineElement);
+        appTimelineList.getChildren().remove(timelineElement);
     }
 
     @FXML
