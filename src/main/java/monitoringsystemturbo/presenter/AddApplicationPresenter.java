@@ -14,13 +14,13 @@ public class AddApplicationPresenter {
 
     @FXML
     private Button addButton;
-    private Stage primaryStage;
     @FXML
     private TextField nameApplication;
     @FXML
     private TextField fullPathApplication;
-    private Application application = null;
 
+    private Stage primaryStage;
+    private Application application;
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -47,6 +47,7 @@ public class AddApplicationPresenter {
 
     }
 
+    @FXML
     public void onCancel() {
         primaryStage.close();
     }

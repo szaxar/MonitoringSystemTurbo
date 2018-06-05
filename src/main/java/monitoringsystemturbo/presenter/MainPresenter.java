@@ -39,6 +39,7 @@ public class MainPresenter {
     private VBox appTimelineList;
     @FXML
     private JFXDatePicker datePicker;
+
     private Integer currentDay;
 
     private TrackingService trackingService;
