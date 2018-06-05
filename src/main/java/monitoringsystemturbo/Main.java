@@ -1,27 +1,27 @@
 package monitoringsystemturbo;
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
-import javafx.stage.WindowEvent;
+import javafx.stage.Stage;
 import monitoringsystemturbo.config.ConfigManager;
 import monitoringsystemturbo.controller.ErrorController;
 import monitoringsystemturbo.controller.MainController;
-import javafx.stage.Stage;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.history.StatisticsManager;
 import monitoringsystemturbo.model.TrackingService;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main extends Application {
+    private static final String APPLICATION_NAME = "MonitoringSystemTurbo";
 
     private TrackingService trackingService;
     private MainExporter mainExporter;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("MonitoringSystemTurbo");
+        primaryStage.setTitle(APPLICATION_NAME);
 
         mainExporter = new MainExporter();
         trackingService = new TrackingService();
@@ -52,7 +52,7 @@ public class Main extends Application {
     }
 
     private void initializeAppsToMonitor(List<monitoringsystemturbo.model.app.Application> loadedApplications) {
-        for(monitoringsystemturbo.model.app.Application application : loadedApplications){
+        for (monitoringsystemturbo.model.app.Application application : loadedApplications) {
             trackingService.addAppToMonitor(application.getName());
         }
     }

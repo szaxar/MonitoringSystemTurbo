@@ -6,7 +6,6 @@ import monitoringsystemturbo.model.computer.ComputerStatistics;
 import monitoringsystemturbo.model.timeline.Timeline;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -17,9 +16,13 @@ import java.util.Map;
 public class MainExporter {
     private static final String REPORT = "report";
 
-    public void export(TrackingService trackingService, List<String> applicationsToExport) throws IOException {
-        Exporter exporter = new Exporter(REPORT);
+    private final Exporter exporter;
 
+    public MainExporter() {
+        exporter = new Exporter(REPORT);
+    }
+
+    public void export(TrackingService trackingService, List<String> applicationsToExport) throws IOException {
         addHistoricalComputerStatistics(exporter);
         addHistoricalAppStatistics(exporter, applicationsToExport);
         addCurrentStatistics(exporter, trackingService, applicationsToExport);
@@ -29,17 +32,16 @@ public class MainExporter {
     }
 
     public void export(TrackingService trackingService, List<String> applicationsToExport, LocalDateTime fromTime, LocalDateTime toTime) throws IOException {
-        Exporter exporter = new Exporter(REPORT);
-
         addHistoricalComputerStatistics(exporter);
         addHistoricalAppStatistics(exporter, applicationsToExport);
         addCurrentStatistics(exporter, trackingService, applicationsToExport);
+
         exporter.exportGeneralInfo(Date.from(fromTime.atZone(ZoneId.systemDefault()).toInstant()), Date.from(toTime.atZone(ZoneId.systemDefault()).toInstant()));
         exporter.exportDetailInfo(Date.from(fromTime.atZone(ZoneId.systemDefault()).toInstant()), Date.from(toTime.atZone(ZoneId.systemDefault()).toInstant()));
     }
 
 
-    private void addHistoricalComputerStatistics(Exporter exporter) throws IOException {
+    private void addHistoricalComputerStatistics(Exporter exporter) {
         for (ComputerStatistics statistics : StatisticsManager.loadComputerStats()) {
             exporter.addComputerStatistics(statistics);
         }

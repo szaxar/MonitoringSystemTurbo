@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConfigManager {
-	private static ObjectMapper mapper = new ObjectMapper();
+    private static ObjectMapper mapper = new ObjectMapper();
 
-	private ConfigManager() {};
+	private ConfigManager() {}
 
 	public static void save(List<Application> list) throws IOException {
 		mapper.writeValue(new File("config.json"), list);
@@ -24,7 +24,7 @@ public class ConfigManager {
 			List<Application> list = mapper.readValue(file, new TypeReference<List<Application>>() { });
 			return list;
 		}
-		return new ArrayList<Application>();
+		return new ArrayList<>();
 	}
 
 	public static void createFileIfNeeded(Application application) {
