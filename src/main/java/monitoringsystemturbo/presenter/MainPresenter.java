@@ -191,9 +191,11 @@ public class MainPresenter {
                         TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
                         //  timelineElement.addTimeLineModel(trackingService.getStatisticsForApp(application.getName()));
                         timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
-                        appTimelineList.getChildren().add(timelineElement);
-                        timelineElements.remove(application.getName());
+
+                        TimelineElement timelineElement1 = timelineElements.get(application.getName());
+                        appTimelineList.getChildren().remove(timelineElement1);
                         timelineElements.put(application.getName(), timelineElement);
+                        appTimelineList.getChildren().add(timelineElement);
                         timelineElement.showDay(currentDay);
                         return;
                     }
@@ -211,6 +213,7 @@ public class MainPresenter {
                 appTimelineList.getChildren().add(timelineElement);
                 timelineElements.put(application.getName(), timelineElement);
                 timelineElement.showDay(currentDay);
+
             }
         } catch (Exception e) {
             e.printStackTrace();
