@@ -181,9 +181,28 @@ public class MainPresenter {
     @FXML
     public void onAddActivity() {
         try {
-            applicationListController.showActivityView();
-        } catch (IOException e) {
+            Application application = applicationListController.showActivityView();
+            if (application != null) {
+                ConfigManager.createFileIfNeeded(application);
+                loadedApplications.add(application);
+                //trackingService.addAppToMonitor(application.getName());
+                applicationList.setItems(FXCollections.observableList(loadedApplications));
+                ConfigManager.save(loadedApplications);
+
+                List<Timeline> timelines = StatisticsManager.load(application.getName());
+                TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
+             //   timelineElement.addTimeLineModel(trackingService.getStatisticsForApp(application.getName()));
+                timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
+                appTimelineList.getChildren().add(timelineElement);
+                timelineElements.put(application.getName(), timelineElement);
+            }
+        } catch (Exception e) {
             e.printStackTrace();
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Error!");
+            errorAlert.setHeaderText(null);
+            errorAlert.setContentText("Error occurred while adding an activity.");
+            errorAlert.showAndWait();
         }
     }
 

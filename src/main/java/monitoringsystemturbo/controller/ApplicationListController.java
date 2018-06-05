@@ -15,7 +15,7 @@ public class ApplicationListController {
 
     private Stage primaryStage;
 
-    public ApplicationListController(Stage primaryStage) {
+    ApplicationListController(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
 
@@ -38,12 +38,11 @@ public class ApplicationListController {
         dialogStage.setScene(scene);
         dialogStage.showAndWait();
 
-        Application application = addApplicationPresenter.getApplication();
-        return application;
+        return addApplicationPresenter.getApplication();
 
     }
 
-    public void showActivityView() throws IOException {
+    public Application showActivityView() throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(this.getClass().getResource("/addActivity.fxml"));
         Parent rootLayout = loader.load();
@@ -60,7 +59,7 @@ public class ApplicationListController {
         dialogStage.setScene(scene);
         dialogStage.showAndWait();
 
-        Application appliation = addActivityPresenter.getActivity();
+        return addActivityPresenter.getActivity();
 
     }
 

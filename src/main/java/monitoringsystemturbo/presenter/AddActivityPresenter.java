@@ -46,7 +46,6 @@ public class AddActivityPresenter {
         toTimePicker.setValue(LocalTime.of(23, 59));
 
         setActivityNameTextListener();
-
     }
 
     private void setActivityNameTextListener() {
@@ -58,7 +57,7 @@ public class AddActivityPresenter {
 
     @FXML
     public void onAdd() {
-        application = new Application(activityName.getText(), "assasinsPath");
+        application = new Application(activityName.getText());
         primaryStage.close();
     }
 
