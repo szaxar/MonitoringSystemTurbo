@@ -43,16 +43,21 @@ public class AddApplicationPresenter {
 
     @FXML
     public void onAdd() {
-        String path = fullPathApplication.getText();
-        if (path.contains("\\") || path.contains("/")) {
+        if (isPathCorrect()) {
             application = new Application(nameApplication.getText(), fullPathApplication.getText());
             primaryStage.close();
         } else {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setHeaderText("Path Error");
-            errorAlert.setContentText("Path without slash is incorrect!");
+            errorAlert.setContentText("Incorrect path!");
             errorAlert.showAndWait();
         }
+    }
+
+    private boolean isPathCorrect() {
+        String path = fullPathApplication.getText();
+        File file = new File(path);
+        return file.exists() && path.endsWith(".exe");
     }
 
     @FXML

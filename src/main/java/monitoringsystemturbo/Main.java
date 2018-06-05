@@ -25,7 +25,7 @@ public class Main extends Application {
 
         mainExporter = new MainExporter();
         trackingService = new TrackingService();
-        List<monitoringsystemturbo.model.app.Application> loadedApplications = new ArrayList<>();
+        List<monitoringsystemturbo.model.app.Application> loadedApplications = null;
         try {
             loadedApplications = ConfigManager.load();
         } catch (IOException e) {
