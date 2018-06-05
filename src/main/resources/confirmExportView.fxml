@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.CheckBox?>
 <BorderPane xmlns="http://javafx.com/javafx/8.0.121"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="monitoringsystemturbo.presenter.ConfirmExportPresenter">
     <top>
@@ -16,11 +17,12 @@
     </top>
     <center>
         <VBox fx:id="checkBoxesContainer" alignment="CENTER_LEFT">
-            <Button mnemonicParsing="false" onAction="#onCheckChange" text="Check/Uncheck all">
+            <Button onAction="#onCheckChange" text="Check/Uncheck all">
                 <VBox.margin>
                     <Insets bottom="10.0"/>
                 </VBox.margin>
             </Button>
+            <CheckBox selected="true" disable="true" text="Computer Statistics"/>
             <BorderPane.margin>
                 <Insets bottom="5.0" left="10.0"/>
             </BorderPane.margin>
