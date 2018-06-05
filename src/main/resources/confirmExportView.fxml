@@ -16,6 +16,11 @@
     </top>
     <center>
         <VBox fx:id="checkBoxesContainer" alignment="CENTER_LEFT">
+            <Button mnemonicParsing="false" onAction="#onCheckChange" text="Check/Uncheck all">
+                <VBox.margin>
+                    <Insets bottom="10.0"/>
+                </VBox.margin>
+            </Button>
             <BorderPane.margin>
                 <Insets bottom="5.0" left="10.0"/>
             </BorderPane.margin>

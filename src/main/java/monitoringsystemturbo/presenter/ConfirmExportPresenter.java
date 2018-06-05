@@ -32,6 +32,11 @@ public class ConfirmExportPresenter {
         primaryStage.close();
     }
 
+    @FXML
+    public void onCheckChange() {
+        setCheckboxes();
+    }
+
     public void start() {
         initializeCheckBoxes(applicationsNames);
         for (CheckBox checkBox : checkBoxes) {
@@ -53,6 +58,22 @@ public class ConfirmExportPresenter {
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
+    }
+
+    private void setCheckboxes() {
+        boolean areAllCheckboxesSelected = areAllCheckboxesSelected();
+        for (CheckBox box : checkBoxes) {
+            box.setSelected(!areAllCheckboxesSelected);
+        }
+    }
+
+    private boolean areAllCheckboxesSelected() {
+        for (CheckBox box : checkBoxes) {
+            if (!box.isSelected()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private void initializeCheckBoxes(List<String> applicationNames) {
