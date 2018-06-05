@@ -182,7 +182,23 @@ public class MainPresenter {
     public void onAddActivity() {
         try {
             Application application = applicationListController.showActivityView();
+
             if (application != null) {
+
+                for(Application applicationFromList : loadedApplications){
+                    if(applicationFromList.getName().equals(application.getName())){
+                        List<Timeline> timelines = StatisticsManager.load(application.getName());
+                        TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
+                        //  timelineElement.addTimeLineModel(trackingService.getStatisticsForApp(application.getName()));
+                        timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
+                        appTimelineList.getChildren().add(timelineElement);
+                        timelineElements.remove(application.getName());
+                        timelineElements.put(application.getName(), timelineElement);
+                        timelineElement.showDay(currentDay);
+                        return;
+                    }
+                }
+
                 ConfigManager.createFileIfNeeded(application);
                 loadedApplications.add(application);
                 applicationList.setItems(FXCollections.observableList(loadedApplications));
@@ -194,8 +210,7 @@ public class MainPresenter {
                 timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
                 appTimelineList.getChildren().add(timelineElement);
                 timelineElements.put(application.getName(), timelineElement);
-                datePicker.setValue(LocalDate.ofEpochDay(currentDay));
-
+                timelineElement.showDay(currentDay);
             }
         } catch (Exception e) {
             e.printStackTrace();
