@@ -60,6 +60,8 @@ public class ApplicationListController {
         dialogStage.setScene(scene);
         dialogStage.showAndWait();
 
+        Application appliation = addActivityPresenter.getActivity();
+
     }
 
 }

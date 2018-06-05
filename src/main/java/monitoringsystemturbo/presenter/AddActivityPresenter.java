@@ -3,8 +3,10 @@ package monitoringsystemturbo.presenter;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTimePicker;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import monitoringsystemturbo.model.app.Application;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -26,21 +28,38 @@ public class AddActivityPresenter {
     @FXML
     private JFXTimePicker fromTimePicker;
 
+    @FXML
+    private TextField activityName;
 
     @FXML
-    private TextField name;
+    Button addButton;
+
+    private boolean isNameEmpty = true;
+
+    private Application application;
 
     @FXML
-    public void initialize(){
+    public void initialize() {
         fromDatePicker.setValue(LocalDate.now());
         toDatePicker.setValue(LocalDate.now());
-        fromTimePicker.setValue(LocalTime.of(0,0));
-        toTimePicker.setValue(LocalTime.of(23,59));
+        fromTimePicker.setValue(LocalTime.of(0, 0));
+        toTimePicker.setValue(LocalTime.of(23, 59));
+
+        setActivityNameTextListener();
+
     }
 
+    private void setActivityNameTextListener() {
+        activityName.textProperty().addListener((observable, oldValue, newValue) -> {
+            isNameEmpty = newValue.isEmpty();
+            addButton.setDisable(isNameEmpty);
+        });
+    }
 
+    @FXML
     public void onAdd() {
-
+        application = new Application(activityName.getText(), "assasinsPath");
+        primaryStage.close();
     }
 
     public void setPrimaryStage(Stage primaryStage) {
@@ -51,4 +70,7 @@ public class AddActivityPresenter {
         primaryStage.close();
     }
 
+    public Application getActivity() {
+        return application;
+    }
 }

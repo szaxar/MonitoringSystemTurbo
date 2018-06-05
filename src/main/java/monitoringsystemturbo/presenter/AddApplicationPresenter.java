@@ -30,7 +30,6 @@ public class AddApplicationPresenter {
     public void onAdd() {
         application = new Application(nameApplication.getText(), fullPathApplication.getText());
         primaryStage.close();
-
     }
 
     @FXML
@@ -44,7 +43,6 @@ public class AddApplicationPresenter {
             fullPathApplication.setText(selectedFile.getAbsolutePath());
             addButton.setDisable(false);
         }
-
     }
 
     public void onCancel() {
