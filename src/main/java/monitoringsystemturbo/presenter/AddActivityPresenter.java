@@ -10,7 +10,10 @@ import monitoringsystemturbo.model.app.Application;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.Date;
 
 public class AddActivityPresenter {
 
@@ -37,6 +40,8 @@ public class AddActivityPresenter {
     private boolean isNameEmpty = true;
 
     private Application application;
+    private Date fromDate;
+    private Date toDate;
 
     @FXML
     public void initialize() {
@@ -58,6 +63,10 @@ public class AddActivityPresenter {
     @FXML
     public void onAdd() {
         application = new Application(activityName.getText());
+        LocalDateTime fromTime = fromDatePicker.getValue().atTime(fromTimePicker.getValue().getHour(), fromTimePicker.getValue().getMinute());
+        LocalDateTime toTime = toDatePicker.getValue().atTime(toTimePicker.getValue().getHour(), toTimePicker.getValue().getMinute());
+        fromDate = Date.from(fromTime.atZone(ZoneId.systemDefault()).toInstant());
+        toDate = Date.from(toTime.atZone(ZoneId.systemDefault()).toInstant());
         primaryStage.close();
     }
 
@@ -71,5 +80,13 @@ public class AddActivityPresenter {
 
     public Application getActivity() {
         return application;
+    }
+
+    public Date getFromDate() {
+        return fromDate;
+    }
+
+    public Date getToDate() {
+        return toDate;
     }
 }

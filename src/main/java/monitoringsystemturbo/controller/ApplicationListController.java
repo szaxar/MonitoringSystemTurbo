@@ -10,6 +10,7 @@ import monitoringsystemturbo.presenter.AddActivityPresenter;
 import monitoringsystemturbo.presenter.AddApplicationPresenter;
 
 import java.io.IOException;
+import java.util.Date;
 
 public class ApplicationListController {
 
@@ -59,8 +60,12 @@ public class ApplicationListController {
         dialogStage.setScene(scene);
         dialogStage.showAndWait();
 
+        Date fromDate = addActivityPresenter.getFromDate();
+        Date toDate = addActivityPresenter.getToDate();
+
         return addActivityPresenter.getActivity();
 
     }
+
 
 }
