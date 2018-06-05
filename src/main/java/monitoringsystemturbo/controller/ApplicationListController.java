@@ -5,11 +5,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import monitoringsystemturbo.history.StatisticsManager;
 import monitoringsystemturbo.model.app.Application;
+import monitoringsystemturbo.model.timeline.Timeline;
 import monitoringsystemturbo.presenter.AddActivityPresenter;
 import monitoringsystemturbo.presenter.AddApplicationPresenter;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.util.Date;
 
 public class ApplicationListController {
@@ -62,8 +65,12 @@ public class ApplicationListController {
 
         Date fromDate = addActivityPresenter.getFromDate();
         Date toDate = addActivityPresenter.getToDate();
+        Application activity = addActivityPresenter.getActivity();
+        Timeline timeline = new Timeline(fromDate, toDate);
 
-        return addActivityPresenter.getActivity();
+        StatisticsManager.save(activity.getName(), timeline);
+
+        return activity;
 
     }
 
