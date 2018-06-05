@@ -66,9 +66,11 @@ public class ApplicationListController {
         Date fromDate = addActivityPresenter.getFromDate();
         Date toDate = addActivityPresenter.getToDate();
         Application activity = addActivityPresenter.getActivity();
-        Timeline timeline = new Timeline(fromDate, toDate);
-
-        StatisticsManager.save(activity.getName(), timeline);
+        if( fromDate!=null && toDate!=null) {
+            Timeline timeline = new Timeline(fromDate, toDate);
+            timeline.addPeriod(fromDate,toDate);
+            StatisticsManager.save(activity.getName(), timeline);
+        }
 
         return activity;
 

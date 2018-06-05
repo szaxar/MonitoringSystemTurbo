@@ -82,6 +82,10 @@ public class Timeline {
         lastPeriod.setDatetimeEnd(datetime);
     }
 
+    public void addPeriod(Date datetimeStart, Date datetimeEnd){
+        observablePeriodList.add(new ActivePeriod(datetimeStart,datetimeEnd));
+    }
+
     public Date getDatetimeStart() {
         return datetimeStart;
     }
