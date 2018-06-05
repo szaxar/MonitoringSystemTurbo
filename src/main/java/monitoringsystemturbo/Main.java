@@ -1,8 +1,7 @@
 package monitoringsystemturbo;
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
-import javafx.stage.WindowEvent;
+import monitoringsystemturbo.startup.Startup;
 import monitoringsystemturbo.config.ConfigManager;
 import monitoringsystemturbo.controller.ErrorController;
 import monitoringsystemturbo.controller.MainController;
@@ -22,6 +21,10 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("MonitoringSystemTurbo");
+
+        if (!Startup.isAppInStartup() && Startup.isAppJar()) {
+            Startup.addAppToStartup();
+        }
 
         mainExporter = new MainExporter();
         trackingService = new TrackingService();
