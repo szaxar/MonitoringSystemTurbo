@@ -188,11 +188,11 @@ public class MainPresenter {
                 for (Application applicationFromList : loadedApplications) {
                     if (applicationFromList.getName().equals(application.getName())) {
                         List<Timeline> timelines = StatisticsManager.load(application.getName());
-                        TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
-                        timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
+                        TimelineElement timelineElement = timelineElements.get(application.getName());
+                        appTimelineList.getChildren().remove(timelineElement);
 
-                        TimelineElement timelineElement1 = timelineElements.get(application.getName());
-                        appTimelineList.getChildren().remove(timelineElement1);
+                        timelineElement = new TimelineElement(application.getName(), timelines);
+                        timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
                         timelineElements.put(application.getName(), timelineElement);
                         appTimelineList.getChildren().add(timelineElement);
                         timelineElement.showDay(currentDay);
