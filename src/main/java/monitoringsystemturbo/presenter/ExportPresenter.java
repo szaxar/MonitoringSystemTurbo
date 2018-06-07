@@ -18,6 +18,8 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
+import static java.time.LocalDate.now;
+
 public class ExportPresenter {
 
     private Stage primaryStage;
@@ -40,9 +42,15 @@ public class ExportPresenter {
     private CheckBox allTimeCheckBox;
 
     @FXML
+    private CheckBox fromBeginCheckBox;
+
+    @FXML
+    private CheckBox toNowCheckBox;
+
+    @FXML
     public void initialize() {
-        fromDatePicker.setValue(LocalDate.now());
-        toDatePicker.setValue(LocalDate.now());
+        fromDatePicker.setValue(now());
+        toDatePicker.setValue(now());
         fromTimePicker.setValue(LocalTime.of(0, 0));
         toTimePicker.setValue(LocalTime.now());
     }
@@ -87,6 +95,69 @@ public class ExportPresenter {
             }
         }
     }
+
+
+    @FXML
+    public void onToNow() {
+        if (toNowCheckBox.isSelected()) {
+            toDatePicker.setValue(now());
+            toTimePicker.setValue(LocalTime.now());
+            toDatePicker.setEditable(false);
+            toTimePicker.setEditable(false);
+
+            allTimeCheckBox.setDisable(true);
+        } else {
+            toDatePicker.setEditable(true);
+            toTimePicker.setEditable(true);
+
+            if (!fromBeginCheckBox.isSelected()) allTimeCheckBox.setDisable(false);
+        }
+    }
+
+    @FXML
+    public void onFromBegin() {
+        if (fromBeginCheckBox.isSelected()) {
+            fromDatePicker.setValue(LocalDate.of(1970, 1, 1));
+            fromTimePicker.setValue(LocalTime.of(0, 0));
+            fromDatePicker.setEditable(false);
+            fromTimePicker.setEditable(false);
+
+            allTimeCheckBox.setDisable(true);
+        } else {
+            fromDatePicker.setEditable(true);
+            fromTimePicker.setEditable(true);
+
+            if (!toNowCheckBox.isSelected()) allTimeCheckBox.setDisable(false);
+        }
+    }
+
+    @FXML
+    public void onAllTime() {
+        if (allTimeCheckBox.isSelected()) {
+            fromDatePicker.setValue(LocalDate.of(1970, 1, 1));
+            fromTimePicker.setValue(LocalTime.of(0, 0));
+
+            fromBeginCheckBox.setDisable(true);
+            toNowCheckBox.setDisable(true);
+
+            toDatePicker.setValue(now());
+            toTimePicker.setValue(LocalTime.now());
+
+            toDatePicker.setEditable(false);
+            toTimePicker.setEditable(false);
+            fromDatePicker.setEditable(false);
+            fromTimePicker.setEditable(false);
+        } else {
+            toDatePicker.setEditable(true);
+            toTimePicker.setEditable(true);
+            fromDatePicker.setEditable(true);
+            fromTimePicker.setEditable(true);
+
+            fromBeginCheckBox.setDisable(false);
+            toNowCheckBox.setDisable(false);
+        }
+    }
+
 
     @FXML
     public void onCancel() {
