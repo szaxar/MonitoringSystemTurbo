@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.control.CheckBox?>
 <?import com.jfoenix.controls.JFXButton?>
-<BorderPane xmlns="http://javafx.com/javafx/8.0.121"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="monitoringsystemturbo.presenter.ConfirmExportPresenter">
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="monitoringsystemturbo.presenter.ConfirmExportPresenter">
     <top>
         <HBox alignment="CENTER">
-            <Label text="Choose programs to export"/>
+            <Label text="Choose programs to export" />
             <BorderPane.margin>
-                <Insets bottom="10.0" top="10.0"/>
+                <Insets bottom="10.0" top="10.0" />
             </BorderPane.margin>
         </HBox>
     </top>
@@ -20,30 +22,30 @@
         <VBox fx:id="checkBoxesContainer" alignment="CENTER_LEFT">
             <JFXButton onAction="#onCheckChange" text="Check/Uncheck all">
                 <VBox.margin>
-                    <Insets bottom="10.0"/>
+                    <Insets bottom="10.0" />
                 </VBox.margin>
             </JFXButton>
-            <CheckBox selected="true" disable="true" text="Computer Statistics"/>
+            <JFXCheckBox checkedColor="BLACK" disable="true" selected="true" text="Computer Statistics" />
             <BorderPane.margin>
-                <Insets bottom="5.0" left="10.0"/>
+                <Insets bottom="5.0" left="10.0" />
             </BorderPane.margin>
         </VBox>
     </center>
     <bottom>
         <HBox alignment="BOTTOM_LEFT" prefHeight="46.0">
-            <JFXButton mnemonicParsing="false" onAction="#onCancel" prefWidth="76.0" text="Cancel">
+            <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onCancel" prefWidth="76.0" ripplerFill="BLACK" text="Cancel">
                 <HBox.margin>
-                    <Insets bottom="5.0" left="5.0" top="5.0"/>
+                    <Insets bottom="5.0" left="5.0" top="5.0" />
                 </HBox.margin>
             </JFXButton>
-            <Region prefWidth="144.0" HBox.hgrow="ALWAYS"/>
-            <Button mnemonicParsing="false" onAction="#onConfirm" prefWidth="80.0" text="Confirm">
+            <Region prefWidth="144.0" HBox.hgrow="ALWAYS" />
+            <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onConfirm" prefWidth="80.0" ripplerFill="BLACK" text="Confirm">
                 <HBox.margin>
-                    <Insets bottom="5.0" right="5.0" top="5.0"/>
+                    <Insets bottom="5.0" right="5.0" top="5.0" />
                 </HBox.margin>
-            </Button>
+            </JFXButton>
             <BorderPane.margin>
-                <Insets bottom="5.0"/>
+                <Insets bottom="5.0" />
             </BorderPane.margin>
         </HBox>
     </bottom>
