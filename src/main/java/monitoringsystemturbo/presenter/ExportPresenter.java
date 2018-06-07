@@ -1,5 +1,6 @@
 package monitoringsystemturbo.presenter;
 
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTimePicker;
 import javafx.fxml.FXML;
@@ -39,13 +40,13 @@ public class ExportPresenter {
     private JFXTimePicker fromTimePicker;
 
     @FXML
-    private CheckBox allTimeCheckBox;
+    private JFXCheckBox allTimeCheckBox;
 
     @FXML
-    private CheckBox fromBeginCheckBox;
+    private JFXCheckBox fromBeginCheckBox;
 
     @FXML
-    private CheckBox toNowCheckBox;
+    private JFXCheckBox toNowCheckBox;
 
     @FXML
     public void initialize() {

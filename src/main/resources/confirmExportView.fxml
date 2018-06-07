@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.CheckBox?>
+<?import com.jfoenix.controls.JFXButton?>
 <BorderPane xmlns="http://javafx.com/javafx/8.0.121"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="monitoringsystemturbo.presenter.ConfirmExportPresenter">
     <top>
@@ -17,11 +18,11 @@
     </top>
     <center>
         <VBox fx:id="checkBoxesContainer" alignment="CENTER_LEFT">
-            <Button onAction="#onCheckChange" text="Check/Uncheck all">
+            <JFXButton onAction="#onCheckChange" text="Check/Uncheck all">
                 <VBox.margin>
                     <Insets bottom="10.0"/>
                 </VBox.margin>
-            </Button>
+            </JFXButton>
             <CheckBox selected="true" disable="true" text="Computer Statistics"/>
             <BorderPane.margin>
                 <Insets bottom="5.0" left="10.0"/>
@@ -30,11 +31,11 @@
     </center>
     <bottom>
         <HBox alignment="BOTTOM_LEFT" prefHeight="46.0">
-            <Button mnemonicParsing="false" onAction="#onCancel" prefWidth="76.0" text="Cancel">
+            <JFXButton mnemonicParsing="false" onAction="#onCancel" prefWidth="76.0" text="Cancel">
                 <HBox.margin>
                     <Insets bottom="5.0" left="5.0" top="5.0"/>
                 </HBox.margin>
-            </Button>
+            </JFXButton>
             <Region prefWidth="144.0" HBox.hgrow="ALWAYS"/>
             <Button mnemonicParsing="false" onAction="#onConfirm" prefWidth="80.0" text="Confirm">
                 <HBox.margin>
