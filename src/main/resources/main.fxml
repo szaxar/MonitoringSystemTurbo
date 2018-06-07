@@ -24,7 +24,7 @@
                         <Button mnemonicParsing="false" onAction="#onNextDay" text="&gt;" />
                      </children>
                   </HBox>
-                  <Button mnemonicParsing="false" onAction="#onExport" text="Eksportuj" />
+                  <Button mnemonicParsing="false" onAction="#onExport" text="Export" />
                </children>
             </HBox>
             <VBox alignment="TOP_RIGHT">
@@ -52,11 +52,11 @@
                <children>
                   <VBox HBox.hgrow="ALWAYS" spacing="5">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#onAddApplication" text="Dodaj" />
                         <Button mnemonicParsing="false" onAction="#onAddActivity" text="Aktywność" />
+                        <Button mnemonicParsing="false" onAction="#onAddApplication" text="Add" />
                      </children>
                   </VBox>
-                  <Button mnemonicParsing="false" onAction="#onRemoveApplication" text="Usuń">
+                  <Button mnemonicParsing="false" onAction="#onRemoveApplication" text="Delete">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
