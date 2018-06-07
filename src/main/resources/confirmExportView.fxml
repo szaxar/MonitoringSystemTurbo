@@ -33,13 +33,13 @@
     </center>
     <bottom>
         <HBox alignment="BOTTOM_LEFT" prefHeight="46.0">
-            <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onCancel" prefWidth="76.0" ripplerFill="BLACK" text="Cancel">
+            <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onCancel" prefWidth="76.0" ripplerFill="RED" style="-fx-background-color: #000000;" textFill="WHITE" text="Cancel">
                 <HBox.margin>
                     <Insets bottom="5.0" left="5.0" top="5.0" />
                 </HBox.margin>
             </JFXButton>
             <Region prefWidth="144.0" HBox.hgrow="ALWAYS" />
-            <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onConfirm" prefWidth="80.0" ripplerFill="BLACK" text="Confirm">
+            <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onConfirm" prefWidth="80.0" ripplerFill="RED" style="-fx-background-color: #000000;" textFill="WHITE" text="Confirm">
                 <HBox.margin>
                     <Insets bottom="5.0" right="5.0" top="5.0" />
                 </HBox.margin>
