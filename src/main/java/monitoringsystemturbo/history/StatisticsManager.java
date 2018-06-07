@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +32,14 @@ public class StatisticsManager {
         objectMapper.writeValue(writer, computerStatistics);
     }
 
-    public static List<ComputerStatistics> loadComputerStats() throws IOException {
+    public static List<ComputerStatistics> loadComputerStats() {
         ArrayList<ComputerStatistics> computerStatisticsList = new ArrayList<>();
-        Stream<String> stream = Files.lines(Paths.get(computerStatisticsFilename));
+        Stream<String> stream = null;
+        try {
+            stream = Files.lines(Paths.get(computerStatisticsFilename));
+        } catch (IOException e) {
+            return new ArrayList<>();
+        }
         stream.forEach((String computerStatisticsJsonString) -> {
             if (computerStatisticsJsonString.length() == 0) {
                 return;

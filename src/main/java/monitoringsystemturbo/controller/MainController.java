@@ -8,6 +8,7 @@ import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.model.TrackingService;
 import monitoringsystemturbo.model.app.Application;
 import monitoringsystemturbo.presenter.MainPresenter;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -28,15 +29,17 @@ public class MainController {
         loader.setLocation(this.getClass().getResource("/main.fxml"));
         Parent rootLayout = loader.load();
 
-        MainPresenter mainPresenter=loader.getController();
+        MainPresenter mainPresenter = loader.getController();
         mainPresenter.initialize(trackingService, mainExporter, loadedApplications);
 
-        ApplicationListController applicationListController =new ApplicationListController(primaryStage);
+        ApplicationListController applicationListController = new ApplicationListController(primaryStage);
         mainPresenter.setApplicationListController(applicationListController);
+
+        ExportController exportController = new ExportController(primaryStage);
+        mainPresenter.setExportController(exportController);
 
         primaryStage.setScene(new Scene(rootLayout));
         primaryStage.show();
     }
-
 
 }

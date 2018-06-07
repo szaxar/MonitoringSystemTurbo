@@ -13,6 +13,7 @@ public class ComputerMonitor extends Thread {
     @Override
     public void run() {
         while (isRunning) {
+
             try {
                 Thread.sleep(200);
             } catch (InterruptedException e) {

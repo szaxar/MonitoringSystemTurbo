@@ -20,7 +20,7 @@ public class ApplicationListController {
 
     public Application showAddView() throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(this.getClass().getResource("/addView.fxml"));
+        loader.setLocation(this.getClass().getResource("/addApplicationView.fxml"));
         Parent rootLayout = loader.load();
 
         AddApplicationPresenter addApplicationPresenter;
