@@ -43,7 +43,7 @@ public class Startup {
     }
 
     private static String getShortcutContent() {
-        return startJarTask + " " + getAppJarPath();
+        return startJarTask + " \"" + getAppJarPath() + "\"";
     }
 
     private static String getAppJarPath() {
