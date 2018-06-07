@@ -50,8 +50,9 @@
             <ListView fx:id="applicationList" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
             <HBox>
                <children>
-                  <VBox HBox.hgrow="ALWAYS">
+                  <VBox HBox.hgrow="ALWAYS" spacing="5">
                      <children>
+                        <Button mnemonicParsing="false" onAction="#onAddActivity" text="Aktywność" />
                         <Button mnemonicParsing="false" onAction="#onAddApplication" text="Add" />
                      </children>
                   </VBox>
