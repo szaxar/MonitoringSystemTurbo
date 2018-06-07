@@ -17,7 +17,11 @@ public class Startup {
     }
 
     public static boolean isAppJar() {
-        return Paths.get(System.getProperty("java.class.path")).toFile().exists();
+        try {
+            return Paths.get(System.getProperty("java.class.path")).toFile().exists();
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public static void addAppToStartup() {
