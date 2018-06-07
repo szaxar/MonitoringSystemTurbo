@@ -21,6 +21,11 @@ public class Application {
         this.fullPath = fullPath;
     }
 
+    public Application(String name) {
+        this.name = name;
+        this.fullPath = "";
+    }
+
     public String getName() {
         return this.name;
     }
@@ -30,6 +35,9 @@ public class Application {
     }
 
     public Icon findIcon() {
+        if (fullPath.equals("")) {
+            return UIManager.getIcon("FileView.directoryIcon");
+        }
         File file = new File(this.fullPath);
         ShellFolder sf = null;
         try {
@@ -39,5 +47,6 @@ public class Application {
         }
         return (new ImageIcon(sf.getIcon(true)));
     }
+
 
 }

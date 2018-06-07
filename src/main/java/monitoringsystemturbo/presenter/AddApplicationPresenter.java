@@ -73,7 +73,6 @@ public class AddApplicationPresenter {
             fullPathApplication.setText(selectedFile.getAbsolutePath());
             addButton.setDisable(false);
         }
-
     }
 
     @FXML

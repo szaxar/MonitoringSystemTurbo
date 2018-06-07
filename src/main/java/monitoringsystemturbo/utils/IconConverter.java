@@ -18,7 +18,8 @@ public class IconConverter {
     public static Image iconToImage(Icon icon) {
         if (icon instanceof ImageIcon) {
             return ((ImageIcon) icon).getImage();
-        } else {
+        }
+        else {
             int iconWidth = icon.getIconWidth();
             int iconHeight = icon.getIconHeight();
             GraphicsEnvironment graphicsEnvironment =
