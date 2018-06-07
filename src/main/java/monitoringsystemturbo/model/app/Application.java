@@ -5,7 +5,7 @@ import sun.awt.shell.ShellFolder;
 import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.util.Objects;
 
 public class Application {
     private String name;
@@ -48,5 +48,17 @@ public class Application {
         return (new ImageIcon(sf.getIcon(true)));
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Application that = (Application) o;
+        return Objects.equals(name, that.name) &&
+                Objects.equals(fullPath, that.fullPath);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, fullPath);
+    }
 }

@@ -23,7 +23,10 @@ import monitoringsystemturbo.presenter.timeline.TimelineElement;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static monitoringsystemturbo.utils.IconConverter.iconToFxImage;
 
@@ -81,12 +84,6 @@ public class MainPresenter {
             if (allApplicationsStatistics.get(appname) != null) {
                 timelineElement.addTimeLineModel(allApplicationsStatistics.get(appname));
             }
-        }
-    }
-
-    private void initializeAppsToMonitor() {
-        for (Application application : loadedApplications) {
-            trackingService.addAppToMonitor(application.getName());
         }
     }
 
@@ -155,13 +152,20 @@ public class MainPresenter {
         try {
             Application application = applicationListController.showAddView();
             if (application != null) {
+                if (loadedApplications.contains(application)) {
+                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                    errorAlert.setTitle("Error!");
+                    errorAlert.setHeaderText(null);
+                    errorAlert.setContentText("Application already exist");
+                    errorAlert.showAndWait();
+                    return;
+                }
                 ConfigManager.createFileIfNeeded(application);
                 loadedApplications.add(application);
+                ConfigManager.save(loadedApplications);
                 trackingService.addAppToMonitor(application.getName());
 
                 applicationList.setItems(FXCollections.observableList(loadedApplications));
-
-                ConfigManager.save(loadedApplications);
 
                 List<Timeline> timelines = StatisticsManager.load(application.getName());
                 TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);

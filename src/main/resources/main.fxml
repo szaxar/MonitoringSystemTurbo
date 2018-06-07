@@ -52,8 +52,8 @@
                <children>
                   <VBox HBox.hgrow="ALWAYS" spacing="5">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#onAddActivity" text="Aktywność" />
-                        <Button mnemonicParsing="false" onAction="#onAddApplication" text="Add" />
+                        <Button mnemonicParsing="false" onAction="#onAddApplication" text="Add app" />
+                        <Button mnemonicParsing="false" onAction="#onAddActivity" text="Add activity" />
                      </children>
                   </VBox>
                   <Button mnemonicParsing="false" onAction="#onRemoveApplication" text="Delete">
