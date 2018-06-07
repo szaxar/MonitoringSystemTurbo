@@ -35,7 +35,7 @@ public class AddActivityPresenter {
     private TextField activityName;
 
     @FXML
-    Button addButton;
+    private Button addButton;
 
     private boolean isNameEmpty = true;
 
@@ -74,6 +74,7 @@ public class AddActivityPresenter {
         this.primaryStage = primaryStage;
     }
 
+    @FXML
     public void onCancel() {
         primaryStage.close();
     }

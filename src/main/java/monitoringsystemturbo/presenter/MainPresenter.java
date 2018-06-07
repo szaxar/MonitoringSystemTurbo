@@ -101,7 +101,7 @@ public class MainPresenter {
         try {
             List<ComputerStatistics> computerStatistics = StatisticsManager.loadComputerStats();
             Timeline timeline;
-            if(computerStatistics.isEmpty()){
+            if (computerStatistics.isEmpty()) {
                 timeline = new Timeline();
             } else {
                 timeline = new Timeline(computerStatistics);
@@ -185,11 +185,10 @@ public class MainPresenter {
 
             if (application != null) {
 
-                for(Application applicationFromList : loadedApplications){
-                    if(applicationFromList.getName().equals(application.getName())){
+                for (Application applicationFromList : loadedApplications) {
+                    if (applicationFromList.getName().equals(application.getName())) {
                         List<Timeline> timelines = StatisticsManager.load(application.getName());
                         TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
-                        //  timelineElement.addTimeLineModel(trackingService.getStatisticsForApp(application.getName()));
                         timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
 
                         TimelineElement timelineElement1 = timelineElements.get(application.getName());
@@ -208,7 +207,6 @@ public class MainPresenter {
 
                 List<Timeline> timelines = StatisticsManager.load(application.getName());
                 TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
-              //  timelineElement.addTimeLineModel(trackingService.getStatisticsForApp(application.getName()));
                 timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
                 appTimelineList.getChildren().add(timelineElement);
                 timelineElements.put(application.getName(), timelineElement);
@@ -234,8 +232,7 @@ public class MainPresenter {
             } catch (IllegalStateException e) {
                 removeApplicationFromList(application);
                 return;
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
             trackingService.stopAppMonitoring(application.getName());
@@ -263,7 +260,7 @@ public class MainPresenter {
     @FXML
     public void onExport() {
         try {
-            exportController.showExportView(mainExporter,trackingService);
+            exportController.showExportView(mainExporter, trackingService);
         } catch (IOException e) {
             e.printStackTrace();
         }

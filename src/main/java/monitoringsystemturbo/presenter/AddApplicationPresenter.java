@@ -1,6 +1,7 @@
 package monitoringsystemturbo.presenter;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
@@ -28,8 +29,21 @@ public class AddApplicationPresenter {
 
     @FXML
     public void onAdd() {
-        application = new Application(nameApplication.getText(), fullPathApplication.getText());
-        primaryStage.close();
+        if (isPathCorrect()) {
+            application = new Application(nameApplication.getText(), fullPathApplication.getText());
+            primaryStage.close();
+        } else {
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setHeaderText("Path Error");
+            errorAlert.setContentText("Incorrect path!");
+            errorAlert.showAndWait();
+        }
+    }
+
+    private boolean isPathCorrect() {
+        String path = fullPathApplication.getText();
+        File file = new File(path);
+        return file.exists() && path.endsWith(".exe");
     }
 
     @FXML

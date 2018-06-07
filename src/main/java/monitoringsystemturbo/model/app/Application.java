@@ -35,7 +35,7 @@ public class Application {
     }
 
     public Icon findIcon() {
-        if(fullPath.equals("")){
+        if (fullPath.equals("")) {
             return UIManager.getIcon("FileView.directoryIcon");
         }
         File file = new File(this.fullPath);
@@ -43,11 +43,10 @@ public class Application {
         try {
             sf = ShellFolder.getShellFolder(file);
         } catch (FileNotFoundException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
         }
         return (new ImageIcon(sf.getIcon(true)));
     }
-
 
 
 }
