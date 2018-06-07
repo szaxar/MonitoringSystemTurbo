@@ -39,7 +39,7 @@ public class ConfirmExportController {
         dialogStage.setScene(scene);
         dialogStage.showAndWait();
 
-        return confirmExportPresenter.getApplicationsToExport();
+        return confirmExportPresenter.getSelectedApplications();
     }
 
     public boolean getCancelValue() {

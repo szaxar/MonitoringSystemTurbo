@@ -17,7 +17,7 @@ public class ConfirmExportPresenter {
     private List<String> applicationsNames;
 
     private List<CheckBox> checkBoxes = new ArrayList<>();
-    private List<String> applicationsToExport = new ArrayList<>();
+    private List<String> selectedApplications = new ArrayList<>();
     private boolean cancelled = true;
 
     @FXML
@@ -44,8 +44,8 @@ public class ConfirmExportPresenter {
         }
     }
 
-    public List<String> getApplicationsToExport() {
-        return applicationsToExport;
+    public List<String> getSelectedApplications() {
+        return selectedApplications;
     }
 
     public boolean wasCancelled() {
@@ -87,7 +87,7 @@ public class ConfirmExportPresenter {
     private void setSelectedApplications(List<CheckBox> checkBoxes) {
         for (CheckBox box : checkBoxes)
             if (box.isSelected()) {
-                applicationsToExport.add(box.getText());
+                selectedApplications.add(box.getText());
             }
     }
 }
