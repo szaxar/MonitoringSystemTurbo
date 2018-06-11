@@ -39,7 +39,7 @@ public class ExportPresenter {
     private JFXTimePicker fromTimePicker;
 
     @FXML
-    private CheckBox allTimeCheckBox;
+    private CheckBox wholeRangeCheckBox;
 
     @FXML
     private CheckBox fromBeginCheckBox;
@@ -74,7 +74,7 @@ public class ExportPresenter {
             try {
                 List<String> applicationsToExport = confirmExportController.showConfirmationAndGetAppList(trackingService.getApplicationsNames());
                 if (!confirmExportController.getCancelValue()) {
-                    if (allTimeCheckBox.isSelected()) {
+                    if (wholeRangeCheckBox.isSelected()) {
                         mainExporter.export(trackingService, applicationsToExport);
                     } else {
                         mainExporter.export(trackingService, applicationsToExport, fromTime, toTime);
@@ -105,12 +105,12 @@ public class ExportPresenter {
             toDatePicker.setEditable(false);
             toTimePicker.setEditable(false);
 
-            allTimeCheckBox.setDisable(true);
+            wholeRangeCheckBox.setDisable(true);
         } else {
             toDatePicker.setEditable(true);
             toTimePicker.setEditable(true);
 
-            if (!fromBeginCheckBox.isSelected()) allTimeCheckBox.setDisable(false);
+            if (!fromBeginCheckBox.isSelected()) wholeRangeCheckBox.setDisable(false);
         }
     }
 
@@ -122,18 +122,18 @@ public class ExportPresenter {
             fromDatePicker.setEditable(false);
             fromTimePicker.setEditable(false);
 
-            allTimeCheckBox.setDisable(true);
+            wholeRangeCheckBox.setDisable(true);
         } else {
             fromDatePicker.setEditable(true);
             fromTimePicker.setEditable(true);
 
-            if (!toNowCheckBox.isSelected()) allTimeCheckBox.setDisable(false);
+            if (!toNowCheckBox.isSelected()) wholeRangeCheckBox.setDisable(false);
         }
     }
 
     @FXML
-    public void onAllTime() {
-        if (allTimeCheckBox.isSelected()) {
+    public void onWholeRange() {
+        if (wholeRangeCheckBox.isSelected()) {
             fromDatePicker.setValue(LocalDate.of(1970, 1, 1));
             fromTimePicker.setValue(LocalTime.of(0, 0));
 
