@@ -1,3 +1,10 @@
+.root{
+    text-collor: white;
+    controller-color: black;
+    background-collor: white;
+    rippler-collor: red;
+}
+
 .scroll-pane:focused {
     -fx-background-color: -fx-box-border, -fx-control-inner-background;
     -fx-background-insets: 0, 1;
@@ -6,4 +13,34 @@
 
 .scroll-pane {
     -fx-box-border: transparent;
+}
+
+.jfx-date-picker{
+    -jfx-default-color:controller-color;
+}
+
+.jfx-time-picker{
+    -jfx-default-color:controller-color;
+}
+
+.jfx-check-box{
+    -jfx-checked-color:controller-color;
+}
+
+
+.jfx-button {
+    -fx-background-color: controller-color;
+    -fx-text-fill: text-collor;
+}
+
+.jfx-button .jfx-rippler{
+    -jfx-rippler-fill:rippler-collor;
+}
+
+#borderPane {
+    -fx-background-color: background-collor ;
+}
+
+#anchorPane {
+    -fx-background-color: background-collor ;
 }

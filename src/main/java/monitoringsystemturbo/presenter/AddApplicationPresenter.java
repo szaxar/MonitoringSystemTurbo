@@ -4,8 +4,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import monitoringsystemturbo.controller.AlertController;
 import monitoringsystemturbo.model.app.Application;
 import org.apache.commons.io.FilenameUtils;
 
@@ -19,6 +21,8 @@ public class AddApplicationPresenter {
     private TextField nameApplication;
     @FXML
     private TextField fullPathApplication;
+    @FXML
+    private BorderPane borderPane;
 
     private Stage primaryStage;
     private Application application;
@@ -39,6 +43,7 @@ public class AddApplicationPresenter {
             isPathEmpty = newValue.isEmpty();
             resolveButtonStatus();
         });
+        reflesh();
     }
 
     @FXML
@@ -47,10 +52,7 @@ public class AddApplicationPresenter {
             application = new Application(nameApplication.getText(), fullPathApplication.getText());
             primaryStage.close();
         } else {
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setHeaderText("Path Error");
-            errorAlert.setContentText("Incorrect path!");
-            errorAlert.showAndWait();
+            AlertController.showAlert("Incorrect path!", Alert.AlertType.ERROR);
         }
     }
 
@@ -86,5 +88,12 @@ public class AddApplicationPresenter {
 
     private void resolveButtonStatus() {
         addButton.setDisable(isNameEmpty || isPathEmpty);
+    }
+
+    public void reflesh() {
+        borderPane.setStyle("text-collor: #" + MotivesPresenter.textCollor.toString().substring(2, 8) + ";" +
+                "controller-color: #" + MotivesPresenter.controllerColor.toString().substring(2, 8) + ";" +
+                "background-collor: #" + MotivesPresenter.backgroundColor.toString().substring(2, 8) + ";" +
+                "rippler-collor: #" + MotivesPresenter.ripplerColor.toString().substring(2, 8) + ";");
     }
 }

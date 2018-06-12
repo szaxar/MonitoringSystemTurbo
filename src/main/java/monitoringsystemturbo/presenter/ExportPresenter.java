@@ -1,12 +1,14 @@
 package monitoringsystemturbo.presenter;
 
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTimePicker;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.CheckBox;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import monitoringsystemturbo.controller.ConfirmExportController;
+import monitoringsystemturbo.controller.AlertController;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.model.TrackingService;
 
@@ -25,6 +27,9 @@ public class ExportPresenter {
     private Stage primaryStage;
     private MainExporter mainExporter;
     private TrackingService trackingService;
+    private List<String> applicationsToExport;
+    private LocalDateTime fromTime;
+    private LocalDateTime toTime;
 
     @FXML
     private JFXDatePicker fromDatePicker;
@@ -39,13 +44,16 @@ public class ExportPresenter {
     private JFXTimePicker fromTimePicker;
 
     @FXML
-    private CheckBox allTimeCheckBox;
+    private JFXCheckBox wholeRangeCheckBox;
 
     @FXML
-    private CheckBox fromBeginCheckBox;
+    private JFXCheckBox fromBeggingCheckBox;
 
     @FXML
-    private CheckBox toNowCheckBox;
+    private JFXCheckBox untilNowCheckBox;
+
+    @FXML
+    private AnchorPane anchorPane;
 
     @FXML
     public void initialize() {
@@ -57,107 +65,85 @@ public class ExportPresenter {
 
     @FXML
     public void onConfirm() {
-        LocalDateTime fromTime = fromDatePicker.getValue().atTime(fromTimePicker.getValue().getHour(), fromTimePicker.getValue().getMinute());
-        LocalDateTime toTime = toDatePicker.getValue().atTime(toTimePicker.getValue().getHour(), toTimePicker.getValue().getMinute());
+        fromTime = fromDatePicker.getValue().atTime(fromTimePicker.getValue().getHour(), fromTimePicker.getValue().getMinute());
+        toTime = toDatePicker.getValue().atTime(toTimePicker.getValue().getHour(), toTimePicker.getValue().getMinute());
 
         Date dateStart = Date.from(fromTime.atZone(ZoneId.systemDefault()).toInstant());
         Date dateEnd = Date.from(toTime.atZone(ZoneId.systemDefault()).toInstant());
 
         if (dateStart.after(dateEnd)) {
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setTitle("Error!");
-            errorAlert.setHeaderText(null);
-            errorAlert.setContentText("Error occurred while checking date.");
-            errorAlert.showAndWait();
+            AlertController.showAlert("Error occurred while checking date.", Alert.AlertType.ERROR);
         } else {
             ConfirmExportController confirmExportController = new ConfirmExportController(primaryStage);
             try {
-                List<String> applicationsToExport = confirmExportController.showConfirmationAndGetAppList(trackingService.getApplicationsNames());
+                applicationsToExport = confirmExportController.showConfirmationAndGetAppList(trackingService.getApplicationsNames());
                 if (!confirmExportController.getCancelValue()) {
-                    if (allTimeCheckBox.isSelected()) {
-                        mainExporter.export(trackingService, applicationsToExport);
-                    } else {
-                        mainExporter.export(trackingService, applicationsToExport, fromTime, toTime);
-                    }
-                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                    successAlert.setTitle("Success!");
-                    successAlert.setHeaderText(null);
-                    successAlert.setContentText("Data exported successfully! ");
-                    successAlert.showAndWait();
+                    export();
+                    AlertController.showAlert("Data exported successfully!", Alert.AlertType.INFORMATION);
                     primaryStage.close();
                 }
             } catch (IOException e) {
-                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                errorAlert.setTitle("Error!");
-                errorAlert.setHeaderText(null);
-                errorAlert.setContentText("Error occurred while exporting data.");
-                errorAlert.showAndWait();
+                AlertController.showAlert("Error occurred while exporting data.", Alert.AlertType.ERROR);
             }
+        }
+    }
+
+
+    public void export() throws IOException {
+        if (wholeRangeCheckBox.isSelected()) {
+            mainExporter.export(trackingService, applicationsToExport);
+        } else {
+            mainExporter.export(trackingService, applicationsToExport, fromTime, toTime);
         }
     }
 
 
     @FXML
     public void onToNow() {
-        if (toNowCheckBox.isSelected()) {
-            toDatePicker.setValue(now());
+        if (untilNowCheckBox.isSelected()) {
+            toDatePicker.setValue(now().plusYears(1));
             toTimePicker.setValue(LocalTime.now());
-            toDatePicker.setEditable(false);
-            toTimePicker.setEditable(false);
-
-            allTimeCheckBox.setDisable(true);
+            setDisableForToPickers(true);
+            wholeRangeCheckBox.setDisable(true);
         } else {
-            toDatePicker.setEditable(true);
-            toTimePicker.setEditable(true);
-
-            if (!fromBeginCheckBox.isSelected()) allTimeCheckBox.setDisable(false);
+            setDisableForToPickers(false);
+            if (!fromBeggingCheckBox.isSelected()) wholeRangeCheckBox.setDisable(false);
         }
     }
 
     @FXML
     public void onFromBegin() {
-        if (fromBeginCheckBox.isSelected()) {
+        if (fromBeggingCheckBox.isSelected()) {
             fromDatePicker.setValue(LocalDate.of(1970, 1, 1));
             fromTimePicker.setValue(LocalTime.of(0, 0));
-            fromDatePicker.setEditable(false);
-            fromTimePicker.setEditable(false);
-
-            allTimeCheckBox.setDisable(true);
+            setDisableToFromPickers(true);
+            wholeRangeCheckBox.setDisable(true);
         } else {
-            fromDatePicker.setEditable(true);
-            fromTimePicker.setEditable(true);
-
-            if (!toNowCheckBox.isSelected()) allTimeCheckBox.setDisable(false);
+            setDisableToFromPickers(false);
+            if (!untilNowCheckBox.isSelected()) wholeRangeCheckBox.setDisable(false);
         }
     }
 
     @FXML
-    public void onAllTime() {
-        if (allTimeCheckBox.isSelected()) {
+    public void onWholeRange() {
+        if (wholeRangeCheckBox.isSelected()) {
             fromDatePicker.setValue(LocalDate.of(1970, 1, 1));
             fromTimePicker.setValue(LocalTime.of(0, 0));
 
-            fromBeginCheckBox.setDisable(true);
-            toNowCheckBox.setDisable(true);
+            fromBeggingCheckBox.setDisable(true);
+            untilNowCheckBox.setDisable(true);
 
-            toDatePicker.setValue(now());
+            toDatePicker.setValue(now().plusYears(1));
             toTimePicker.setValue(LocalTime.now());
 
-            toDatePicker.setEditable(false);
-            toTimePicker.setEditable(false);
-            fromDatePicker.setEditable(false);
-            fromTimePicker.setEditable(false);
+            setDisableToAllPickers(true);
         } else {
-            toDatePicker.setEditable(true);
-            toTimePicker.setEditable(true);
-            fromDatePicker.setEditable(true);
-            fromTimePicker.setEditable(true);
+            setDisableToAllPickers(false);
 
-            fromBeginCheckBox.setDisable(false);
-            toNowCheckBox.setDisable(false);
+            fromBeggingCheckBox.setDisable(false);
+            untilNowCheckBox.setDisable(false);
         }
     }
-
 
     @FXML
     public void onCancel() {
@@ -174,5 +160,29 @@ public class ExportPresenter {
 
     public void setTrackingService(TrackingService trackingService) {
         this.trackingService = trackingService;
+    }
+
+    public void setDisableToAllPickers(boolean isDisable) {
+        toDatePicker.setDisable(isDisable);
+        toTimePicker.setDisable(isDisable);
+        fromDatePicker.setDisable(isDisable);
+        fromTimePicker.setDisable(isDisable);
+    }
+
+    public void setDisableForToPickers(boolean isDisable) {
+        toDatePicker.setDisable(isDisable);
+        toTimePicker.setDisable(isDisable);
+    }
+
+    public void setDisableToFromPickers(boolean isDisable) {
+        fromDatePicker.setDisable(isDisable);
+        fromTimePicker.setDisable(isDisable);
+    }
+
+    public void reflesh() {
+        anchorPane.setStyle("text-collor: #" + MotivesPresenter.textCollor.toString().substring(2, 8) + ";" +
+                "controller-color: #" + MotivesPresenter.controllerColor.toString().substring(2, 8) + ";" +
+                "background-collor: #" + MotivesPresenter.backgroundColor.toString().substring(2, 8) + ";" +
+                "rippler-collor: #" + MotivesPresenter.ripplerColor.toString().substring(2, 8) + ";");
     }
 }

@@ -33,6 +33,7 @@ public class ConfirmExportController {
         confirmExportPresenter = loader.getController();
         confirmExportPresenter.setPrimaryStage(dialogStage);
         confirmExportPresenter.setApplicationsNames(applications);
+        confirmExportPresenter.reflesh();
         confirmExportPresenter.start();
 
         Scene scene = new Scene(rootLayout);

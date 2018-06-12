@@ -5,10 +5,10 @@ import com.jfoenix.controls.JFXTimePicker;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import monitoringsystemturbo.model.app.Application;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -37,6 +37,9 @@ public class AddActivityPresenter {
     @FXML
     private Button addButton;
 
+    @FXML
+    private AnchorPane anchorPane;
+
     private boolean isNameEmpty = true;
 
     private Application application;
@@ -49,7 +52,7 @@ public class AddActivityPresenter {
         toDatePicker.setValue(LocalDate.now());
         fromTimePicker.setValue(LocalTime.of(0, 0));
         toTimePicker.setValue(LocalTime.of(23, 59));
-
+        reflesh();
         setActivityNameTextListener();
     }
 
@@ -89,5 +92,12 @@ public class AddActivityPresenter {
 
     public Date getToDate() {
         return toDate;
+    }
+
+    public void reflesh() {
+        anchorPane.setStyle("text-collor: #" + MotivesPresenter.textCollor.toString().substring(2, 8) + ";" +
+                "controller-color: #" + MotivesPresenter.controllerColor.toString().substring(2, 8) + ";" +
+                "background-collor: #" + MotivesPresenter.backgroundColor.toString().substring(2, 8) + ";" +
+                "rippler-collor: #" + MotivesPresenter.ripplerColor.toString().substring(2, 8) + ";");
     }
 }
