@@ -2,11 +2,16 @@ package monitoringsystemturbo.config;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import monitoringsystemturbo.controller.ErrorController;
+import monitoringsystemturbo.history.StatisticsManager;
 import monitoringsystemturbo.model.app.Application;
+import monitoringsystemturbo.model.timeline.Timeline;
+import monitoringsystemturbo.presenter.timeline.TimelineElement;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class ConfigManager {
@@ -24,9 +29,30 @@ public class ConfigManager {
         if (file.exists()) {
             List<Application> list = mapper.readValue(file, new TypeReference<List<Application>>() {
             });
+            checkApplicationList(list);
             return list;
         }
         return new ArrayList<>();
+    }
+
+    public static void checkApplicationList(List<Application> loadedApplications) {
+        boolean allExists = true;
+        Iterator<Application> iter = loadedApplications.iterator();
+
+        while (iter.hasNext()) {
+            Application application = iter.next();
+            String fullPath = application.getFullPath();
+            if (!fullPath.equals("")) {
+                File file = new File(fullPath);
+                if (!file.exists()) {
+                    iter.remove();
+                    allExists = false;
+                }
+            }
+        }
+        if (!allExists) {
+            ErrorController.showError("Some applications were uninstalled");
+        }
     }
 
     public static void createFileIfNeeded(Application application) throws IOException {
