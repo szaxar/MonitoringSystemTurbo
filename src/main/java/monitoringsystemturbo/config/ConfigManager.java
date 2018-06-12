@@ -27,6 +27,7 @@ public class ConfigManager {
             List<Application> list = mapper.readValue(file, new TypeReference<List<Application>>() {
             });
             if(!checkApplicationList(list)) {
+                ErrorController.showError("Some applications were not found and will be removed form list.");
                 save(list);
             }
             return list;
@@ -49,9 +50,7 @@ public class ConfigManager {
                 }
             }
         }
-        if (!allExists) {
-            ErrorController.showError("Some applications were not found and removed form list");
-        }
+
         return allExists;
     }
 
