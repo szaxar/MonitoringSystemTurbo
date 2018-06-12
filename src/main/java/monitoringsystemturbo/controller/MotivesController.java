@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import monitoringsystemturbo.presenter.MotivesPresenter;
 
 import java.io.IOException;
 
@@ -27,7 +28,8 @@ public class MotivesController {
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.initOwner(primaryStage);
 
-
+        MotivesPresenter motivesPresenter=loader.getController();
+        motivesPresenter.setPrimaryStage(dialogStage);
 
         Scene scene = new Scene(rootLayout);
         dialogStage.setScene(scene);

@@ -5,6 +5,7 @@
 <?import com.jfoenix.controls.JFXListView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -19,12 +20,13 @@
                <children>
                   <HBox HBox.hgrow="ALWAYS">
                      <children>
-                        <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onPrevDay" text="&lt;"/>
+                        <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onPrevDay" text="&lt;" />
                         <JFXDatePicker fx:id="datePicker" />
-                        <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onNextDay" text="&gt;"/>
+                        <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onNextDay" text="&gt;" />
                      </children>
                   </HBox>
                   <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onMotives" text="Motives" />
+                  <AnchorPane prefHeight="31.0" prefWidth="23.0" />
                   <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onExport" text="Export" />
                </children>
             </HBox>
@@ -54,7 +56,7 @@
                   <VBox spacing="5" HBox.hgrow="ALWAYS">
                      <children>
                         <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onAddApplication" text="Add app" />
-                        <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onAddActivity" text="Add activity"/>
+                        <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onAddActivity" text="Add activity" />
                      </children>
                   </VBox>
                   <JFXButton buttonType="RAISED" onAction="#onRemoveApplication" text="Delete">

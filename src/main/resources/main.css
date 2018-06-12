@@ -6,8 +6,20 @@
 
 .scroll-pane {
     -fx-box-border: transparent;
-
 }
+
+.jfx-date-picker{
+    -jfx-default-color:BLACK;
+}
+
+.jfx-time-picker{
+    -jfx-default-color:BLACK;
+}
+
+.jfx-check-box{
+    -jfx-checked-color:BLACK;
+}
+
 
 .jfx-button {
     -fx-background-color: #000000;
@@ -16,8 +28,4 @@
 
 .jfx-button .jfx-rippler{
     -jfx-rippler-fill:RED;
-}
-
-.date-picker{
-    -jfx-default-color:BLACK
 }
