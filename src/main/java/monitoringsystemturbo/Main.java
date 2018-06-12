@@ -79,16 +79,16 @@ public class Main extends Application {
     }
 
     private void registerHook() {
+        Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
+        logger.setLevel(Level.WARNING);
+        logger.setUseParentHandlers(false);
+
         try {
             GlobalScreen.registerNativeHook();
         } catch (NativeHookException ex) {
             System.err.println("There was a problem registering the native hook. Extended monitoring will be disabled");
             System.err.println(ex.getMessage());
         }
-        Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
-        logger.setLevel(Level.WARNING);
-
-        logger.setUseParentHandlers(false);
     }
 
     private void initializeEventListeners() {
