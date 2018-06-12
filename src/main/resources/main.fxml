@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import monitoringsystemturbo.presenter.Legend?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="main.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="monitoringsystemturbo.presenter.MainPresenter">
+<BorderPane fx:id="borderPane" prefHeight="600.0" prefWidth="800.0" stylesheets="main.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="monitoringsystemturbo.presenter.MainPresenter">
    <center>
       <VBox spacing="15.0" BorderPane.alignment="CENTER">
          <children>

@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import monitoringsystemturbo.config.ConfigManager;
@@ -45,6 +46,9 @@ public class MainPresenter {
     @FXML
     private JFXDatePicker datePicker;
 
+    @FXML
+    private BorderPane borderPane;
+
     private Integer currentDay;
 
     private TrackingService trackingService;
@@ -71,6 +75,7 @@ public class MainPresenter {
         addCurrentTimeline();
         addCurrentTimelineForComputer();
         initializeDatePicker();
+        initMotive();
     }
 
     private void addCurrentTimelineForComputer() {
@@ -317,9 +322,17 @@ public class MainPresenter {
     @FXML
     public void onMotives() {
         try {
-            motivesController.showMotivesView();
+            motivesController.showMotivesView(borderPane);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+    public void initMotive(){
+        borderPane.setStyle("text-collor: #" + MotivesPresenter.textCollor.toString().substring(2, 8) + ";" +
+                "controller-color: #" + MotivesPresenter.controllerColor.toString().substring(2, 8) + ";" +
+                "background-collor: #" + MotivesPresenter.backgroundColor.toString().substring(2, 8) + ";" +
+                "rippler-collor: #" + MotivesPresenter.ripplerColor.toString().substring(2, 8) + ";");
     }
 }
