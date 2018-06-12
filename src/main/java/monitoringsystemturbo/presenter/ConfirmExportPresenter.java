@@ -66,9 +66,8 @@ public class ConfirmExportPresenter {
     }
 
     private void setCheckboxes() {
-        boolean areAllCheckboxesSelected = areAllCheckboxesSelected();
         for (JFXCheckBox box : checkBoxes) {
-            box.setSelected(!areAllCheckboxesSelected);
+            box.setSelected(!areAllCheckboxesSelected());
         }
     }
 

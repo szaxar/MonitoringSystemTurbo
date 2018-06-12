@@ -27,6 +27,9 @@ public class ExportPresenter {
     private Stage primaryStage;
     private MainExporter mainExporter;
     private TrackingService trackingService;
+    private List<String> applicationsToExport;
+    private LocalDateTime fromTime;
+    private LocalDateTime toTime;
 
     @FXML
     private JFXDatePicker fromDatePicker;
@@ -62,8 +65,8 @@ public class ExportPresenter {
 
     @FXML
     public void onConfirm() {
-        LocalDateTime fromTime = fromDatePicker.getValue().atTime(fromTimePicker.getValue().getHour(), fromTimePicker.getValue().getMinute());
-        LocalDateTime toTime = toDatePicker.getValue().atTime(toTimePicker.getValue().getHour(), toTimePicker.getValue().getMinute());
+        fromTime = fromDatePicker.getValue().atTime(fromTimePicker.getValue().getHour(), fromTimePicker.getValue().getMinute());
+        toTime = toDatePicker.getValue().atTime(toTimePicker.getValue().getHour(), toTimePicker.getValue().getMinute());
 
         Date dateStart = Date.from(fromTime.atZone(ZoneId.systemDefault()).toInstant());
         Date dateEnd = Date.from(toTime.atZone(ZoneId.systemDefault()).toInstant());
@@ -73,19 +76,24 @@ public class ExportPresenter {
         } else {
             ConfirmExportController confirmExportController = new ConfirmExportController(primaryStage);
             try {
-                List<String> applicationsToExport = confirmExportController.showConfirmationAndGetAppList(trackingService.getApplicationsNames());
+                applicationsToExport = confirmExportController.showConfirmationAndGetAppList(trackingService.getApplicationsNames());
                 if (!confirmExportController.getCancelValue()) {
-                    if (wholeRangeCheckBox.isSelected()) {
-                        mainExporter.export(trackingService, applicationsToExport);
-                    } else {
-                        mainExporter.export(trackingService, applicationsToExport, fromTime, toTime);
-                    }
+                    export();
                     AlertController.showAlert("Data exported successfully!", Alert.AlertType.INFORMATION);
                     primaryStage.close();
                 }
             } catch (IOException e) {
                 AlertController.showAlert("Error occurred while exporting data.", Alert.AlertType.ERROR);
             }
+        }
+    }
+
+
+    public void export() throws IOException {
+        if (wholeRangeCheckBox.isSelected()) {
+            mainExporter.export(trackingService, applicationsToExport);
+        } else {
+            mainExporter.export(trackingService, applicationsToExport, fromTime, toTime);
         }
     }
 

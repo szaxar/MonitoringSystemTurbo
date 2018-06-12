@@ -263,6 +263,8 @@ public class MainPresenter {
             exportController.showExportView(mainExporter, trackingService);
         } catch (IOException e) {
             e.printStackTrace();
+            AlertController.showAlert("Error occurred while export an activity.", Alert.AlertType.ERROR);
+
         }
     }
 
@@ -312,7 +314,10 @@ public class MainPresenter {
             motivesController.showMotivesView(mainControler);
         } catch (IOException e) {
             e.printStackTrace();
+            AlertController.showAlert("Error occurred while loading motives view.", Alert.AlertType.ERROR);
+
         }
+
     }
 
 
