@@ -17,6 +17,8 @@ import org.jnativehook.NativeHookException;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Main extends Application {
     private static final String APPLICATION_NAME = "MonitoringSystemTurbo";
@@ -83,6 +85,10 @@ public class Main extends Application {
             System.err.println("There was a problem registering the native hook. Extended monitoring will be disabled");
             System.err.println(ex.getMessage());
         }
+        Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
+        logger.setLevel(Level.WARNING);
+
+        logger.setUseParentHandlers(false);
     }
 
     private void initializeEventListeners() {

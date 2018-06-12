@@ -29,7 +29,7 @@ public class ActivityMonitor extends Thread {
     public void run() {
         while (isRunning) {
             timeLock.lock();
-            boolean shouldBeSlept = LocalTime.now().minus(STOP_TIME, ChronoUnit.SECONDS).compareTo(lastUpdate) > 0;
+            boolean shouldBeSlept = LocalTime.now().minus(STOP_TIME, ChronoUnit.MINUTES).compareTo(lastUpdate) > 0;
             timeLock.unlock();
             if (shouldBeSlept && !isSleeping.get()) {
                 Map<String, Timeline> appStatistics = trackingService.getAllApplicationsStatistics();
@@ -46,7 +46,6 @@ public class ActivityMonitor extends Thread {
             try {
                 Thread.sleep(200);
             } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         }
     }
