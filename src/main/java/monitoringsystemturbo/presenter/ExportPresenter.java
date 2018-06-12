@@ -100,7 +100,7 @@ public class ExportPresenter {
     @FXML
     public void onToNow() {
         if (toNowCheckBox.isSelected()) {
-            toDatePicker.setValue(now());
+            toDatePicker.setValue(now().plusYears(1));
             toTimePicker.setValue(LocalTime.now());
             toDatePicker.setEditable(false);
             toTimePicker.setEditable(false);
@@ -140,7 +140,7 @@ public class ExportPresenter {
             fromBeginCheckBox.setDisable(true);
             toNowCheckBox.setDisable(true);
 
-            toDatePicker.setValue(now());
+            toDatePicker.setValue(now().plusYears(1));
             toTimePicker.setValue(LocalTime.now());
 
             toDatePicker.setEditable(false);
