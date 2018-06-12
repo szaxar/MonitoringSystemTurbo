@@ -1,35 +1,31 @@
 package monitoringsystemturbo.model;
 
-import monitoringsystemturbo.Main;
 import monitoringsystemturbo.model.app.ApplicationMonitor;
 import monitoringsystemturbo.model.app.ApplicationService;
 import monitoringsystemturbo.model.computer.ComputerMonitor;
 import monitoringsystemturbo.model.computer.ComputerStatistics;
 import monitoringsystemturbo.model.timeline.Timeline;
-import monitoringsystemturbo.presenter.MainPresenter;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class TrackingService {
+    private final List<String> applicationNames;
+
     private ComputerStatistics computerStatistics;
     private ApplicationMonitor applicationMonitor;
     private ComputerMonitor computerMonitor;
 
     public TrackingService() {
-        applicationMonitor = new ApplicationMonitor();
+        applicationNames = new ArrayList<>();
     }
 
     public TrackingService(List<String> applicationNames) {
-        List<ApplicationService> appServices = applicationNames.stream()
-                .map(ApplicationService::new)
-                .collect(Collectors.toList());
-
-        applicationMonitor = new ApplicationMonitor(appServices);
+        this.applicationNames = applicationNames;
     }
 
     public void addAppToMonitor(String appName) {
-        applicationMonitor.startMonitoring(appName);
+        applicationNames.add(appName);
     }
 
     public void stopAppMonitoring(String appName) {
@@ -45,8 +41,14 @@ public class TrackingService {
     }
 
     public void start() {
+        List<ApplicationService> appServices = applicationNames.stream()
+                .map(ApplicationService::new)
+                .collect(Collectors.toList());
+
+        applicationMonitor = new ApplicationMonitor(appServices);
         computerStatistics = new ComputerStatistics(new Date());
         computerMonitor = new ComputerMonitor(computerStatistics);
+
         computerMonitor.start();
         applicationMonitor.start();
     }
