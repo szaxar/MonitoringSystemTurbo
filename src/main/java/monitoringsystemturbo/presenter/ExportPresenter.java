@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTimePicker;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import monitoringsystemturbo.controller.ConfirmExportController;
 import monitoringsystemturbo.exporter.MainExporter;
@@ -46,6 +47,9 @@ public class ExportPresenter {
 
     @FXML
     private JFXCheckBox untilNowCheckBox;
+
+    @FXML
+    private AnchorPane anchorPane;
 
     @FXML
     public void initialize() {
@@ -180,5 +184,12 @@ public class ExportPresenter {
     public void setDisableToFromPickers(boolean isDisable) {
         fromDatePicker.setDisable(isDisable);
         fromTimePicker.setDisable(isDisable);
+    }
+
+    public void reflesh() {
+        anchorPane.setStyle("text-collor: #" + MotivesPresenter.textCollor.toString().substring(2, 8) + ";" +
+                "controller-color: #" + MotivesPresenter.controllerColor.toString().substring(2, 8) + ";" +
+                "background-collor: #" + MotivesPresenter.backgroundColor.toString().substring(2, 8) + ";" +
+                "rippler-collor: #" + MotivesPresenter.ripplerColor.toString().substring(2, 8) + ";");
     }
 }
