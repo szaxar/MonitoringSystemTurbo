@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class Main extends Application {
     private static final String APPLICATION_NAME = "MonitoringSystemTurbo";
@@ -36,10 +37,6 @@ public class Main extends Application {
         }
 
         registerHook();
-        mainExporter = new MainExporter();
-        trackingService = new TrackingService();
-        activityMonitor = new ActivityMonitor(trackingService);
-        initializeEventListeners();
         List<monitoringsystemturbo.model.app.Application> loadedApplications = null;
         try {
             loadedApplications = ConfigManager.load();
@@ -47,7 +44,11 @@ public class Main extends Application {
             ErrorController.showError("Error occurred while reading from config file");
             System.exit(1);
         }
-        initializeAppsToMonitor(loadedApplications);
+        mainExporter = new MainExporter();
+        trackingService = new TrackingService(loadedApplications.stream()
+                .map(it -> it.getName()).collect(Collectors.toList()));
+        activityMonitor = new ActivityMonitor(trackingService);
+        initializeEventListeners();
         trackingService.start();
 
         MainController mainController = new MainController(primaryStage, trackingService, mainExporter);
@@ -98,12 +99,6 @@ public class Main extends Application {
         GlobalScreen.addNativeMouseWheelListener(mouseListener);
         GlobalScreen.addNativeKeyListener(new KeyboardListener(activityMonitor));
         activityMonitor.start();
-    }
-
-    private void initializeAppsToMonitor(List<monitoringsystemturbo.model.app.Application> loadedApplications) {
-        for (monitoringsystemturbo.model.app.Application application : loadedApplications) {
-            trackingService.addAppToMonitor(application.getName());
-        }
     }
 
     public static void main(String[] args) {
