@@ -18,6 +18,8 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
+import static java.time.LocalDate.now;
+
 public class ExportPresenter {
 
     private Stage primaryStage;
@@ -37,12 +39,18 @@ public class ExportPresenter {
     private JFXTimePicker fromTimePicker;
 
     @FXML
-    private CheckBox allTimeCheckBox;
+    private CheckBox wholeRangeCheckBox;
+
+    @FXML
+    private CheckBox fromBeggingCheckBox;
+
+    @FXML
+    private CheckBox untilNowCheckBox;
 
     @FXML
     public void initialize() {
-        fromDatePicker.setValue(LocalDate.now());
-        toDatePicker.setValue(LocalDate.now());
+        fromDatePicker.setValue(now());
+        toDatePicker.setValue(now());
         fromTimePicker.setValue(LocalTime.of(0, 0));
         toTimePicker.setValue(LocalTime.now());
     }
@@ -66,7 +74,7 @@ public class ExportPresenter {
             try {
                 List<String> applicationsToExport = confirmExportController.showConfirmationAndGetAppList(trackingService.getApplicationsNames());
                 if (!confirmExportController.getCancelValue()) {
-                    if (allTimeCheckBox.isSelected()) {
+                    if (wholeRangeCheckBox.isSelected()) {
                         mainExporter.export(trackingService, applicationsToExport);
                     } else {
                         mainExporter.export(trackingService, applicationsToExport, fromTime, toTime);
@@ -88,6 +96,55 @@ public class ExportPresenter {
         }
     }
 
+
+    @FXML
+    public void onToNow() {
+        if (untilNowCheckBox.isSelected()) {
+            toDatePicker.setValue(now().plusYears(1));
+            toTimePicker.setValue(LocalTime.now());
+            setDisableForToPickers(true);
+            wholeRangeCheckBox.setDisable(true);
+        } else {
+            setDisableForToPickers(false);
+            if (!fromBeggingCheckBox.isSelected()) wholeRangeCheckBox.setDisable(false);
+        }
+    }
+
+    @FXML
+    public void onFromBegin() {
+        if (fromBeggingCheckBox.isSelected()) {
+            fromDatePicker.setValue(LocalDate.of(1970, 1, 1));
+            fromTimePicker.setValue(LocalTime.of(0, 0));
+            setDisableToFromPickers(true);
+            wholeRangeCheckBox.setDisable(true);
+        } else {
+            setDisableToFromPickers(false);
+            if (!untilNowCheckBox.isSelected()) wholeRangeCheckBox.setDisable(false);
+        }
+    }
+
+    @FXML
+    public void onWholeRange() {
+        if (wholeRangeCheckBox.isSelected()) {
+            fromDatePicker.setValue(LocalDate.of(1970, 1, 1));
+            fromTimePicker.setValue(LocalTime.of(0, 0));
+
+            fromBeggingCheckBox.setDisable(true);
+            untilNowCheckBox.setDisable(true);
+
+            toDatePicker.setValue(now().plusYears(1));
+            toTimePicker.setValue(LocalTime.now());
+
+            setDisableToAllPickers(true);
+        } else {
+            setDisableToAllPickers(false);
+
+            fromBeggingCheckBox.setDisable(false);
+            untilNowCheckBox.setDisable(false);
+        }
+    }
+
+
     @FXML
     public void onCancel() {
         primaryStage.close();
@@ -103,5 +160,22 @@ public class ExportPresenter {
 
     public void setTrackingService(TrackingService trackingService) {
         this.trackingService = trackingService;
+    }
+
+    public void setDisableToAllPickers(boolean isDisable) {
+        toDatePicker.setDisable(isDisable);
+        toTimePicker.setDisable(isDisable);
+        fromDatePicker.setDisable(isDisable);
+        fromTimePicker.setDisable(isDisable);
+    }
+
+    public void setDisableForToPickers(boolean isDisable) {
+        toDatePicker.setDisable(isDisable);
+        toTimePicker.setDisable(isDisable);
+    }
+
+    public void setDisableToFromPickers(boolean isDisable) {
+        fromDatePicker.setDisable(isDisable);
+        fromTimePicker.setDisable(isDisable);
     }
 }
