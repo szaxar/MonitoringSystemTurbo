@@ -20,12 +20,12 @@
     </top>
     <center>
         <VBox fx:id="checkBoxesContainer" alignment="CENTER_LEFT">
-            <JFXButton onAction="#onCheckChange" text="Check/Uncheck all">
+            <JFXButton buttonType="RAISED" ripplerFill="RED" style="-fx-background-color: #000000;" textFill="WHITE" onAction="#onCheckChange" text="Check/Uncheck all">
                 <VBox.margin>
                     <Insets bottom="10.0" />
                 </VBox.margin>
             </JFXButton>
-            <JFXCheckBox checkedColor="BLACK" disable="true" selected="true" text="Computer Statistics" />
+            <JFXCheckBox  checkedColor="BLACK" disable="true" selected="true" text="Computer Statistics" />
             <BorderPane.margin>
                 <Insets bottom="5.0" left="10.0" />
             </BorderPane.margin>

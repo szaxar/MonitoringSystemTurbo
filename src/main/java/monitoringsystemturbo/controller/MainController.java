@@ -38,6 +38,10 @@ public class MainController {
         ExportController exportController = new ExportController(primaryStage);
         mainPresenter.setExportController(exportController);
 
+        MotivesController motivesController=new MotivesController(primaryStage);
+        mainPresenter.setMotivesController(motivesController);
+
+
         primaryStage.setScene(new Scene(rootLayout));
         primaryStage.show();
     }

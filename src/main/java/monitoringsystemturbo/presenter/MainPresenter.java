@@ -2,6 +2,7 @@ package monitoringsystemturbo.presenter;
 
 import com.jfoenix.controls.JFXDatePicker;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -12,6 +13,7 @@ import javafx.scene.layout.VBox;
 import monitoringsystemturbo.config.ConfigManager;
 import monitoringsystemturbo.controller.ApplicationListController;
 import monitoringsystemturbo.controller.ExportController;
+import monitoringsystemturbo.controller.MotivesController;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.history.StatisticsManager;
 import monitoringsystemturbo.model.TrackingService;
@@ -51,6 +53,7 @@ public class MainPresenter {
     private Map<String, TimelineElement> timelineElements;
     private List<Application> loadedApplications;
     private ApplicationListController applicationListController;
+    private MotivesController motivesController;
     private ExportController exportController;
 
     @FXML
@@ -304,5 +307,19 @@ public class MainPresenter {
 
     public void setExportController(ExportController exportController) {
         this.exportController = exportController;
+    }
+
+
+    public void setMotivesController(MotivesController motivesController) {
+        this.motivesController = motivesController;
+    }
+
+    @FXML
+    public void onMotives() {
+        try {
+            motivesController.showMotivesView();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
