@@ -17,6 +17,7 @@ public class MainController {
     private Stage primaryStage;
     private TrackingService trackingService;
     private MainExporter mainExporter;
+    private MainPresenter mainPresenter;
 
     public MainController(Stage primaryStage, TrackingService trackingService, MainExporter mainExporter) {
         this.primaryStage = primaryStage;
@@ -29,7 +30,7 @@ public class MainController {
         loader.setLocation(this.getClass().getResource("/main.fxml"));
         Parent rootLayout = loader.load();
 
-        MainPresenter mainPresenter = loader.getController();
+        mainPresenter = loader.getController();
         mainPresenter.initialize(trackingService, mainExporter, loadedApplications);
 
         ApplicationListController applicationListController = new ApplicationListController(primaryStage);
@@ -38,8 +39,15 @@ public class MainController {
         ExportController exportController = new ExportController(primaryStage);
         mainPresenter.setExportController(exportController);
 
+        MotivesController motivesController = new MotivesController(primaryStage);
+        mainPresenter.setMotivesController(motivesController);
+        mainPresenter.setMainControler(this);
+
         primaryStage.setScene(new Scene(rootLayout));
         primaryStage.show();
     }
 
+    public void reflesh() {
+        mainPresenter.reflesh();
+    }
 }

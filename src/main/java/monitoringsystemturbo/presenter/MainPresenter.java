@@ -7,12 +7,15 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import monitoringsystemturbo.config.ConfigManager;
 import monitoringsystemturbo.controller.ApplicationListController;
 import monitoringsystemturbo.controller.AlertController;
 import monitoringsystemturbo.controller.ExportController;
+import monitoringsystemturbo.controller.MainController;
+import monitoringsystemturbo.controller.MotivesController;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.history.StatisticsManager;
 import monitoringsystemturbo.model.TrackingService;
@@ -43,6 +46,9 @@ public class MainPresenter {
     private VBox appTimelineList;
     @FXML
     private JFXDatePicker datePicker;
+    @FXML
+    private BorderPane borderPane;
+
 
     private Integer currentDay;
 
@@ -52,7 +58,9 @@ public class MainPresenter {
     private Map<String, TimelineElement> timelineElements;
     private List<Application> loadedApplications;
     private ApplicationListController applicationListController;
+    private MotivesController motivesController;
     private ExportController exportController;
+    private MainController mainControler;
 
     @FXML
     private ListView<Application> applicationList;
@@ -255,6 +263,8 @@ public class MainPresenter {
             exportController.showExportView(mainExporter, trackingService);
         } catch (IOException e) {
             e.printStackTrace();
+            AlertController.showAlert("Error occurred while export an activity.", Alert.AlertType.ERROR);
+
         }
     }
 
@@ -291,5 +301,33 @@ public class MainPresenter {
 
     public void setExportController(ExportController exportController) {
         this.exportController = exportController;
+    }
+
+
+    public void setMotivesController(MotivesController motivesController) {
+        this.motivesController = motivesController;
+    }
+
+    @FXML
+    public void onMotives() {
+        try {
+            motivesController.showMotivesView(mainControler);
+        } catch (IOException e) {
+            e.printStackTrace();
+            AlertController.showAlert("Error occurred while loading motives view.", Alert.AlertType.ERROR);
+
+        }
+
+    }
+
+    public void setMainControler(MainController mainControler) {
+        this.mainControler = mainControler;
+    }
+
+    public void reflesh() {
+        borderPane.setStyle("text-collor: #" + MotivesPresenter.textCollor.toString().substring(2, 8) + ";" +
+                "controller-color: #" + MotivesPresenter.controllerColor.toString().substring(2, 8) + ";" +
+                "background-collor: #" + MotivesPresenter.backgroundColor.toString().substring(2, 8) + ";" +
+                "rippler-collor: #" + MotivesPresenter.ripplerColor.toString().substring(2, 8) + ";");
     }
 }

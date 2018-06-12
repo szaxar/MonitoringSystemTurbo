@@ -1,8 +1,10 @@
 package monitoringsystemturbo.presenter;
 
+import com.jfoenix.controls.JFXCheckBox;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -13,10 +15,13 @@ public class ConfirmExportPresenter {
     @FXML
     private VBox checkBoxesContainer;
 
+    @FXML
+    private BorderPane borderPane;
+
     private Stage primaryStage;
     private List<String> applicationsNames;
 
-    private List<CheckBox> checkBoxes = new ArrayList<>();
+    private List<JFXCheckBox> checkBoxes = new ArrayList<>();
     private List<String> selectedApplications = new ArrayList<>();
     private boolean cancelled = true;
 
@@ -39,7 +44,7 @@ public class ConfirmExportPresenter {
 
     public void start() {
         initializeCheckBoxes(applicationsNames);
-        for (CheckBox checkBox : checkBoxes) {
+        for (JFXCheckBox checkBox : checkBoxes) {
             checkBoxesContainer.getChildren().add(checkBox);
         }
     }
@@ -61,14 +66,13 @@ public class ConfirmExportPresenter {
     }
 
     private void setCheckboxes() {
-        boolean areAllCheckboxesSelected = areAllCheckboxesSelected();
-        for (CheckBox box : checkBoxes) {
-            box.setSelected(!areAllCheckboxesSelected);
+        for (JFXCheckBox box : checkBoxes) {
+            box.setSelected(!areAllCheckboxesSelected());
         }
     }
 
     private boolean areAllCheckboxesSelected() {
-        for (CheckBox box : checkBoxes) {
+        for (JFXCheckBox box : checkBoxes) {
             if (!box.isSelected()) {
                 return false;
             }
@@ -78,16 +82,24 @@ public class ConfirmExportPresenter {
 
     private void initializeCheckBoxes(List<String> applicationNames) {
         for (String app : applicationNames) {
-            CheckBox option = new CheckBox(app);
+            JFXCheckBox option = new JFXCheckBox(app);
+            option.setCheckedColor(Color.BLACK);
             option.setSelected(true);
             checkBoxes.add(option);
         }
     }
 
-    private void setSelectedApplications(List<CheckBox> checkBoxes) {
-        for (CheckBox box : checkBoxes)
+    private void setSelectedApplications(List<JFXCheckBox> checkBoxes) {
+        for (JFXCheckBox box : checkBoxes)
             if (box.isSelected()) {
                 selectedApplications.add(box.getText());
             }
+    }
+
+    public void reflesh() {
+        borderPane.setStyle("text-collor: #" + MotivesPresenter.textCollor.toString().substring(2, 8) + ";" +
+                "controller-color: #" + MotivesPresenter.controllerColor.toString().substring(2, 8) + ";" +
+                "background-collor: #" + MotivesPresenter.backgroundColor.toString().substring(2, 8) + ";" +
+                "rippler-collor: #" + MotivesPresenter.ripplerColor.toString().substring(2, 8) + ";");
     }
 }
