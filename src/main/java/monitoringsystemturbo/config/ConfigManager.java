@@ -2,7 +2,7 @@ package monitoringsystemturbo.config;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import monitoringsystemturbo.controller.ErrorController;
+import javafx.scene.control.Alert;
 import monitoringsystemturbo.model.app.Application;
 
 import java.io.File;
@@ -26,8 +26,18 @@ public class ConfigManager {
         if (file.exists()) {
             List<Application> list = mapper.readValue(file, new TypeReference<List<Application>>() {
             });
-            if(!checkApplicationList(list)) {
-                ErrorController.showError("Some applications were not found and will be removed form list.");
+            List<Application> removedApplications = checkApplicationList(list);
+            if(!removedApplications.isEmpty()) {
+                String removedAppNames = "";
+                for (Application application : removedApplications) {
+                    removedAppNames += "- " + application.getName() +" (" + application.getFullPath() + ")" + "\n";
+                }
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                errorAlert.setTitle("Error!");
+                errorAlert.setHeaderText(null);
+                errorAlert.setContentText("Following applications were not found and will be removed form list:\n" + removedAppNames);
+                errorAlert.showAndWait();
+
                 save(list);
             }
             return list;
@@ -35,9 +45,9 @@ public class ConfigManager {
         return new ArrayList<>();
     }
 
-    public static boolean checkApplicationList(List<Application> loadedApplications) {
-        boolean allExists = true;
+    public static List<Application> checkApplicationList(List<Application> loadedApplications) {
         Iterator<Application> iter = loadedApplications.iterator();
+        List<Application> notFound = new ArrayList<>();
 
         while (iter.hasNext()) {
             Application application = iter.next();
@@ -45,13 +55,13 @@ public class ConfigManager {
             if (!fullPath.equals("")) {
                 File file = new File(fullPath);
                 if (!file.exists()) {
+                    notFound.add(application);
                     iter.remove();
-                    allExists = false;
                 }
             }
         }
 
-        return allExists;
+        return notFound;
     }
 
     public static void createFileIfNeeded(Application application) throws IOException {
