@@ -7,19 +7,19 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="230.0" prefWidth="624.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="monitoringsystemturbo.presenter.ExportPresenter">
+<AnchorPane stylesheets="default.css" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="230.0" prefWidth="624.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="monitoringsystemturbo.presenter.ExportPresenter">
    <children>
       <Label layoutX="236.0" layoutY="24.0" prefHeight="44.0" prefWidth="125.0" text="Please select time" />
-      <JFXDatePicker fx:id="fromDatePicker" defaultColor="BLACK" layoutX="93.0" layoutY="65.0" promptText="From Date Picker" />
-      <JFXDatePicker fx:id="toDatePicker" defaultColor="BLACK" layoutX="93.0" layoutY="122.0" promptText="To Date Picker" />
+      <JFXDatePicker fx:id="fromDatePicker"  layoutX="93.0" layoutY="65.0" promptText="From Date Picker" />
+      <JFXDatePicker fx:id="toDatePicker"  layoutX="93.0" layoutY="122.0" promptText="To Date Picker" />
       <Label layoutX="39.0" layoutY="68.0" text="From" />
       <Label layoutX="39.0" layoutY="126.0" text="To" />
-      <JFXButton buttonType="RAISED" layoutX="428.0" layoutY="183.0" mnemonicParsing="false" onAction="#onConfirm" ripplerFill="RED" style="-fx-background-color: #000000;" text="Confirm" textFill="WHITE" />
-      <JFXButton buttonType="RAISED" layoutX="502.0" layoutY="183.0" mnemonicParsing="false" onAction="#onCancel" style="-fx-background-color: #000000;" text="Cancel" textFill="WHITE" />
-      <JFXCheckBox fx:id="wholeRangeCheckBox" checkedColor="BLACK" layoutX="28.0" layoutY="188.0" mnemonicParsing="false" onAction="#onWholeRange" text="Whole range" unCheckedColor="BLACK" />
-      <JFXTimePicker fx:id="fromTimePicker" defaultColor="BLACK" editable="true" layoutX="363.0" layoutY="65.0" promptText="From Time Picker" />
-      <JFXTimePicker fx:id="toTimePicker" defaultColor="BLACK" editable="true" layoutX="361.0" layoutY="122.0" promptText="To Time Picker" />
-      <JFXCheckBox fx:id="toNowCheckBox" checkedColor="BLACK" layoutX="28.0" layoutY="162.0" mnemonicParsing="false" onAction="#onToNow" text="To Now" unCheckedColor="BLACK" />
-      <JFXCheckBox fx:id="fromBeginCheckBox" checkedColor="BLACK" layoutX="28.0" layoutY="36.0" mnemonicParsing="false" onAction="#onFromBegin" text="From Begin" unCheckedColor="BLACK" />
+      <JFXButton buttonType="RAISED" layoutX="428.0" layoutY="183.0" mnemonicParsing="false" onAction="#onConfirm"  text="Confirm" />
+      <JFXButton buttonType="RAISED" layoutX="502.0" layoutY="183.0" mnemonicParsing="false" onAction="#onCancel"  text="Cancel"  />
+      <JFXCheckBox fx:id="wholeRangeCheckBox" layoutX="28.0" layoutY="188.0" mnemonicParsing="false" onAction="#onWholeRange" text="Whole range" />
+      <JFXTimePicker fx:id="fromTimePicker"  editable="true" layoutX="363.0" layoutY="65.0" promptText="From Time Picker" />
+      <JFXTimePicker fx:id="toTimePicker"  editable="true" layoutX="361.0" layoutY="122.0" promptText="To Time Picker" />
+      <JFXCheckBox fx:id="toNowCheckBox"  layoutX="28.0" layoutY="162.0" mnemonicParsing="false" onAction="#onToNow" text="To Now" />
+      <JFXCheckBox fx:id="fromBeginCheckBox"  layoutX="28.0" layoutY="36.0" mnemonicParsing="false" onAction="#onFromBegin" text="From Begin" />
    </children>
 </AnchorPane>

@@ -19,13 +19,13 @@
                <children>
                   <HBox HBox.hgrow="ALWAYS">
                      <children>
-                        <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onPrevDay" ripplerFill="RED" style="-fx-background-color: #000000;" text="&lt;" textFill="WHITE" />
-                        <JFXDatePicker fx:id="datePicker" defaultColor="BLACK" />
-                        <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onNextDay" ripplerFill="RED" style="-fx-background-color: #000000;" text="&gt;" textFill="WHITE" />
+                        <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onPrevDay" text="&lt;"/>
+                        <JFXDatePicker fx:id="datePicker" />
+                        <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onNextDay" text="&gt;"/>
                      </children>
                   </HBox>
-                  <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onMotives" ripplerFill="RED" style="-fx-background-color: #000000;" text="Motives" textFill="WHITE" />
-                  <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onExport" ripplerFill="RED" style="-fx-background-color: #000000;" text="Export" textFill="WHITE" />
+                  <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onMotives" text="Motives" />
+                  <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onExport" text="Export" />
                </children>
             </HBox>
             <VBox alignment="TOP_RIGHT">
@@ -53,11 +53,11 @@
                <children>
                   <VBox spacing="5" HBox.hgrow="ALWAYS">
                      <children>
-                        <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onAddApplication" ripplerFill="RED" style="-fx-background-color: #000000;" text="Add app" textFill="WHITE" />
-                        <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onAddActivity" ripplerFill="RED" style="-fx-background-color: #000000;" text="Add activity" textFill="WHITE" />
+                        <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onAddApplication" text="Add app" />
+                        <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onAddActivity" text="Add activity"/>
                      </children>
                   </VBox>
-                  <JFXButton buttonType="RAISED" onAction="#onRemoveApplication" ripplerFill="RED" style="-fx-background-color: #000000;" text="Delete" textFill="WHITE">
+                  <JFXButton buttonType="RAISED" onAction="#onRemoveApplication" text="Delete">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>

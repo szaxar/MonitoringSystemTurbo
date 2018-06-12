@@ -6,4 +6,18 @@
 
 .scroll-pane {
     -fx-box-border: transparent;
+
+}
+
+.jfx-button {
+    -fx-background-color: #000000;
+    -fx-text-fill: white;
+}
+
+.jfx-button .jfx-rippler{
+    -jfx-rippler-fill:RED;
+}
+
+.date-picker{
+    -jfx-default-color:BLACK
 }

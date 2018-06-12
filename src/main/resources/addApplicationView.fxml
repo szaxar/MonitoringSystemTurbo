@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import javafx.scene.control.Button?>
-<BorderPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="monitoringsystemturbo.presenter.AddApplicationPresenter">
+<BorderPane stylesheets="default.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="monitoringsystemturbo.presenter.AddApplicationPresenter">
     <center>
         <GridPane alignment="TOP_CENTER" hgap="5.0" vgap="5.0" BorderPane.alignment="CENTER">
             <columnConstraints>
@@ -74,13 +74,13 @@
             </BorderPane.margin>
            <children>
    
-               <JFXButton buttonType="RAISED" minWidth="60.0" mnemonicParsing="false" onAction="#onCancel" text="Cancel" ripplerFill="RED" style="-fx-background-color: #000000;" textFill="WHITE" >
+               <JFXButton buttonType="RAISED" minWidth="60.0" mnemonicParsing="false" onAction="#onCancel" text="Cancel" >
                    <HBox.margin>
                        <Insets bottom="5.0" left="5.0" top="5.0" />
                    </HBox.margin>
                </JFXButton>
             <VBox HBox.hgrow="ALWAYS" />
-               <JFXButton fx:id="addButton" buttonType="RAISED" disable="true" minWidth="60.0" mnemonicParsing="false" onAction="#onAdd"  ripplerFill="RED" style="-fx-background-color: #000000;" textFill="WHITE" text="Add">
+               <JFXButton fx:id="addButton" buttonType="RAISED" disable="true" minWidth="60.0" mnemonicParsing="false" onAction="#onAdd"   text="Add">
                    <HBox.margin>
                        <Insets bottom="5.0" right="5.0" top="5.0" />
                    </HBox.margin>

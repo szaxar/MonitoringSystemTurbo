@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane prefHeight="145.0" prefWidth="535.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="monitoringsystemturbo.presenter.MotivesPresenter">
+<AnchorPane stylesheets="default.css" prefHeight="145.0" prefWidth="535.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="monitoringsystemturbo.presenter.MotivesPresenter">
    <children>
       <HBox layoutX="6.0" layoutY="35.0" prefHeight="46.0" prefWidth="529.0">
          <children>
@@ -20,6 +20,6 @@
       <Label layoutX="142.0" layoutY="14.0" prefHeight="21.0" prefWidth="130.0" text="Controllers color" />
       <Label layoutX="272.0" layoutY="14.0" prefHeight="21.0" prefWidth="130.0" text="Rippler color" />
       <Label layoutX="402.0" layoutY="14.0" prefHeight="21.0" prefWidth="130.0" text="Text color" />
-      <JFXButton buttonType="RAISED" layoutX="425.0" layoutY="93.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="84.0" ripplerFill="RED" style="-fx-background-color: #000000;" text="Confirm" textFill="WHITE" />
+      <JFXButton buttonType="RAISED" layoutX="425.0" layoutY="93.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="84.0" text="Confirm" />
    </children>
 </AnchorPane>
