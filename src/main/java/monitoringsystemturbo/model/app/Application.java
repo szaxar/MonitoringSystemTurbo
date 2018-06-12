@@ -8,22 +8,31 @@ import java.io.FileNotFoundException;
 import java.util.Objects;
 
 public class Application {
+    private final String userName;
+    private final String fullPath;
     private String name;
-    private String fullPath;
 
     public Application() {
-        this.name = "";
+        this.userName = "";
         this.fullPath = "";
     }
 
-    public Application(String name, String fullPath) {
-        this.name = name;
+    public Application(String userName, String fullPath) {
+        this.userName = userName;
         this.fullPath = fullPath;
+        resolveName(fullPath);
     }
 
-    public Application(String name) {
-        this.name = name;
+    public Application(String userName) {
+        this.userName = userName;
         this.fullPath = "";
+        resolveName(fullPath);
+    }
+
+    private void resolveName(String fullPath) {
+        String[] splitFullPath = fullPath.split("\\\\");
+        this.name = splitFullPath[splitFullPath.length - 1]
+                .split("\\.")[0];
     }
 
     public String getName() {
@@ -32,6 +41,10 @@ public class Application {
 
     public String getFullPath() {
         return this.fullPath;
+    }
+
+    public String getUserName() {
+        return userName;
     }
 
     public Icon findIcon() {
@@ -53,12 +66,13 @@ public class Application {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Application that = (Application) o;
-        return Objects.equals(name, that.name) &&
-                Objects.equals(fullPath, that.fullPath);
+        return Objects.equals(userName, that.userName) &&
+                Objects.equals(fullPath, that.fullPath) &&
+                Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, fullPath);
+        return Objects.hash(userName, fullPath, name);
     }
 }

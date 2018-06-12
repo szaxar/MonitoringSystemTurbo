@@ -117,10 +117,10 @@ public class MainPresenter {
             for (Application application : loadedApplications) {
                 ConfigManager.createFileIfNeeded(application);
                 List<Timeline> timelines = StatisticsManager.load(application.getName());
-                TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
+                TimelineElement timelineElement = new TimelineElement(application.getUserName(), timelines);
                 timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
                 appTimelineList.getChildren().add(timelineElement);
-                timelineElements.put(application.getName(), timelineElement);
+                timelineElements.put(application.getUserName(), timelineElement);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -168,11 +168,11 @@ public class MainPresenter {
                 applicationList.setItems(FXCollections.observableList(loadedApplications));
 
                 List<Timeline> timelines = StatisticsManager.load(application.getName());
-                TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
+                TimelineElement timelineElement = new TimelineElement(application.getUserName(), timelines);
                 timelineElement.addTimeLineModel(trackingService.getStatisticsForApp(application.getName()));
                 timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
                 appTimelineList.getChildren().add(timelineElement);
-                timelineElements.put(application.getName(), timelineElement);
+                timelineElements.put(application.getUserName(), timelineElement);
             }
         } catch (Exception e) {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
@@ -193,12 +193,12 @@ public class MainPresenter {
                 for (Application applicationFromList : loadedApplications) {
                     if (applicationFromList.getName().equals(application.getName())) {
                         List<Timeline> timelines = StatisticsManager.load(application.getName());
-                        TimelineElement timelineElement = timelineElements.get(application.getName());
+                        TimelineElement timelineElement = timelineElements.get(application.getUserName());
                         appTimelineList.getChildren().remove(timelineElement);
 
-                        timelineElement = new TimelineElement(application.getName(), timelines);
+                        timelineElement = new TimelineElement(application.getUserName(), timelines);
                         timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
-                        timelineElements.put(application.getName(), timelineElement);
+                        timelineElements.put(application.getUserName(), timelineElement);
                         appTimelineList.getChildren().add(timelineElement);
                         timelineElement.showDay(currentDay);
                         return;
@@ -211,10 +211,10 @@ public class MainPresenter {
                 ConfigManager.save(loadedApplications);
 
                 List<Timeline> timelines = StatisticsManager.load(application.getName());
-                TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
+                TimelineElement timelineElement = new TimelineElement(application.getUserName(), timelines);
                 timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
                 appTimelineList.getChildren().add(timelineElement);
-                timelineElements.put(application.getName(), timelineElement);
+                timelineElements.put(application.getUserName(), timelineElement);
                 timelineElement.showDay(currentDay);
 
             }
@@ -254,7 +254,7 @@ public class MainPresenter {
             e.printStackTrace();
         }
         TimelineElement timelineElement = timelineElements.values().stream()
-                .filter(element -> element.getName().equals(application.getName()))
+                .filter(element -> element.getName().equals(application.getUserName()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("Cannot delete app which are not in list"));
 
@@ -287,7 +287,7 @@ public class MainPresenter {
                     setGraphic(null);
                 } else {
                     Image image = iconToFxImage(application.findIcon());
-                    label.setText(application.getName());
+                    label.setText(application.getUserName());
                     imageView.setImage(image);
                     vbox.setAlignment(Pos.CENTER);
                     vbox.getChildren().add(imageView);
