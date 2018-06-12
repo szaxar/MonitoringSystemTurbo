@@ -3,10 +3,7 @@ package monitoringsystemturbo.config;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import monitoringsystemturbo.controller.ErrorController;
-import monitoringsystemturbo.history.StatisticsManager;
 import monitoringsystemturbo.model.app.Application;
-import monitoringsystemturbo.model.timeline.Timeline;
-import monitoringsystemturbo.presenter.timeline.TimelineElement;
 
 import java.io.File;
 import java.io.IOException;
