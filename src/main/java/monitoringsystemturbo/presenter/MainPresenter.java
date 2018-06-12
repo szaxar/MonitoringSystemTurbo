@@ -11,6 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import monitoringsystemturbo.config.ConfigManager;
 import monitoringsystemturbo.controller.ApplicationListController;
+import monitoringsystemturbo.controller.ErrorController;
 import monitoringsystemturbo.controller.ExportController;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.history.StatisticsManager;
@@ -153,11 +154,7 @@ public class MainPresenter {
             Application application = applicationListController.showAddView();
             if (application != null) {
                 if (loadedApplications.contains(application)) {
-                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                    errorAlert.setTitle("Error!");
-                    errorAlert.setHeaderText(null);
-                    errorAlert.setContentText("Application already exist");
-                    errorAlert.showAndWait();
+                    ErrorController.showError("Application already exist", Alert.AlertType.INFORMATION);
                     return;
                 }
                 ConfigManager.createFileIfNeeded(application);
@@ -175,11 +172,7 @@ public class MainPresenter {
                 timelineElements.put(application.getName(), timelineElement);
             }
         } catch (Exception e) {
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setTitle("Error!");
-            errorAlert.setHeaderText(null);
-            errorAlert.setContentText("Error occurred while adding application.");
-            errorAlert.showAndWait();
+            ErrorController.showError("Error occurred while adding application.", Alert.AlertType.ERROR);
         }
     }
 
@@ -190,19 +183,17 @@ public class MainPresenter {
 
             if (application != null) {
 
-                for (Application applicationFromList : loadedApplications) {
-                    if (applicationFromList.getName().equals(application.getName())) {
-                        List<Timeline> timelines = StatisticsManager.load(application.getName());
-                        TimelineElement timelineElement = timelineElements.get(application.getName());
-                        appTimelineList.getChildren().remove(timelineElement);
+                if (loadedApplications.contains(application)) {
+                    List<Timeline> timelines = StatisticsManager.load(application.getName());
+                    TimelineElement timelineElement = timelineElements.get(application.getName());
+                    appTimelineList.getChildren().remove(timelineElement);
 
-                        timelineElement = new TimelineElement(application.getName(), timelines);
-                        timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
-                        timelineElements.put(application.getName(), timelineElement);
-                        appTimelineList.getChildren().add(timelineElement);
-                        timelineElement.showDay(currentDay);
-                        return;
-                    }
+                    timelineElement = new TimelineElement(application.getName(), timelines);
+                    timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
+                    timelineElements.put(application.getName(), timelineElement);
+                    appTimelineList.getChildren().add(timelineElement);
+                    timelineElement.showDay(currentDay);
+                    return;
                 }
 
                 ConfigManager.createFileIfNeeded(application);
@@ -220,11 +211,7 @@ public class MainPresenter {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setTitle("Error!");
-            errorAlert.setHeaderText(null);
-            errorAlert.setContentText("Error occurred while adding an activity.");
-            errorAlert.showAndWait();
+            ErrorController.showError("Error occurred while adding an activity.", Alert.AlertType.ERROR);
         }
     }
 

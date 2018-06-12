@@ -1,6 +1,7 @@
 package monitoringsystemturbo;
 
 import javafx.application.Application;
+import javafx.scene.control.Alert;
 import monitoringsystemturbo.startup.Startup;
 import javafx.stage.Stage;
 import monitoringsystemturbo.config.ConfigManager;
@@ -34,7 +35,7 @@ public class Main extends Application {
         try {
             loadedApplications = ConfigManager.load();
         } catch (IOException e) {
-            ErrorController.showError("Error occurred while reading from config file");
+            ErrorController.showError("Error occurred while reading from config file", Alert.AlertType.ERROR);
             System.exit(1);
         }
         initializeAppsToMonitor(loadedApplications);
