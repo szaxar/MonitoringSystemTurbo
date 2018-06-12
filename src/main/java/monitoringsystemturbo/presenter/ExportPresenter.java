@@ -8,6 +8,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import monitoringsystemturbo.controller.ConfirmExportController;
+import monitoringsystemturbo.controller.AlertController;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.model.TrackingService;
 
@@ -68,11 +69,7 @@ public class ExportPresenter {
         Date dateEnd = Date.from(toTime.atZone(ZoneId.systemDefault()).toInstant());
 
         if (dateStart.after(dateEnd)) {
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setTitle("Error!");
-            errorAlert.setHeaderText(null);
-            errorAlert.setContentText("Error occurred while checking date.");
-            errorAlert.showAndWait();
+            AlertController.showAlert("Error occurred while checking date.", Alert.AlertType.ERROR);
         } else {
             ConfirmExportController confirmExportController = new ConfirmExportController(primaryStage);
             try {
@@ -83,19 +80,11 @@ public class ExportPresenter {
                     } else {
                         mainExporter.export(trackingService, applicationsToExport, fromTime, toTime);
                     }
-                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                    successAlert.setTitle("Success!");
-                    successAlert.setHeaderText(null);
-                    successAlert.setContentText("Data exported successfully! ");
-                    successAlert.showAndWait();
+                    AlertController.showAlert("Data exported successfully!", Alert.AlertType.INFORMATION);
                     primaryStage.close();
                 }
             } catch (IOException e) {
-                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                errorAlert.setTitle("Error!");
-                errorAlert.setHeaderText(null);
-                errorAlert.setContentText("Error occurred while exporting data.");
-                errorAlert.showAndWait();
+                AlertController.showAlert("Error occurred while exporting data.", Alert.AlertType.ERROR);
             }
         }
     }
@@ -104,15 +93,12 @@ public class ExportPresenter {
     @FXML
     public void onToNow() {
         if (untilNowCheckBox.isSelected()) {
-            toDatePicker.setValue(now());
+            toDatePicker.setValue(now().plusYears(1));
             toTimePicker.setValue(LocalTime.now());
             setDisableForToPickers(true);
-
             wholeRangeCheckBox.setDisable(true);
         } else {
-            toDatePicker.setEditable(true);
-            toTimePicker.setEditable(true);
-
+            setDisableForToPickers(false);
             if (!fromBeggingCheckBox.isSelected()) wholeRangeCheckBox.setDisable(false);
         }
     }
