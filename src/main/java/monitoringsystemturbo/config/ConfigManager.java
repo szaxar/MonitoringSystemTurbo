@@ -29,13 +29,15 @@ public class ConfigManager {
         if (file.exists()) {
             List<Application> list = mapper.readValue(file, new TypeReference<List<Application>>() {
             });
-            checkApplicationList(list);
+            if(!checkApplicationList(list)) {
+                save(list);
+            }
             return list;
         }
         return new ArrayList<>();
     }
 
-    public static void checkApplicationList(List<Application> loadedApplications) {
+    public static boolean checkApplicationList(List<Application> loadedApplications) {
         boolean allExists = true;
         Iterator<Application> iter = loadedApplications.iterator();
 
@@ -51,8 +53,9 @@ public class ConfigManager {
             }
         }
         if (!allExists) {
-            ErrorController.showError("Some applications were uninstalled");
+            ErrorController.showError("Some applications were not found and removed form list");
         }
+        return allExists;
     }
 
     public static void createFileIfNeeded(Application application) throws IOException {
