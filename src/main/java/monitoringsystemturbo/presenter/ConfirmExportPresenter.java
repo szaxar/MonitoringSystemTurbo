@@ -2,12 +2,11 @@ package monitoringsystemturbo.presenter;
 
 import com.jfoenix.controls.JFXCheckBox;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +14,9 @@ public class ConfirmExportPresenter {
 
     @FXML
     private VBox checkBoxesContainer;
+
+    @FXML
+    private BorderPane borderPane;
 
     private Stage primaryStage;
     private List<String> applicationsNames;
@@ -93,5 +95,12 @@ public class ConfirmExportPresenter {
             if (box.isSelected()) {
                 selectedApplications.add(box.getText());
             }
+    }
+
+    public void reflesh() {
+        borderPane.setStyle("text-collor: #" + MotivesPresenter.textCollor.toString().substring(2, 8) + ";" +
+                "controller-color: #" + MotivesPresenter.controllerColor.toString().substring(2, 8) + ";" +
+                "background-collor: #" + MotivesPresenter.backgroundColor.toString().substring(2, 8) + ";" +
+                "rippler-collor: #" + MotivesPresenter.ripplerColor.toString().substring(2, 8) + ";");
     }
 }

@@ -2,7 +2,6 @@ package monitoringsystemturbo.presenter;
 
 import com.jfoenix.controls.JFXDatePicker;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -14,6 +13,7 @@ import javafx.scene.layout.VBox;
 import monitoringsystemturbo.config.ConfigManager;
 import monitoringsystemturbo.controller.ApplicationListController;
 import monitoringsystemturbo.controller.ExportController;
+import monitoringsystemturbo.controller.MainController;
 import monitoringsystemturbo.controller.MotivesController;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.history.StatisticsManager;
@@ -45,9 +45,9 @@ public class MainPresenter {
     private VBox appTimelineList;
     @FXML
     private JFXDatePicker datePicker;
-
     @FXML
     private BorderPane borderPane;
+
 
     private Integer currentDay;
 
@@ -59,6 +59,7 @@ public class MainPresenter {
     private ApplicationListController applicationListController;
     private MotivesController motivesController;
     private ExportController exportController;
+    private MainController mainControler;
 
     @FXML
     private ListView<Application> applicationList;
@@ -75,7 +76,6 @@ public class MainPresenter {
         addCurrentTimeline();
         addCurrentTimelineForComputer();
         initializeDatePicker();
-        initMotive();
     }
 
     private void addCurrentTimelineForComputer() {
@@ -322,14 +322,18 @@ public class MainPresenter {
     @FXML
     public void onMotives() {
         try {
-            motivesController.showMotivesView(borderPane);
+            motivesController.showMotivesView(mainControler);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
 
-    public void initMotive(){
+    public void setMainControler(MainController mainControler) {
+        this.mainControler = mainControler;
+    }
+
+    public void reflesh() {
         borderPane.setStyle("text-collor: #" + MotivesPresenter.textCollor.toString().substring(2, 8) + ";" +
                 "controller-color: #" + MotivesPresenter.controllerColor.toString().substring(2, 8) + ";" +
                 "background-collor: #" + MotivesPresenter.backgroundColor.toString().substring(2, 8) + ";" +

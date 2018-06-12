@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXTimePicker;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import monitoringsystemturbo.controller.ConfirmExportController;
 import monitoringsystemturbo.exporter.MainExporter;
@@ -26,6 +27,8 @@ public class ExportPresenter {
     private MainExporter mainExporter;
     private TrackingService trackingService;
 
+    @FXML
+    private AnchorPane anchorPane;
     @FXML
     private JFXDatePicker fromDatePicker;
 
@@ -174,5 +177,12 @@ public class ExportPresenter {
 
     public void setTrackingService(TrackingService trackingService) {
         this.trackingService = trackingService;
+    }
+
+    public void reflesh() {
+        anchorPane.setStyle("text-collor: #" + MotivesPresenter.textCollor.toString().substring(2, 8) + ";" +
+                "controller-color: #" + MotivesPresenter.controllerColor.toString().substring(2, 8) + ";" +
+                "background-collor: #" + MotivesPresenter.backgroundColor.toString().substring(2, 8) + ";" +
+                "rippler-collor: #" + MotivesPresenter.ripplerColor.toString().substring(2, 8) + ";");
     }
 }

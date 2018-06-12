@@ -12,7 +12,6 @@ import monitoringsystemturbo.presenter.AddActivityPresenter;
 import monitoringsystemturbo.presenter.AddApplicationPresenter;
 
 import java.io.IOException;
-import java.sql.Time;
 import java.util.Date;
 
 public class ApplicationListController {
@@ -37,7 +36,7 @@ public class ApplicationListController {
 
         addApplicationPresenter = loader.getController();
         addApplicationPresenter.setPrimaryStage(dialogStage);
-
+        addApplicationPresenter.reflesh();
         Scene scene = new Scene(rootLayout);
         dialogStage.setScene(scene);
         dialogStage.showAndWait();

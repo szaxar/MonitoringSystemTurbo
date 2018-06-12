@@ -36,3 +36,11 @@
 .jfx-button .jfx-rippler{
     -jfx-rippler-fill:rippler-collor;
 }
+
+#borderPane {
+    -fx-background-color: background-collor ;
+}
+
+#anchorPane {
+    -fx-background-color: background-collor ;
+}

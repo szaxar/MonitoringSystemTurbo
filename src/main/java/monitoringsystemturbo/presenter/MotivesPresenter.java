@@ -2,17 +2,18 @@ package monitoringsystemturbo.presenter;
 
 import com.jfoenix.controls.JFXColorPicker;
 import javafx.fxml.FXML;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import monitoringsystemturbo.controller.MainController;
 
 
 public class MotivesPresenter {
 
     private Stage primaryStage;
-
+    private MainController mainController;
     @FXML
-    private BorderPane boarderPane;
+    private AnchorPane anchorPane;
     @FXML
     JFXColorPicker backgroundColorPicker;
     @FXML
@@ -33,7 +34,7 @@ public class MotivesPresenter {
         controllerColor = controllersColorPicker.getValue();
         backgroundColor = backgroundColorPicker.getValue();
         ripplerColor = ripplerColorPicker.getValue();
-        setMotive();
+        mainController.reflesh();
         primaryStage.close();
 
     }
@@ -48,8 +49,8 @@ public class MotivesPresenter {
     }
 
 
-    private void setMotive() {
-        boarderPane.setStyle("text-collor: #" + textCollor.toString().substring(2, 8) + ";" +
+    public void reflesh() {
+        anchorPane.setStyle("text-collor: #" + textCollor.toString().substring(2, 8) + ";" +
                 "controller-color: #" + controllerColor.toString().substring(2, 8) + ";" +
                 "background-collor: #" + backgroundColor.toString().substring(2, 8) + ";" +
                 "rippler-collor: #" + ripplerColor.toString().substring(2, 8) + ";");
@@ -64,7 +65,7 @@ public class MotivesPresenter {
         this.primaryStage = primaryStage;
     }
 
-    public void setBoarderPane(BorderPane boarderPane) {
-        this.boarderPane = boarderPane;
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
     }
 }

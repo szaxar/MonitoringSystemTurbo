@@ -33,7 +33,7 @@ public class ExportController {
         exportPresenter.setPrimaryStage(dialogStage);
         exportPresenter.setMainExporter(mainExporter);
         exportPresenter.setTrackingService(trackingService);
-
+        exportPresenter.reflesh();
         Scene scene = new Scene(rootLayout);
         dialogStage.setScene(scene);
         dialogStage.showAndWait();
