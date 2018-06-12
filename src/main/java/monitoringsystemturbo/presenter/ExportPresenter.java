@@ -57,7 +57,7 @@ public class ExportPresenter {
         Date dateEnd = Date.from(toTime.atZone(ZoneId.systemDefault()).toInstant());
 
         if (dateStart.after(dateEnd)) {
-            ErrorController.showError("Error occurred while checking date.", Alert.AlertType.ERROR);
+            ErrorController.showAlert("Error occurred while checking date.", Alert.AlertType.ERROR);
         } else {
             ConfirmExportController confirmExportController = new ConfirmExportController(primaryStage);
             try {
@@ -68,15 +68,11 @@ public class ExportPresenter {
                     } else {
                         mainExporter.export(trackingService, applicationsToExport, fromTime, toTime);
                     }
-                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                    successAlert.setTitle("Success!");
-                    successAlert.setHeaderText(null);
-                    successAlert.setContentText("Data exported successfully! ");
-                    successAlert.showAndWait();
+                    ErrorController.showAlert("Data exported successfully!", Alert.AlertType.INFORMATION);
                     primaryStage.close();
                 }
             } catch (IOException e) {
-                ErrorController.showError("Error occurred while exporting data.", Alert.AlertType.ERROR);
+                ErrorController.showAlert("Error occurred while exporting data.", Alert.AlertType.ERROR);
             }
         }
     }

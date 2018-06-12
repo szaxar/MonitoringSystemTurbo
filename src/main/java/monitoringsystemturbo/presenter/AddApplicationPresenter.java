@@ -48,7 +48,7 @@ public class AddApplicationPresenter {
             application = new Application(nameApplication.getText(), fullPathApplication.getText());
             primaryStage.close();
         } else {
-            ErrorController.showError("Incorrect path!", Alert.AlertType.ERROR);
+            ErrorController.showAlert("Incorrect path!", Alert.AlertType.ERROR);
         }
     }
 

@@ -33,7 +33,7 @@ public class ConfigManager {
                 for (Application application : removedApplications) {
                     removedAppNames += "- " + application.getName() + " (" + application.getFullPath() + ")" + "\n";
                 }
-                ErrorController.showError("Following applications were not found and will be removed form list:\n" + removedAppNames, Alert.AlertType.WARNING);
+                ErrorController.showAlert("Following applications were not found and will be removed form list:\n" + removedAppNames, Alert.AlertType.WARNING);
                 save(list);
             }
             return list;

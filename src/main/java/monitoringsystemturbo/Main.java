@@ -12,7 +12,6 @@ import monitoringsystemturbo.history.StatisticsManager;
 import monitoringsystemturbo.model.TrackingService;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Main extends Application {
@@ -35,7 +34,7 @@ public class Main extends Application {
         try {
             loadedApplications = ConfigManager.load();
         } catch (IOException e) {
-            ErrorController.showError("Error occurred while reading from config file", Alert.AlertType.ERROR);
+            ErrorController.showAlert("Error occurred while reading from config file", Alert.AlertType.ERROR);
             System.exit(1);
         }
         initializeAppsToMonitor(loadedApplications);

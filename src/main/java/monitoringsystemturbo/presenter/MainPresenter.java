@@ -154,7 +154,7 @@ public class MainPresenter {
             Application application = applicationListController.showAddView();
             if (application != null) {
                 if (loadedApplications.contains(application)) {
-                    ErrorController.showError("Application already exist", Alert.AlertType.INFORMATION);
+                    ErrorController.showAlert("Application already exist", Alert.AlertType.INFORMATION);
                     return;
                 }
                 ConfigManager.createFileIfNeeded(application);
@@ -172,7 +172,7 @@ public class MainPresenter {
                 timelineElements.put(application.getName(), timelineElement);
             }
         } catch (Exception e) {
-            ErrorController.showError("Error occurred while adding application.", Alert.AlertType.ERROR);
+            ErrorController.showAlert("Error occurred while adding application.", Alert.AlertType.ERROR);
         }
     }
 
@@ -211,7 +211,7 @@ public class MainPresenter {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            ErrorController.showError("Error occurred while adding an activity.", Alert.AlertType.ERROR);
+            ErrorController.showAlert("Error occurred while adding an activity.", Alert.AlertType.ERROR);
         }
     }
 
