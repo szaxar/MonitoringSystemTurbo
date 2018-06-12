@@ -31,6 +31,7 @@ public class TrackingService {
 
     public void stopAppMonitoring(String appName) {
         applicationMonitor.stopMonitoring(appName);
+        applicationNames.remove(appName);
     }
 
     public List<String> getApplicationsNames() {
