@@ -34,5 +34,4 @@ public class Legend extends HBox {
         label.setPadding(new Insets(0, 5, 0, 0));
         getChildren().addAll(square, label);
     }
-
 }

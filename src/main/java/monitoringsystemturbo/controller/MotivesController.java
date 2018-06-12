@@ -18,7 +18,6 @@ public class MotivesController {
         this.primaryStage = primaryStage;
     }
 
-
     public void showMotivesView(MainController mainController) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(this.getClass().getResource("/motivesView.fxml"));

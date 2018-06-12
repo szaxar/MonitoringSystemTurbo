@@ -145,7 +145,6 @@ public class ExportPresenter {
         }
     }
 
-
     @FXML
     public void onCancel() {
         primaryStage.close();

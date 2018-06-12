@@ -19,7 +19,6 @@ public class MainController {
     private MainExporter mainExporter;
     private MainPresenter mainPresenter;
 
-
     public MainController(Stage primaryStage, TrackingService trackingService, MainExporter mainExporter) {
         this.primaryStage = primaryStage;
         this.trackingService = trackingService;
@@ -47,7 +46,6 @@ public class MainController {
         primaryStage.setScene(new Scene(rootLayout));
         primaryStage.show();
     }
-
 
     public void reflesh() {
         mainPresenter.reflesh();

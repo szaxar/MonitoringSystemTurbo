@@ -11,5 +11,4 @@ public class AlertController {
         alert.setContentText(alertMessage);
         alert.showAndWait();
     }
-
 }

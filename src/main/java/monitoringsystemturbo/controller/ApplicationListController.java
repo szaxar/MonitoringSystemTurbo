@@ -42,7 +42,6 @@ public class ApplicationListController {
         dialogStage.showAndWait();
 
         return addApplicationPresenter.getApplication();
-
     }
 
     public Application showActivityView() throws IOException {
@@ -72,8 +71,5 @@ public class ApplicationListController {
         }
 
         return activity;
-
     }
-
-
 }

@@ -320,7 +320,6 @@ public class MainPresenter {
 
     }
 
-
     public void setMainControler(MainController mainControler) {
         this.mainControler = mainControler;
     }

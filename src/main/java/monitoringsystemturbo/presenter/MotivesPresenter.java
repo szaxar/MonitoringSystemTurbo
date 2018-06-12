@@ -12,14 +12,19 @@ public class MotivesPresenter {
 
     private Stage primaryStage;
     private MainController mainController;
+
     @FXML
     private AnchorPane anchorPane;
+
     @FXML
     JFXColorPicker backgroundColorPicker;
+
     @FXML
     JFXColorPicker controllersColorPicker;
+
     @FXML
     JFXColorPicker ripplerColorPicker;
+
     @FXML
     JFXColorPicker textColorPicker;
 
@@ -39,7 +44,6 @@ public class MotivesPresenter {
 
     }
 
-
     @FXML
     public void initialize() {
         textColorPicker.setValue(textCollor);
@@ -47,8 +51,7 @@ public class MotivesPresenter {
         backgroundColorPicker.setValue(backgroundColor);
         ripplerColorPicker.setValue(ripplerColor);
     }
-
-
+    
     public void reflesh() {
         anchorPane.setStyle("text-collor: #" + textCollor.toString().substring(2, 8) + ";" +
                 "controller-color: #" + controllerColor.toString().substring(2, 8) + ";" +
