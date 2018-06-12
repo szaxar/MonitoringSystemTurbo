@@ -7,7 +7,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.stage.Stage;
 import monitoringsystemturbo.controller.ConfirmExportController;
-import monitoringsystemturbo.controller.ErrorController;
+import monitoringsystemturbo.controller.AlertController;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.model.TrackingService;
 
@@ -57,7 +57,7 @@ public class ExportPresenter {
         Date dateEnd = Date.from(toTime.atZone(ZoneId.systemDefault()).toInstant());
 
         if (dateStart.after(dateEnd)) {
-            ErrorController.showAlert("Error occurred while checking date.", Alert.AlertType.ERROR);
+            AlertController.showAlert("Error occurred while checking date.", Alert.AlertType.ERROR);
         } else {
             ConfirmExportController confirmExportController = new ConfirmExportController(primaryStage);
             try {
@@ -68,11 +68,11 @@ public class ExportPresenter {
                     } else {
                         mainExporter.export(trackingService, applicationsToExport, fromTime, toTime);
                     }
-                    ErrorController.showAlert("Data exported successfully!", Alert.AlertType.INFORMATION);
+                    AlertController.showAlert("Data exported successfully!", Alert.AlertType.INFORMATION);
                     primaryStage.close();
                 }
             } catch (IOException e) {
-                ErrorController.showAlert("Error occurred while exporting data.", Alert.AlertType.ERROR);
+                AlertController.showAlert("Error occurred while exporting data.", Alert.AlertType.ERROR);
             }
         }
     }

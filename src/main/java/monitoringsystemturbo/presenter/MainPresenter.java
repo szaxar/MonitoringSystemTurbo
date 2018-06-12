@@ -11,7 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import monitoringsystemturbo.config.ConfigManager;
 import monitoringsystemturbo.controller.ApplicationListController;
-import monitoringsystemturbo.controller.ErrorController;
+import monitoringsystemturbo.controller.AlertController;
 import monitoringsystemturbo.controller.ExportController;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.history.StatisticsManager;
@@ -154,7 +154,7 @@ public class MainPresenter {
             Application application = applicationListController.showAddView();
             if (application != null) {
                 if (loadedApplications.contains(application)) {
-                    ErrorController.showAlert("Application already exist", Alert.AlertType.INFORMATION);
+                    AlertController.showAlert("Application already exist", Alert.AlertType.INFORMATION);
                     return;
                 }
                 ConfigManager.createFileIfNeeded(application);
@@ -172,7 +172,7 @@ public class MainPresenter {
                 timelineElements.put(application.getName(), timelineElement);
             }
         } catch (Exception e) {
-            ErrorController.showAlert("Error occurred while adding application.", Alert.AlertType.ERROR);
+            AlertController.showAlert("Error occurred while adding application.", Alert.AlertType.ERROR);
         }
     }
 
@@ -211,7 +211,7 @@ public class MainPresenter {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            ErrorController.showAlert("Error occurred while adding an activity.", Alert.AlertType.ERROR);
+            AlertController.showAlert("Error occurred while adding an activity.", Alert.AlertType.ERROR);
         }
     }
 

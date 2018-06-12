@@ -6,7 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import monitoringsystemturbo.controller.ErrorController;
+import monitoringsystemturbo.controller.AlertController;
 import monitoringsystemturbo.model.app.Application;
 import org.apache.commons.io.FilenameUtils;
 
@@ -48,7 +48,7 @@ public class AddApplicationPresenter {
             application = new Application(nameApplication.getText(), fullPathApplication.getText());
             primaryStage.close();
         } else {
-            ErrorController.showAlert("Incorrect path!", Alert.AlertType.ERROR);
+            AlertController.showAlert("Incorrect path!", Alert.AlertType.ERROR);
         }
     }
 

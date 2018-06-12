@@ -3,7 +3,7 @@ package monitoringsystemturbo.config;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.scene.control.Alert;
-import monitoringsystemturbo.controller.ErrorController;
+import monitoringsystemturbo.controller.AlertController;
 import monitoringsystemturbo.model.app.Application;
 
 import java.io.File;
@@ -33,7 +33,7 @@ public class ConfigManager {
                 for (Application application : removedApplications) {
                     removedAppNames += "- " + application.getName() + " (" + application.getFullPath() + ")" + "\n";
                 }
-                ErrorController.showAlert("Following applications were not found and will be removed form list:\n" + removedAppNames, Alert.AlertType.WARNING);
+                AlertController.showAlert("Following applications were not found and will be removed form list:\n" + removedAppNames, Alert.AlertType.WARNING);
                 save(list);
             }
             return list;
