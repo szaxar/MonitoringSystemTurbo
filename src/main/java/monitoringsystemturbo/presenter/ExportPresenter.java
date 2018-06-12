@@ -1,11 +1,10 @@
 package monitoringsystemturbo.presenter;
 
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTimePicker;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.CheckBox;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import monitoringsystemturbo.controller.ConfirmExportController;
 import monitoringsystemturbo.exporter.MainExporter;
@@ -28,8 +27,6 @@ public class ExportPresenter {
     private TrackingService trackingService;
 
     @FXML
-    private AnchorPane anchorPane;
-    @FXML
     private JFXDatePicker fromDatePicker;
 
     @FXML
@@ -42,13 +39,13 @@ public class ExportPresenter {
     private JFXTimePicker fromTimePicker;
 
     @FXML
-    private CheckBox wholeRangeCheckBox;
+    private JFXCheckBox wholeRangeCheckBox;
 
     @FXML
-    private CheckBox fromBeginCheckBox;
+    private JFXCheckBox fromBeggingCheckBox;
 
     @FXML
-    private CheckBox toNowCheckBox;
+    private JFXCheckBox untilNowCheckBox;
 
     @FXML
     public void initialize() {
@@ -102,35 +99,30 @@ public class ExportPresenter {
 
     @FXML
     public void onToNow() {
-        if (toNowCheckBox.isSelected()) {
-            toDatePicker.setValue(now().plusYears(1));
+        if (untilNowCheckBox.isSelected()) {
+            toDatePicker.setValue(now());
             toTimePicker.setValue(LocalTime.now());
-            toDatePicker.setEditable(false);
-            toTimePicker.setEditable(false);
+            setDisableForToPickers(true);
 
             wholeRangeCheckBox.setDisable(true);
         } else {
             toDatePicker.setEditable(true);
             toTimePicker.setEditable(true);
 
-            if (!fromBeginCheckBox.isSelected()) wholeRangeCheckBox.setDisable(false);
+            if (!fromBeggingCheckBox.isSelected()) wholeRangeCheckBox.setDisable(false);
         }
     }
 
     @FXML
     public void onFromBegin() {
-        if (fromBeginCheckBox.isSelected()) {
+        if (fromBeggingCheckBox.isSelected()) {
             fromDatePicker.setValue(LocalDate.of(1970, 1, 1));
             fromTimePicker.setValue(LocalTime.of(0, 0));
-            fromDatePicker.setEditable(false);
-            fromTimePicker.setEditable(false);
-
+            setDisableToFromPickers(true);
             wholeRangeCheckBox.setDisable(true);
         } else {
-            fromDatePicker.setEditable(true);
-            fromTimePicker.setEditable(true);
-
-            if (!toNowCheckBox.isSelected()) wholeRangeCheckBox.setDisable(false);
+            setDisableToFromPickers(false);
+            if (!untilNowCheckBox.isSelected()) wholeRangeCheckBox.setDisable(false);
         }
     }
 
@@ -140,24 +132,18 @@ public class ExportPresenter {
             fromDatePicker.setValue(LocalDate.of(1970, 1, 1));
             fromTimePicker.setValue(LocalTime.of(0, 0));
 
-            fromBeginCheckBox.setDisable(true);
-            toNowCheckBox.setDisable(true);
+            fromBeggingCheckBox.setDisable(true);
+            untilNowCheckBox.setDisable(true);
 
             toDatePicker.setValue(now().plusYears(1));
             toTimePicker.setValue(LocalTime.now());
 
-            toDatePicker.setEditable(false);
-            toTimePicker.setEditable(false);
-            fromDatePicker.setEditable(false);
-            fromTimePicker.setEditable(false);
+            setDisableToAllPickers(true);
         } else {
-            toDatePicker.setEditable(true);
-            toTimePicker.setEditable(true);
-            fromDatePicker.setEditable(true);
-            fromTimePicker.setEditable(true);
+            setDisableToAllPickers(false);
 
-            fromBeginCheckBox.setDisable(false);
-            toNowCheckBox.setDisable(false);
+            fromBeggingCheckBox.setDisable(false);
+            untilNowCheckBox.setDisable(false);
         }
     }
 
@@ -179,10 +165,20 @@ public class ExportPresenter {
         this.trackingService = trackingService;
     }
 
-    public void reflesh() {
-        anchorPane.setStyle("text-collor: #" + MotivesPresenter.textCollor.toString().substring(2, 8) + ";" +
-                "controller-color: #" + MotivesPresenter.controllerColor.toString().substring(2, 8) + ";" +
-                "background-collor: #" + MotivesPresenter.backgroundColor.toString().substring(2, 8) + ";" +
-                "rippler-collor: #" + MotivesPresenter.ripplerColor.toString().substring(2, 8) + ";");
+    public void setDisableToAllPickers(boolean isDisable) {
+        toDatePicker.setDisable(isDisable);
+        toTimePicker.setDisable(isDisable);
+        fromDatePicker.setDisable(isDisable);
+        fromTimePicker.setDisable(isDisable);
+    }
+
+    public void setDisableForToPickers(boolean isDisable) {
+        toDatePicker.setDisable(isDisable);
+        toTimePicker.setDisable(isDisable);
+    }
+
+    public void setDisableToFromPickers(boolean isDisable) {
+        fromDatePicker.setDisable(isDisable);
+        fromTimePicker.setDisable(isDisable);
     }
 }
