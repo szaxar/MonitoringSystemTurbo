@@ -36,12 +36,15 @@ public abstract class Period {
         this.datetimeEnd.setValue(datetimeEnd);
     }
 
-    public int getTimeInSec() {
-        return (int) (getTimeInMs() / 1000);
-    }
-
-    public long getTimeInMs() {
-        return datetimeEnd.get().getTime() - datetimeStart.getTime();
+    public int getTimeInSec(Date fromDate, Date toDate) {
+        if (fromDate == null || datetimeStart.after(fromDate)) {
+            fromDate = datetimeStart;
+        }
+        if (toDate == null || datetimeEnd.getValue().before(toDate)) {
+            toDate = datetimeEnd.getValue();
+        }
+        int timeInSec = (int) ((toDate.getTime() - fromDate.getTime()) / 1000);
+        return timeInSec < 0 ? 0 : timeInSec;
     }
 
     public ObjectProperty<Date> getDatetimeEndProperty() {

@@ -44,11 +44,20 @@ public class Timeline {
     }
 
     public Timeline(ComputerStatistics computerStatistic) {
+        this(computerStatistic, true);
+    }
+
+    public Timeline(ComputerStatistics computerStatistic, boolean observableDatetimeEnd) {
         observablePeriodList = FXCollections.observableArrayList();
         this.datetimeStart = computerStatistic.getSystemStartTime();
         this.datetimeEnd = computerStatistic.getSystemCloseTime();
 
-        Period period = new RunningPeriod(datetimeStart, computerStatistic.getSystemCloseTimeProperty());
+        Period period;
+        if (observableDatetimeEnd) {
+            period = new RunningPeriod(datetimeStart, computerStatistic.getSystemCloseTimeProperty());
+        } else {
+            period = new RunningPeriod(datetimeStart, datetimeEnd);
+        }
         observablePeriodList.add(period);
     }
 
@@ -99,20 +108,28 @@ public class Timeline {
     }
 
     public int getActiveTimeInSec() {
+        return getActiveTimeInSec(null, null);
+    }
+
+    public int getActiveTimeInSec(Date fromDate, Date toDate) {
         int timeInSec = 0;
         for (Period period : observablePeriodList) {
             if (period instanceof ActivePeriod) {
-                timeInSec += period.getTimeInSec();
+                timeInSec += period.getTimeInSec(fromDate, toDate);
             }
         }
         return timeInSec;
     }
 
     public int getRunningTimeInSec() {
+        return getRunningTimeInSec(null, null);
+    }
+
+    public int getRunningTimeInSec(Date fromDate, Date toDate) {
         int timeInSec = 0;
         for (Period period : observablePeriodList) {
             if (period instanceof RunningPeriod) {
-                timeInSec += period.getTimeInSec();
+                timeInSec += period.getTimeInSec(fromDate, toDate);
             }
         }
         return timeInSec;
