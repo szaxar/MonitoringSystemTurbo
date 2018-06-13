@@ -14,10 +14,12 @@ import monitoringsystemturbo.config.ConfigManager;
 import monitoringsystemturbo.controller.ApplicationListController;
 import monitoringsystemturbo.controller.AlertController;
 import monitoringsystemturbo.controller.ExportController;
+import monitoringsystemturbo.controller.OptionsController;
 import monitoringsystemturbo.controller.MainController;
 import monitoringsystemturbo.controller.MotivesController;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.history.StatisticsManager;
+import monitoringsystemturbo.model.ActionsMonitor;
 import monitoringsystemturbo.model.TrackingService;
 import monitoringsystemturbo.model.app.Application;
 import monitoringsystemturbo.model.computer.ComputerStatistics;
@@ -61,15 +63,18 @@ public class MainPresenter {
     private MotivesController motivesController;
     private ExportController exportController;
     private MainController mainControler;
+    private OptionsController optionsController;
+    private ActionsMonitor actionsMonitor;
 
     @FXML
     private ListView<Application> applicationList;
 
     @FXML
-    public void initialize(TrackingService trackingService, MainExporter mainExporter, List<Application> loadedApplications) {
+    public void initialize(TrackingService trackingService, MainExporter mainExporter, List<Application> loadedApplications, ActionsMonitor actionsMonitor) {
         this.trackingService = trackingService;
         this.mainExporter = mainExporter;
         this.loadedApplications = loadedApplications;
+        this.actionsMonitor = actionsMonitor;
         setCellFactory();
         applicationList.setItems(FXCollections.observableList(loadedApplications));
         renderTimelineLegend();
@@ -268,6 +273,15 @@ public class MainPresenter {
         }
     }
 
+    @FXML
+    public void onOptions() {
+        try {
+            optionsController.showOptionsView(actionsMonitor);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void setCellFactory() {
         applicationList.setCellFactory(param -> new ListCell<Application>() {
             @Override
@@ -303,6 +317,9 @@ public class MainPresenter {
         this.exportController = exportController;
     }
 
+    public void setOptionsController(OptionsController optionsController) {
+        this.optionsController = optionsController;
+    }
 
     public void setMotivesController(MotivesController motivesController) {
         this.motivesController = motivesController;
@@ -315,9 +332,7 @@ public class MainPresenter {
         } catch (IOException e) {
             e.printStackTrace();
             AlertController.showAlert("Error occurred while loading motives view.", Alert.AlertType.ERROR);
-
         }
-
     }
 
     public void setMainControler(MainController mainControler) {
@@ -331,3 +346,4 @@ public class MainPresenter {
                 "rippler-collor: #" + MotivesPresenter.ripplerColor.toString().substring(2, 8) + ";");
     }
 }
+
