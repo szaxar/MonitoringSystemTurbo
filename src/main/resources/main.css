@@ -3,7 +3,8 @@
     controller-color: black;
     background-color: white;
     rippler-color: red;
-    secound-color: #B0B0B0;
+    second-color: grey;
+    background-text-color:black;
 }
 
 .scroll-pane:focused {
@@ -24,15 +25,16 @@
     -jfx-default-color:controller-color;
 }
 
+
 .jfx-time-picker{
     -jfx-default-color:controller-color;
+    -fx-text-fill: background-text-color;
 }
 
 .jfx-check-box{
     -jfx-checked-color:controller-color;
-    -jfx-unchecked-color: secound-color;
+    -jfx-unchecked-color: second-color;
 }
-
 
 .jfx-button {
     -fx-background-color: controller-color;
@@ -53,9 +55,32 @@
 
 .list-view .list-cell:even {
     -fx-background-color: background-color;
-    -fx-text-fill: text-color;
 }
 .list-view .list-cell:odd {
-    -fx-background-color: secound-color;
+    -fx-background-color: second-color;
+}
+
+.choice-box {
+    -fx-background-color: controller-color;
+    -fx-text-fill: text-color;
+    -fx-mark-color: second-color;
+
+}
+
+.choice-box .context-menu {
+    -fx-background-color: controller-color;
+    -fx-text-fill: text-color;
+
+}
+
+.choice-box .menu-item:focused {
+    -fx-background-color: second-color;
+}
+
+.choice-box .menu-item > .label {
+    -fx-text-fill: text-color;
+}
+
+.choice-box .label {
     -fx-text-fill: text-color;
 }

@@ -1,28 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXColorPicker?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="147.0" prefWidth="653.0" stylesheets="main.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="monitoringsystemturbo.presenter.MotivesPresenter">
+<AnchorPane fx:id="anchorPane" prefHeight="147.0" prefWidth="832.0" stylesheets="main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="monitoringsystemturbo.presenter.MotivesPresenter">
    <children>
-      <HBox layoutX="6.0" layoutY="35.0" prefHeight="46.0" prefWidth="529.0">
+      <HBox layoutX="6.0" layoutY="35.0" prefHeight="39.0" prefWidth="833.0">
          <children>
             <JFXColorPicker fx:id="backgroundColorPicker" prefHeight="46.0" prefWidth="132.0" />
             <JFXColorPicker fx:id="controllersColorPicker" layoutX="10.0" layoutY="10.0" prefHeight="46.0" prefWidth="132.0" />
             <JFXColorPicker fx:id="ripplerColorPicker" layoutX="10.0" layoutY="10.0" prefHeight="46.0" prefWidth="132.0" />
             <JFXColorPicker fx:id="textColorPicker" layoutX="274.0" layoutY="10.0" prefHeight="46.0" prefWidth="132.0" />
+            <JFXColorPicker fx:id="backgroundTextColorPicker" prefHeight="46.0" prefWidth="150.0" />
+            <JFXColorPicker fx:id="secondColorPicker" prefHeight="46.0" prefWidth="141.0" />
          </children>
       </HBox>
       <Label layoutX="14.0" layoutY="14.0" prefHeight="21.0" prefWidth="130.0" text="Background color" />
       <Label layoutX="142.0" layoutY="14.0" prefHeight="21.0" prefWidth="130.0" text="Controllers color" />
       <Label layoutX="272.0" layoutY="14.0" prefHeight="21.0" prefWidth="130.0" text="Rippler color" />
       <Label layoutX="402.0" layoutY="14.0" prefHeight="21.0" prefWidth="130.0" text="Text color" />
-      <JFXButton buttonType="RAISED" layoutX="494.0" layoutY="106.0" mnemonicParsing="false" onAction="#onCancel" prefHeight="33.0" prefWidth="77.0" text="Cancel" />
-      <JFXButton buttonType="RAISED" layoutX="571.0" layoutY="106.0" mnemonicParsing="false" onAction="#onConfirm" prefHeight="33.0" prefWidth="77.0" text="Confirm" />
-      <JFXColorPicker fx:id="secoundColorPicker" layoutX="526.0" layoutY="35.0" prefHeight="46.0" prefWidth="132.0" />
-      <Label layoutX="527.0" layoutY="14.0" prefHeight="21.0" prefWidth="130.0" text="Secound color" />
+      <JFXButton buttonType="RAISED" layoutX="648.0" layoutY="106.0" mnemonicParsing="false" onAction="#onCancel" prefHeight="33.0" prefWidth="77.0" text="Cancel" />
+      <JFXButton buttonType="RAISED" layoutX="756.0" layoutY="106.0" mnemonicParsing="false" onAction="#onConfirm" prefHeight="33.0" prefWidth="77.0" text="Confirm" />
+      <Label layoutX="685.0" layoutY="14.0" prefHeight="21.0" prefWidth="130.0" text="Secound color" />
+      <ChoiceBox fx:id="choiceBox" layoutX="4.0" layoutY="107.0" prefWidth="150.0" />
+      <Label layoutX="536.0" layoutY="14.0" prefHeight="21.0" prefWidth="150.0" text="BackgroundText color" />
    </children>
 </AnchorPane>

@@ -184,6 +184,7 @@ public class ExportPresenter {
                 "controller-color: #" + MotivesPresenter.controllerColor.toString().substring(2, 8) + ";" +
                 "background-color: #" + MotivesPresenter.backgroundColor.toString().substring(2, 8) + ";" +
                 "rippler-color: #" + MotivesPresenter.ripplerColor.toString().substring(2, 8) + ";"+
-                "secound-color: #" + MotivesPresenter.secoundColor.toString().substring(2, 8) + ";");
+                "second-color: #" + MotivesPresenter.secondColor.toString().substring(2, 8) + ";"+
+                "background-text-color: #" + MotivesPresenter.backgroundTextColor.toString().substring(2, 8) + ";");
     }
 }

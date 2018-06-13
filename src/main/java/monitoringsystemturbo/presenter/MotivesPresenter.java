@@ -1,7 +1,11 @@
 package monitoringsystemturbo.presenter;
 
 import com.jfoenix.controls.JFXColorPicker;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -29,13 +33,20 @@ public class MotivesPresenter {
     JFXColorPicker textColorPicker;
 
     @FXML
-    JFXColorPicker secoundColorPicker;
+    JFXColorPicker secondColorPicker;
+
+    @FXML
+    JFXColorPicker backgroundTextColorPicker;
+
+    @FXML
+    ChoiceBox choiceBox;
 
     public static Color textColor = Color.WHITE;
     public static Color controllerColor = Color.BLACK;
     public static Color backgroundColor = Color.WHITE;
     public static Color ripplerColor = Color.RED;
-    public static Color secoundColor = Color.GREY;
+    public static Color secondColor = Color.GREY;
+    public static Color backgroundTextColor = Color.BLACK;
 
     @FXML
     public void onConfirm() {
@@ -43,7 +54,8 @@ public class MotivesPresenter {
         controllerColor = controllersColorPicker.getValue();
         backgroundColor = backgroundColorPicker.getValue();
         ripplerColor = ripplerColorPicker.getValue();
-        secoundColor = secoundColorPicker.getValue();
+        secondColor = secondColorPicker.getValue();
+        backgroundTextColor = backgroundTextColorPicker.getValue();
         mainController.reflesh();
         primaryStage.close();
 
@@ -55,16 +67,39 @@ public class MotivesPresenter {
         controllersColorPicker.setValue(controllerColor);
         backgroundColorPicker.setValue(backgroundColor);
         ripplerColorPicker.setValue(ripplerColor);
-        secoundColorPicker.setValue(secoundColor);
+        secondColorPicker.setValue(secondColor);
+        backgroundTextColorPicker.setValue(backgroundTextColor);
+
+        choiceBox.setItems(FXCollections.observableArrayList(
+                "Standard", "Dracula"));
+
+        choiceBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                changeMotive(newValue);
+            }
+        });
     }
-    
+
+    private void changeMotive(Number newValue) {
+
+        switch (newValue.intValue()){
+            case 0:
+                setStandardMode();
+                break;
+            case 1:
+                setDraculaMode();
+                break;
+        }
+    }
+
     public void reflesh() {
         anchorPane.setStyle("text-color: #" + textColor.toString().substring(2, 8) + ";" +
                 "controller-color: #" + controllerColor.toString().substring(2, 8) + ";" +
                 "background-color: #" + backgroundColor.toString().substring(2, 8) + ";" +
                 "rippler-color: #" + ripplerColor.toString().substring(2, 8) + ";"+
-                "secound-color: #" + secoundColor.toString().substring(2, 8) + ";"+
-                "secound-color: #" + MotivesPresenter.secoundColor.toString().substring(2, 8) + ";");
+                "secound-color: #" + secondColor.toString().substring(2, 8) + ";"+
+                "background-text-color: #" + backgroundTextColor.toString().substring(2, 8) + ";");
     }
 
     @FXML
@@ -78,5 +113,24 @@ public class MotivesPresenter {
 
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
+    }
+
+
+    public void setStandardMode(){
+        controllersColorPicker.setValue(Color.BLACK);
+        backgroundColorPicker.setValue(Color.WHITE);
+        ripplerColorPicker.setValue(Color.RED);
+        secondColorPicker.setValue(Color.GREY);
+        textColorPicker.setValue(Color.WHITE);
+        backgroundTextColorPicker.setValue(Color.BLACK);
+    }
+
+    public void setDraculaMode(){
+        controllersColorPicker.setValue(Color.WHITE);
+        backgroundColorPicker.setValue(Color.BLACK);
+        ripplerColorPicker.setValue(Color.RED);
+        secondColorPicker.setValue(Color.GREY);
+        textColorPicker.setValue(Color.BLACK);
+        backgroundTextColorPicker.setValue(Color.WHITE);
     }
 }
