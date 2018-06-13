@@ -4,7 +4,6 @@
     background-color: white;
     rippler-color: red;
     second-color: grey;
-    background-text-color:black;
 }
 
 .scroll-pane:focused {
@@ -25,10 +24,8 @@
     -jfx-default-color:controller-color;
 }
 
-
 .jfx-time-picker{
     -jfx-default-color:controller-color;
-    -fx-text-fill: background-text-color;
 }
 
 .jfx-check-box{
