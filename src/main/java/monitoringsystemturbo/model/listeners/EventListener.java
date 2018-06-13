@@ -1,17 +1,17 @@
 package monitoringsystemturbo.model.listeners;
 
-import monitoringsystemturbo.model.ActivityMonitor;
+import monitoringsystemturbo.model.ActionsMonitor;
 
 import java.time.LocalTime;
 
 abstract class EventListener {
-    private ActivityMonitor activityMonitor;
+    private ActionsMonitor actionsMonitor;
 
-    EventListener(ActivityMonitor activityMonitor) {
-        this.activityMonitor = activityMonitor;
+    EventListener(ActionsMonitor actionsMonitor) {
+        this.actionsMonitor = actionsMonitor;
     }
 
     void notifyMonitors() {
-        activityMonitor.eventCaptured(LocalTime.now());
+        actionsMonitor.eventCaptured(LocalTime.now());
     }
 }

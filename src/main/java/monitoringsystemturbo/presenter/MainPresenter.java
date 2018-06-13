@@ -15,7 +15,7 @@ import monitoringsystemturbo.controller.ExportController;
 import monitoringsystemturbo.controller.OptionsController;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.history.StatisticsManager;
-import monitoringsystemturbo.model.ActivityMonitor;
+import monitoringsystemturbo.model.ActionsMonitor;
 import monitoringsystemturbo.model.TrackingService;
 import monitoringsystemturbo.model.app.Application;
 import monitoringsystemturbo.model.computer.ComputerStatistics;
@@ -55,17 +55,17 @@ public class MainPresenter {
     private ApplicationListController applicationListController;
     private ExportController exportController;
     private OptionsController optionsController;
-    private ActivityMonitor activityMonitor;
+    private ActionsMonitor actionsMonitor;
 
     @FXML
     private ListView<Application> applicationList;
 
     @FXML
-    public void initialize(TrackingService trackingService, MainExporter mainExporter, List<Application> loadedApplications, ActivityMonitor activityMonitor) {
+    public void initialize(TrackingService trackingService, MainExporter mainExporter, List<Application> loadedApplications, ActionsMonitor actionsMonitor) {
         this.trackingService = trackingService;
         this.mainExporter = mainExporter;
         this.loadedApplications = loadedApplications;
-        this.activityMonitor = activityMonitor;
+        this.actionsMonitor = actionsMonitor;
         setCellFactory();
         applicationList.setItems(FXCollections.observableList(loadedApplications));
         renderTimelineLegend();
@@ -279,7 +279,7 @@ public class MainPresenter {
     @FXML
     public void onOptions() {
         try {
-            optionsController.showOptionsView(activityMonitor);
+            optionsController.showOptionsView(actionsMonitor);
         } catch (IOException e) {
             e.printStackTrace();
         }

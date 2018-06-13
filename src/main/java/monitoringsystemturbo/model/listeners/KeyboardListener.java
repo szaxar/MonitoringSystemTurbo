@@ -1,12 +1,12 @@
 package monitoringsystemturbo.model.listeners;
 
-import monitoringsystemturbo.model.ActivityMonitor;
+import monitoringsystemturbo.model.ActionsMonitor;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
 
 public class KeyboardListener extends EventListener implements NativeKeyListener {
-    public KeyboardListener(ActivityMonitor activityMonitor) {
-        super(activityMonitor);
+    public KeyboardListener(ActionsMonitor actionsMonitor) {
+        super(actionsMonitor);
     }
 
     @Override

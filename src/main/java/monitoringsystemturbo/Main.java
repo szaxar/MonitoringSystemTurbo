@@ -7,7 +7,7 @@ import monitoringsystemturbo.controller.ErrorController;
 import monitoringsystemturbo.controller.MainController;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.history.StatisticsManager;
-import monitoringsystemturbo.model.ActivityMonitor;
+import monitoringsystemturbo.model.ActionsMonitor;
 import monitoringsystemturbo.model.TrackingService;
 import monitoringsystemturbo.model.listeners.KeyboardListener;
 import monitoringsystemturbo.model.listeners.MouseListener;
@@ -26,7 +26,7 @@ public class Main extends Application {
 
     private TrackingService trackingService;
     private MainExporter mainExporter;
-    private ActivityMonitor activityMonitor;
+    private ActionsMonitor actionsMonitor;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -46,12 +46,13 @@ public class Main extends Application {
         }
         mainExporter = new MainExporter();
         trackingService = new TrackingService(loadedApplications.stream()
-                .map(it -> it.getName()).collect(Collectors.toList()));
-        activityMonitor = new ActivityMonitor(trackingService);
+                .map(it -> it.getName())
+                .collect(Collectors.toList()));
+        actionsMonitor = new ActionsMonitor(trackingService);
         initializeEventListeners();
         trackingService.start();
 
-        MainController mainController = new MainController(primaryStage, trackingService, mainExporter, activityMonitor);
+        MainController mainController = new MainController(primaryStage, trackingService, mainExporter, actionsMonitor);
         mainController.showMainWindow(loadedApplications);
 
         primaryStage.setOnCloseRequest(event -> {
@@ -65,16 +66,19 @@ public class Main extends Application {
                 try {
                     StatisticsManager.save(appName, trackingService.getStatisticsForApp(appName));
                 } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
             try {
                 StatisticsManager.save(trackingService.getComputerStatistics());
             } catch (IOException e) {
+                e.printStackTrace();
             }
             try {
-                activityMonitor.interrupt();
-                activityMonitor.join();
+                actionsMonitor.interrupt();
+                actionsMonitor.join();
             } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         });
     }
@@ -93,12 +97,12 @@ public class Main extends Application {
     }
 
     private void initializeEventListeners() {
-        MouseListener mouseListener = new MouseListener(activityMonitor);
+        MouseListener mouseListener = new MouseListener(actionsMonitor);
         GlobalScreen.addNativeMouseListener(mouseListener);
         GlobalScreen.addNativeMouseMotionListener(mouseListener);
         GlobalScreen.addNativeMouseWheelListener(mouseListener);
-        GlobalScreen.addNativeKeyListener(new KeyboardListener(activityMonitor));
-        activityMonitor.start();
+        GlobalScreen.addNativeKeyListener(new KeyboardListener(actionsMonitor));
+        actionsMonitor.start();
     }
 
     public static void main(String[] args) {

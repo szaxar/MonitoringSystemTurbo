@@ -5,20 +5,20 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import monitoringsystemturbo.model.ActivityMonitor;
+import monitoringsystemturbo.model.ActionsMonitor;
 import monitoringsystemturbo.presenter.OptionsPresenter;
 
 import java.io.IOException;
 
 public class OptionsController {
     private Stage primaryStage;
-    private ActivityMonitor activityMonitor;
+    private ActionsMonitor actionsMonitor;
 
     public OptionsController(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
 
-    public void showOptionsView(ActivityMonitor activityMonitor) throws IOException {
+    public void showOptionsView(ActionsMonitor actionsMonitor) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(this.getClass().getResource("/optionsView.fxml"));
         Parent rootLayout = loader.load();
@@ -30,7 +30,8 @@ public class OptionsController {
 
         OptionsPresenter optionsPresenter = loader.getController();
         optionsPresenter.setPrimaryStage(dialogStage);
-        optionsPresenter.setActivityMonitor(activityMonitor);
+        optionsPresenter.setActionsMonitor(actionsMonitor);
+        optionsPresenter.start();
 
         Scene scene = new Scene(rootLayout);
         dialogStage.setScene(scene);

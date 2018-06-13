@@ -11,8 +11,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class ActivityMonitor extends Thread {
-    private int stopTime = 1;
+public class ActionsMonitor extends Thread {
+    private int stopTime = 5;
 
     private LocalTime lastUpdate = LocalTime.now();
     private AtomicBoolean isSleeping = new AtomicBoolean(false);
@@ -22,7 +22,7 @@ public class ActivityMonitor extends Thread {
     private boolean isRunning = true;
     private boolean isExtendedMonitoring = true;
 
-    public ActivityMonitor(TrackingService trackingService) {
+    public ActionsMonitor(TrackingService trackingService) {
         this.trackingService = trackingService;
     }
 
@@ -65,6 +65,14 @@ public class ActivityMonitor extends Thread {
             trackingService.start();
             isSleeping.set(false);
         }
+    }
+
+    public int getStopTime() {
+        return stopTime;
+    }
+
+    public boolean isExtendedMonitoring() {
+        return isExtendedMonitoring;
     }
 
     public void setStopTime(int stopTime) {

@@ -1,14 +1,14 @@
 package monitoringsystemturbo.model.listeners;
 
-import monitoringsystemturbo.model.ActivityMonitor;
+import monitoringsystemturbo.model.ActionsMonitor;
 import org.jnativehook.mouse.NativeMouseEvent;
 import org.jnativehook.mouse.NativeMouseInputListener;
 import org.jnativehook.mouse.NativeMouseWheelEvent;
 import org.jnativehook.mouse.NativeMouseWheelListener;
 
 public class MouseListener extends EventListener implements NativeMouseInputListener, NativeMouseWheelListener {
-    public MouseListener(ActivityMonitor activityMonitor) {
-        super(activityMonitor);
+    public MouseListener(ActionsMonitor actionsMonitor) {
+        super(actionsMonitor);
     }
 
     @Override

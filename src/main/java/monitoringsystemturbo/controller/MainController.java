@@ -5,7 +5,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import monitoringsystemturbo.exporter.MainExporter;
-import monitoringsystemturbo.model.ActivityMonitor;
+import monitoringsystemturbo.model.ActionsMonitor;
 import monitoringsystemturbo.model.TrackingService;
 import monitoringsystemturbo.model.app.Application;
 import monitoringsystemturbo.presenter.MainPresenter;
@@ -18,13 +18,13 @@ public class MainController {
     private Stage primaryStage;
     private TrackingService trackingService;
     private MainExporter mainExporter;
-    private ActivityMonitor activityMonitor;
+    private ActionsMonitor actionsMonitor;
 
-    public MainController(Stage primaryStage, TrackingService trackingService, MainExporter mainExporter, ActivityMonitor activityMonitor) {
+    public MainController(Stage primaryStage, TrackingService trackingService, MainExporter mainExporter, ActionsMonitor actionsMonitor) {
         this.primaryStage = primaryStage;
         this.trackingService = trackingService;
         this.mainExporter = mainExporter;
-        this.activityMonitor = activityMonitor;
+        this.actionsMonitor = actionsMonitor;
     }
 
     public void showMainWindow(List<Application> loadedApplications) throws IOException {
@@ -33,7 +33,7 @@ public class MainController {
         Parent rootLayout = loader.load();
 
         MainPresenter mainPresenter = loader.getController();
-        mainPresenter.initialize(trackingService, mainExporter, loadedApplications, activityMonitor);
+        mainPresenter.initialize(trackingService, mainExporter, loadedApplications, actionsMonitor);
 
         ApplicationListController applicationListController = new ApplicationListController(primaryStage);
         mainPresenter.setApplicationListController(applicationListController);
