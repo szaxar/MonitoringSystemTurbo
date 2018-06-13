@@ -37,10 +37,10 @@ public abstract class Period {
     }
 
     public int getTimeInSec(Date fromDate, Date toDate) {
-        if (fromDate == null || datetimeStart.getTime() > fromDate.getTime()) {
+        if (fromDate == null || datetimeStart.after(fromDate)) {
             fromDate = datetimeStart;
         }
-        if (toDate == null || datetimeEnd.getValue().getTime() < toDate.getTime()) {
+        if (toDate == null || datetimeEnd.getValue().before(toDate)) {
             toDate = datetimeEnd.getValue();
         }
         return (int) ((toDate.getTime() - fromDate.getTime()) / 1000);

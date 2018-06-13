@@ -45,10 +45,10 @@ public class ComputerStatistics {
     }
 
     public int getRunningTimeInSec(Date fromDate, Date toDate) {
-        if (fromDate == null || systemStartTime.getTime() > fromDate.getTime()) {
+        if (fromDate == null || systemStartTime.after(fromDate)) {
             fromDate = systemStartTime;
         }
-        if (toDate == null || systemCloseTime.getTime() < toDate.getTime()) {
+        if (toDate == null || systemCloseTime.before(toDate)) {
             toDate = systemCloseTime;
         }
         return (int) ((toDate.getTime() - fromDate.getTime()) / 1000);

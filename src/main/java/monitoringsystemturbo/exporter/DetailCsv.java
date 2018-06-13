@@ -108,7 +108,7 @@ public class DetailCsv {
     private List<Day> getComputerDays() {
         List<Timeline> timelines = new ArrayList<>();
         for (ComputerStatistics computerStatistics : computerStatisticsList) {
-            timelines.add(new Timeline(computerStatistics));
+            timelines.add(new Timeline(computerStatistics, false));
         }
         return getDaysByTimelines(timelines);
     }

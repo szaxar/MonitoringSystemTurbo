@@ -44,11 +44,20 @@ public class Timeline {
     }
 
     public Timeline(ComputerStatistics computerStatistic) {
+        this(computerStatistic, true);
+    }
+
+    public Timeline(ComputerStatistics computerStatistic, boolean observableDatetimeEnd) {
         observablePeriodList = FXCollections.observableArrayList();
         this.datetimeStart = computerStatistic.getSystemStartTime();
         this.datetimeEnd = computerStatistic.getSystemCloseTime();
 
-        Period period = new RunningPeriod(datetimeStart, computerStatistic.getSystemCloseTimeProperty());
+        Period period;
+        if (observableDatetimeEnd) {
+            period = new RunningPeriod(datetimeStart, computerStatistic.getSystemCloseTimeProperty());
+        } else {
+            period = new RunningPeriod(datetimeStart, datetimeEnd);
+        }
         observablePeriodList.add(period);
     }
 
