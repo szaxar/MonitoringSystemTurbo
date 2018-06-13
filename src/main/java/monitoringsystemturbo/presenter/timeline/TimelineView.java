@@ -62,7 +62,7 @@ public class TimelineView extends Group {
             Rectangle periodView = createPeriodView(period);
             this.currentPeriodView = periodView;
             long datetimeStartInDay = Math.max(datetimeStart, day * dayInMs - dateOffset);
-            long datetimeEndInDay = Math.min(datetimeEnd, (day + 1) * dayInMs - dateOffset);
+            long datetimeEndInDay = Math.min(datetimeEnd, (day + 1) * dayInMs - dateOffset - 1);
             setPeriodViewWidthProperties(periodView, datetimeStartInDay, datetimeEndInDay);
             addPeriodViewForDay(day, periodView);
         }
@@ -102,7 +102,7 @@ public class TimelineView extends Group {
 
     private void setPeriodViewWidthProperties(Rectangle periodView, long datetimeStart, long datetimeEnd) {
         double widthRatio = (double) (datetimeEnd - datetimeStart) / dayInMs;
-        double offsetRatio = (double) (datetimeStart % dayInMs) / dayInMs;
+        double offsetRatio = (double) ((datetimeStart + dateOffset) % dayInMs) / dayInMs;
         widthProperty().addListener((observable, oldValue, newValue) -> {
             double timelineWidth = newValue.doubleValue();
             periodView.setWidth(timelineWidth * widthRatio);
