@@ -29,11 +29,13 @@ public class ConfigManager {
             });
             List<Application> removedApplications = checkApplicationList(list);
             if (!removedApplications.isEmpty()) {
-                String removedAppNames = "";
+                StringBuilder removedAppNames = new StringBuilder();
                 for (Application application : removedApplications) {
-                    removedAppNames += "- " + application.getName() + " (" + application.getFullPath() + ")" + "\n";
+                    removedAppNames.append("- ").append(application.getName()).append(" (")
+                            .append(application.getFullPath()).append(")").append("\n");
                 }
-                AlertController.showAlert("Following applications were not found and will be removed form list:\n" + removedAppNames, Alert.AlertType.WARNING);
+                AlertController.showAlert("Following applications were not found and will be removed from list:\n"
+                        + removedAppNames, Alert.AlertType.WARNING);
                 save(list);
             }
             return list;
@@ -41,7 +43,7 @@ public class ConfigManager {
         return new ArrayList<>();
     }
 
-    public static List<Application> checkApplicationList(List<Application> loadedApplications) {
+    private static List<Application> checkApplicationList(List<Application> loadedApplications) {
         Iterator<Application> iter = loadedApplications.iterator();
         List<Application> notFound = new ArrayList<>();
 
