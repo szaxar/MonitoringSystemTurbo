@@ -2,26 +2,21 @@ package monitoringsystemturbo.exporter;
 
 import monitoringsystemturbo.model.computer.ComputerStatistics;
 import monitoringsystemturbo.model.timeline.Timeline;
+import monitoringsystemturbo.utils.DateFormats;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.*;
+
+import static monitoringsystemturbo.utils.DateFormats.getDurationFormat;
 
 public class Exporter {
 
-    private static final SimpleDateFormat datetimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private static final String hourSummary = "h";
-    private static final String minuteSummary = "min";
-    private static final String secondSummary = "s";
-
-    private String filename;
-    private ArrayList<ComputerStatistics> computerStatisticsList = new ArrayList<>();
-    private HashMap<String, List<Timeline>> applicationTimelinesMap = new HashMap<>();
+    private final String filename;
+    private final ArrayList<ComputerStatistics> computerStatisticsList = new ArrayList<>();
+    private final HashMap<String, List<Timeline>> applicationTimelinesMap = new HashMap<>();
 
     public Exporter(String filename) {
         this.filename = filename;
@@ -47,140 +42,40 @@ public class Exporter {
         }
     }
 
-    public void exportGeneralInfo(Date... dates) throws IOException {
-        String datetimeStart;
-        String datetimeEnd;
-        String fromDate = null;
-        String toDate = null;
-        if (dates.length > 0) {
-            fromDate = datetimeFormat.format(dates[0]);
-            toDate = datetimeFormat.format(dates[1]);
-        }
-        CsvBuilder csvBuilder = new CsvBuilder();
-        csvBuilder.writeRow("", "RunningTime", "ActiveTime");
-        int runningTime = 0, activeTime;
-        for (ComputerStatistics computerStatistics : computerStatisticsList) {
-            if (dates.length > 0) {
-                datetimeStart = datetimeFormat.format(computerStatistics.getSystemStartTime());
-                datetimeEnd = datetimeFormat.format(computerStatistics.getSystemCloseTime());
-                if (areDatesInInterval(fromDate, toDate, datetimeStart, datetimeEnd))
-                    runningTime += computerStatistics.getRunningTimeInSec();
-            } else {
-                runningTime += computerStatistics.getRunningTimeInSec();
-            }
-
-        }
-        csvBuilder.writeRow("Computer", getDurationFormat(runningTime));
-        for (Map.Entry<String, List<Timeline>> entry : applicationTimelinesMap.entrySet()) {
-            runningTime = activeTime = 0;
-            for (Timeline timeline : entry.getValue()) {
-                if (dates.length > 0) {
-                    datetimeStart = datetimeFormat.format(timeline.getDatetimeStart());
-                    datetimeEnd = datetimeFormat.format(timeline.getDatetimeEnd());
-                    if (areDatesInInterval(fromDate, toDate, datetimeStart, datetimeEnd)) {
-                        runningTime += timeline.getRunningTimeInSec();
-                        activeTime += timeline.getActiveTimeInSec();
-                    }
-                } else {
-                    runningTime += timeline.getRunningTimeInSec();
-                    activeTime += timeline.getActiveTimeInSec();
-                }
-            }
-            csvBuilder.writeRow(entry.getKey(), getDurationFormat(runningTime), getDurationFormat(activeTime));
-        }
-        saveFile(getGeneralFilename(), csvBuilder.build());
+    public void exportGeneralInfo() throws IOException {
+        GeneralCsv generalCsv = new GeneralCsv.Builder()
+                .setComputerStatisticsList(computerStatisticsList)
+                .setApplicationTimelinesMap(applicationTimelinesMap)
+                .build();
+        saveFile(getGeneralFilename(), generalCsv.build());
     }
 
-
-    public void exportDetailInfo(Date... dates) throws IOException {
-        String datetimeStart;
-        String datetimeEnd;
-        CsvBuilder csvBuilder = new CsvBuilder();
-        csvBuilder.writeRow("Computer");
-        csvBuilder.writeRow("SystemStartDatetime", "SystemCloseDatetime", "RunningTime");
-        for (ComputerStatistics computerStatistics : computerStatisticsList) {
-            if (dates.length > 0) {
-                datetimeStart = datetimeFormat.format(computerStatistics.getSystemStartTime());
-                datetimeEnd = datetimeFormat.format(computerStatistics.getSystemCloseTime());
-                String fromDate = datetimeFormat.format(dates[0]);
-                String toDate = datetimeFormat.format(dates[1]);
-                if (areDatesInInterval(fromDate, toDate, datetimeStart, datetimeEnd))
-                    csvBuilder.writeRow(
-                            datetimeFormat.format(computerStatistics.getSystemStartTime()),
-                            datetimeFormat.format(computerStatistics.getSystemCloseTime()),
-                            getDurationFormat(computerStatistics.getRunningTimeInSec())
-                    );
-            } else {
-                csvBuilder.writeRow(
-                        datetimeFormat.format(computerStatistics.getSystemStartTime()),
-                        datetimeFormat.format(computerStatistics.getSystemCloseTime()),
-                        getDurationFormat(computerStatistics.getRunningTimeInSec())
-                );
-            }
-        }
-        for (Map.Entry<String, List<Timeline>> entry : applicationTimelinesMap.entrySet()) {
-            csvBuilder.nextRow();
-            csvBuilder.writeRow(entry.getKey());
-            csvBuilder.writeRow("DatetimeStart", "DatetimeEnd", "RunningTime", "ActiveTime");
-            for (Timeline timeline : entry.getValue()) {
-                datetimeStart = datetimeFormat.format(timeline.getDatetimeStart());
-                datetimeEnd = datetimeFormat.format(timeline.getDatetimeEnd());
-                if (dates.length > 0) {
-                    String fromDate = datetimeFormat.format(dates[0]);
-                    String toDate = datetimeFormat.format(dates[1]);
-                    if (areDatesInInterval(fromDate, toDate, datetimeStart, datetimeEnd))
-                        csvBuilder.writeRow(
-                                datetimeStart,
-                                datetimeEnd,
-                                getDurationFormat(timeline.getRunningTimeInSec()),
-                                getDurationFormat(timeline.getActiveTimeInSec())
-                        );
-                } else {
-                    csvBuilder.writeRow(
-                            datetimeStart,
-                            datetimeEnd,
-                            getDurationFormat(timeline.getRunningTimeInSec()),
-                            getDurationFormat(timeline.getActiveTimeInSec())
-                    );
-                }
-
-            }
-        }
-        saveFile(getDetailFilename(), csvBuilder.build());
+    public void exportGeneralInfo(Date fromDate, Date toDate) throws IOException {
+        GeneralCsv generalCsv = new GeneralCsv.Builder()
+                .setComputerStatisticsList(computerStatisticsList)
+                .setApplicationTimelinesMap(applicationTimelinesMap)
+                .setFromDate(fromDate)
+                .setToDate(toDate)
+                .build();
+        saveFile(getGeneralFilename(), generalCsv.build());
     }
 
-    private boolean areDatesInInterval(String fromDate, String toDate, String startDate, String endDate) {
-        boolean startDateInInterval = (startDate.compareTo(fromDate) >= 0 && startDate.compareTo(toDate) <= 0);
-        boolean endDateInInterval = (endDate.compareTo(fromDate) >= 0 && endDate.compareTo(toDate) <= 0);
-        return (startDateInInterval && endDateInInterval);
+    public void exportDetailInfo() throws IOException {
+        DetailCsv detailCsv = new DetailCsv.Builder()
+                .setComputerStatisticsList(computerStatisticsList)
+                .setApplicationTimelinesMap(applicationTimelinesMap)
+                .build();
+        saveFile(getDetailFilename(), detailCsv.build());
     }
 
-    private String getDurationFormat(int duration) {
-        if (duration == 0) {
-            return "0" + secondSummary;
-        }
-        int sec = duration % 60;
-        duration /= 60;
-        int min = duration % 60;
-        duration /= 60;
-        int h = duration;
-        StringBuilder durationFormat = new StringBuilder();
-        if (h != 0) {
-            durationFormat.append(h).append(hourSummary);
-        }
-        if (min != 0) {
-            if (durationFormat.length() > 0) {
-                durationFormat.append(" ");
-            }
-            durationFormat.append(min).append(minuteSummary);
-        }
-        if (sec != 0) {
-            if (durationFormat.length() > 0) {
-                durationFormat.append(" ");
-            }
-            durationFormat.append(sec).append(secondSummary);
-        }
-        return durationFormat.toString();
+    public void exportDetailInfo(Date fromDate, Date toDate) throws IOException {
+        DetailCsv detailCsv = new DetailCsv.Builder()
+                .setComputerStatisticsList(computerStatisticsList)
+                .setApplicationTimelinesMap(applicationTimelinesMap)
+                .setFromDate(fromDate)
+                .setToDate(toDate)
+                .build();
+        saveFile(getDetailFilename(), detailCsv.build());
     }
 
     private String getGeneralFilename() {

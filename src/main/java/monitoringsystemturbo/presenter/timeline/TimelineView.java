@@ -16,10 +16,7 @@ import monitoringsystemturbo.utils.DateFormats;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import static monitoringsystemturbo.presenter.timeline.PeriodColor.*;
 
@@ -27,6 +24,8 @@ public class TimelineView extends Group {
 
     private final static int height = 35;
     private final static long dayInMs = 24 * 60 * 60 * 1000;
+    private final static long hInMs = 60 * 60 * 1000;
+    private final static long dateOffset = hInMs + TimeZone.getDefault().getRawOffset();
 
     private Rectangle timelineBackground;
     private List<Timeline> timelineModels;
@@ -58,11 +57,11 @@ public class TimelineView extends Group {
     private void renderPeriod(Period period) throws ClassNotFoundException {
         long datetimeStart = period.getDatetimeStart().getTime();
         long datetimeEnd = period.getDatetimeEnd().getTime();
-        for (int day = (int) (datetimeStart / dayInMs); day <= datetimeEnd / dayInMs; day++) {
+        for (int day = (int) ((datetimeStart + dateOffset) / dayInMs); day <= (datetimeEnd + dateOffset) / dayInMs; day++) {
             Rectangle periodView = createPeriodView(period);
             this.currentPeriodView = periodView;
-            long datetimeStartInDay = Math.max(datetimeStart, day * dayInMs);
-            long datetimeEndInDay = Math.min(datetimeEnd, (day + 1) * dayInMs);
+            long datetimeStartInDay = Math.max(datetimeStart, day * dayInMs - dateOffset);
+            long datetimeEndInDay = Math.min(datetimeEnd, (day + 1) * dayInMs - dateOffset);
             setPeriodViewWidthProperties(periodView, datetimeStartInDay, datetimeEndInDay);
             addPeriodViewForDay(day, periodView);
         }
@@ -156,7 +155,7 @@ public class TimelineView extends Group {
     }
 
     private void setListenerForPeriod(Period period) {
-        period.getgetDatetimeEndProperty().addListener((observable, oldValue, newValue) -> {
+        period.getDatetimeEndProperty().addListener((observable, oldValue, newValue) -> {
             double widthRatio = (double) (newValue.getTime() - period.getDatetimeStart().getTime()) / dayInMs;
             double offsetRatio = (double) (period.getDatetimeStart().getTime() % dayInMs) / dayInMs;
             double timelineWidth = widthProperty().getValue();
