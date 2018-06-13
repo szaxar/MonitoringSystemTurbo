@@ -25,6 +25,7 @@
       <JFXButton buttonType="RAISED" layoutX="467.0" layoutY="106.0" mnemonicParsing="false" onAction="#onCancel" prefHeight="33.0" prefWidth="77.0" text="Cancel" />
       <JFXButton buttonType="RAISED" layoutX="585.0" layoutY="106.0" mnemonicParsing="false" onAction="#onConfirm" prefHeight="33.0" prefWidth="77.0" text="Confirm" />
       <Label layoutX="532.0" layoutY="14.0" prefHeight="21.0" prefWidth="130.0" text="Secound color" />
-      <ChoiceBox fx:id="choiceBox" layoutX="4.0" layoutY="107.0" prefWidth="150.0" />
+      <ChoiceBox fx:id="choiceBox" layoutX="154.0" layoutY="107.0" prefWidth="150.0" />
+      <Label layoutX="14.0" layoutY="112.0" prefHeight="21.0" prefWidth="130.0" text="Choice theme:" />
    </children>
 </AnchorPane>

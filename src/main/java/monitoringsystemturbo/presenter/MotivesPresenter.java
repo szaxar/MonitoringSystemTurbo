@@ -35,7 +35,6 @@ public class MotivesPresenter {
     @FXML
     JFXColorPicker secondColorPicker;
 
-
     @FXML
     ChoiceBox choiceBox;
 
@@ -54,7 +53,6 @@ public class MotivesPresenter {
         secondColor = secondColorPicker.getValue();
         mainController.reflesh();
         primaryStage.close();
-
     }
 
     @FXML
@@ -77,7 +75,6 @@ public class MotivesPresenter {
     }
 
     private void changeMotive(Number newValue) {
-
         switch (newValue.intValue()){
             case 0:
                 setStandardMode();
