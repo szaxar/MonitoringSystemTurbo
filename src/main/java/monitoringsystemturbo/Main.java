@@ -16,6 +16,7 @@ import monitoringsystemturbo.startup.Startup;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
@@ -32,6 +33,11 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle(APPLICATION_NAME);
+
+        File historyDir = new File(StatisticsManager.historyDirName);
+        if (!historyDir.exists()) {
+            historyDir.mkdir();
+        }
 
         if (!Startup.isAppInStartup() && Startup.isAppJar()) {
             Startup.addAppToStartup();

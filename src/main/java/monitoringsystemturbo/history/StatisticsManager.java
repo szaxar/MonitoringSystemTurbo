@@ -11,14 +11,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
 public class StatisticsManager {
-
+    public final static String historyDirName = "history";
     private static final String computerStatisticsFilename = "computer-statistics.json";
 
     public static void save(ComputerStatistics computerStatistics) throws IOException {
@@ -28,15 +27,15 @@ public class StatisticsManager {
         module.addSerializer(ComputerStatistics.class, new ComputerStatsJsonSerializer());
         objectMapper.registerModule(module);
 
-        PrintWriter writer = new PrintWriter(new FileWriter(computerStatisticsFilename, true));
+        PrintWriter writer = new PrintWriter(new FileWriter(historyDirName + "/" + computerStatisticsFilename, true));
         objectMapper.writeValue(writer, computerStatistics);
     }
 
     public static List<ComputerStatistics> loadComputerStats() {
         ArrayList<ComputerStatistics> computerStatisticsList = new ArrayList<>();
-        Stream<String> stream = null;
+        Stream<String> stream;
         try {
-            stream = Files.lines(Paths.get(computerStatisticsFilename));
+            stream = Files.lines(Paths.get(historyDirName + "/" + computerStatisticsFilename));
         } catch (IOException e) {
             return new ArrayList<>();
         }
@@ -86,7 +85,7 @@ public class StatisticsManager {
     }
 
     private static String getFilename(String applicationName) {
-        return String.format("%s.json", applicationName);
+        return String.format("%s/%s.json", historyDirName, applicationName);
     }
 
 }

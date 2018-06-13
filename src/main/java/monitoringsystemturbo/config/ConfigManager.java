@@ -12,8 +12,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import static monitoringsystemturbo.history.StatisticsManager.historyDirName;
+
 public class ConfigManager {
-    private static ObjectMapper mapper = new ObjectMapper();
+    private final static ObjectMapper mapper = new ObjectMapper();
 
     private ConfigManager() {
     }
@@ -61,7 +63,7 @@ public class ConfigManager {
     }
 
     public static void createFileIfNeeded(Application application) throws IOException {
-        File file = new File(application.getName() + ".json");
+        File file = new File(historyDirName + "/" + application.getName() + ".json");
         file.createNewFile();
     }
 }
