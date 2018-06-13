@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 
-
+<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.collections.FXCollections?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="126.0"
-            prefWidth="243.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+<?import java.lang.*?>
+<AnchorPane fx:id="anchorPane" stylesheets="main.css" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity" prefHeight="126.0" prefWidth="243.0" xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="monitoringsystemturbo.presenter.OptionsPresenter">
     <children>
         <Text layoutX="51.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Extended monitoring time:"/>
@@ -25,7 +26,9 @@
                 </FXCollections>
             </items>
         </ChoiceBox>
-        <Button layoutX="47.0" layoutY="75.0" mnemonicParsing="false" text="Confirm" onAction="#onConfirm"/>
-        <Button layoutX="145.0" layoutY="75.0" mnemonicParsing="false" text="Cancel" onAction="#onCancel"/>
+        <JFXButton buttonType="RAISED" layoutX="47.0" layoutY="75.0" mnemonicParsing="false" text="Confirm"
+                   onAction="#onConfirm"/>
+        <JFXButton buttonType="RAISED" layoutX="145.0" layoutY="75.0" mnemonicParsing="false" text="Cancel"
+                   onAction="#onCancel"/>
     </children>
 </AnchorPane>

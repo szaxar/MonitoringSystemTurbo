@@ -33,7 +33,7 @@ public class MainController {
         loader.setLocation(this.getClass().getResource("/main.fxml"));
         Parent rootLayout = loader.load();
 
-        MainPresenter mainPresenter = loader.getController();
+        mainPresenter = loader.getController();
         mainPresenter.initialize(trackingService, mainExporter, loadedApplications, actionsMonitor);
 
         ApplicationListController applicationListController = new ApplicationListController(primaryStage);

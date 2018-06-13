@@ -2,12 +2,16 @@ package monitoringsystemturbo.presenter;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import monitoringsystemturbo.model.ActionsMonitor;
 
 public class OptionsPresenter {
     private Stage primaryStage;
     private ActionsMonitor actionsMonitor;
+
+    @FXML
+    private AnchorPane anchorPane;
 
     @FXML
     private ChoiceBox timeDurationChoiceBox;
@@ -47,5 +51,12 @@ public class OptionsPresenter {
                 timeDurationChoiceBox.getSelectionModel().selectNext();
             }
         }
+    }
+
+    public void reflesh() {
+        anchorPane.setStyle("text-collor: #" + MotivesPresenter.textCollor.toString().substring(2, 8) + ";" +
+                "controller-color: #" + MotivesPresenter.controllerColor.toString().substring(2, 8) + ";" +
+                "background-collor: #" + MotivesPresenter.backgroundColor.toString().substring(2, 8) + ";" +
+                "rippler-collor: #" + MotivesPresenter.ripplerColor.toString().substring(2, 8) + ";");
     }
 }

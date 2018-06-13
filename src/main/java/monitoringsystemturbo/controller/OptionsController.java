@@ -12,7 +12,6 @@ import java.io.IOException;
 
 public class OptionsController {
     private Stage primaryStage;
-    private ActionsMonitor actionsMonitor;
 
     public OptionsController(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -32,6 +31,7 @@ public class OptionsController {
         optionsPresenter.setPrimaryStage(dialogStage);
         optionsPresenter.setActionsMonitor(actionsMonitor);
         optionsPresenter.start();
+        optionsPresenter.reflesh();
 
         Scene scene = new Scene(rootLayout);
         dialogStage.setScene(scene);
