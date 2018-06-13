@@ -43,7 +43,6 @@ public class AddApplicationPresenter {
             isPathEmpty = newValue.isEmpty();
             resolveButtonStatus();
         });
-        reflesh();
     }
 
     @FXML
