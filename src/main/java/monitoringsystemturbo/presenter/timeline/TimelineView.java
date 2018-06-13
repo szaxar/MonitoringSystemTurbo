@@ -14,10 +14,8 @@ import monitoringsystemturbo.model.timeline.RunningPeriod;
 import monitoringsystemturbo.model.timeline.Timeline;
 import monitoringsystemturbo.utils.DateFormats;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -34,7 +32,8 @@ public class TimelineView extends Group {
     private Integer currentDay;
     private Rectangle currentPeriodView;
 
-    TimelineView(List<Timeline> timelineModels) throws ClassNotFoundException {
+    TimelineView(List<Timeline> timelineModels, Integer day) throws ClassNotFoundException {
+        currentDay = day;
         this.timelineModels = timelineModels;
         setTimelineBackground();
         for (Timeline timeline : timelineModels) {
@@ -126,18 +125,10 @@ public class TimelineView extends Group {
     }
 
     void showDay(Integer day) {
-        if (currentDay != null && currentDay.equals(day)) {
-            return;
-        }
-
-        if (currentDay != null) {
+        if(dayPeriodsMap.containsKey(currentDay))
             getChildren().removeAll(dayPeriodsMap.get(currentDay));
-        }
-        if (day == null || !dayPeriodsMap.containsKey(day)) {
-            currentDay = null;
-            return;
-        }
-        getChildren().addAll(dayPeriodsMap.get(day));
+        if(dayPeriodsMap.containsKey(day))
+            getChildren().addAll(dayPeriodsMap.get(day));
         currentDay = day;
     }
 
@@ -156,7 +147,7 @@ public class TimelineView extends Group {
     }
 
     private void setListenerForPeriod(Period period) {
-        period.getgetDatetimeEndProperty().addListener((observable, oldValue, newValue) -> {
+        period.getDatetimeEndProperty().addListener((observable, oldValue, newValue) -> {
             double widthRatio = (double) (newValue.getTime() - period.getDatetimeStart().getTime()) / dayInMs;
             double offsetRatio = (double) (period.getDatetimeStart().getTime() % dayInMs) / dayInMs;
             double timelineWidth = widthProperty().getValue();
@@ -167,13 +158,7 @@ public class TimelineView extends Group {
     }
 
     private void onNewPeriodAdded(ListChangeListener.Change<? extends Period> change) {
-        Integer todayInMilis = (int) LocalDate.now().toEpochDay();
-        if (currentDay != null && currentDay.equals(todayInMilis)) {
-            Platform.runLater(() -> {
-                getChildren().removeAll(dayPeriodsMap.get(currentDay));
-                getChildren().addAll(dayPeriodsMap.get(todayInMilis));
-            });
-        }
+
         ObservableList<? extends Period> list = change.getList();
         Period period = list.get(list.size() - 1);
 
@@ -184,5 +169,16 @@ public class TimelineView extends Group {
         }
 
         setListenerForPeriod(period);
+
+        Integer todayInMilis = (int) LocalDate.now().toEpochDay();
+        if (currentDay.equals(todayInMilis)) {
+            Platform.runLater(() -> {
+                if(dayPeriodsMap.containsKey(currentDay))
+                    getChildren().removeAll(dayPeriodsMap.get(currentDay));
+                if(dayPeriodsMap.containsKey(todayInMilis))
+                    getChildren().addAll(dayPeriodsMap.get(todayInMilis));
+            });
+        }
+
     }
 }

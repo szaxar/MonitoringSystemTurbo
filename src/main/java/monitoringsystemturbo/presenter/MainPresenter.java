@@ -67,6 +67,7 @@ public class MainPresenter {
 
     @FXML
     public void initialize(TrackingService trackingService, MainExporter mainExporter, List<Application> loadedApplications) {
+        currentDay = (int) LocalDate.now().toEpochDay();
         this.trackingService = trackingService;
         this.mainExporter = mainExporter;
         this.loadedApplications = loadedApplications;
@@ -114,7 +115,7 @@ public class MainPresenter {
                 timeline = new Timeline(computerStatistics);
             }
 
-            TimelineElement timelineElement = new TimelineElement("Computer", Arrays.asList(timeline));
+            TimelineElement timelineElement = new TimelineElement("Computer", Arrays.asList(timeline), currentDay);
             timelineElement.setTimelineViewWidthByRegion(computerTimelineContainer);
             computerTimelineContainer.getChildren().add(timelineElement);
             timelineElements.put("Computer", timelineElement);
@@ -126,7 +127,7 @@ public class MainPresenter {
             for (Application application : loadedApplications) {
                 ConfigManager.createFileIfNeeded(application);
                 List<Timeline> timelines = StatisticsManager.load(application.getName());
-                TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
+                TimelineElement timelineElement = new TimelineElement(application.getName(), timelines, currentDay);
                 timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
                 appTimelineList.getChildren().add(timelineElement);
                 timelineElements.put(application.getName(), timelineElement);
@@ -173,7 +174,7 @@ public class MainPresenter {
                 applicationList.setItems(FXCollections.observableList(loadedApplications));
 
                 List<Timeline> timelines = StatisticsManager.load(application.getName());
-                TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
+                TimelineElement timelineElement = new TimelineElement(application.getName(), timelines, (int) LocalDate.now().toEpochDay());
                 timelineElement.addTimeLineModel(trackingService.getStatisticsForApp(application.getName()));
                 timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
                 appTimelineList.getChildren().add(timelineElement);
@@ -196,7 +197,7 @@ public class MainPresenter {
                     TimelineElement timelineElement = timelineElements.get(application.getName());
                     appTimelineList.getChildren().remove(timelineElement);
 
-                    timelineElement = new TimelineElement(application.getName(), timelines);
+                    timelineElement = new TimelineElement(application.getName(), timelines, (int) LocalDate.now().toEpochDay());
                     timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
                     timelineElements.put(application.getName(), timelineElement);
                     appTimelineList.getChildren().add(timelineElement);
@@ -210,7 +211,7 @@ public class MainPresenter {
                 ConfigManager.save(loadedApplications);
 
                 List<Timeline> timelines = StatisticsManager.load(application.getName());
-                TimelineElement timelineElement = new TimelineElement(application.getName(), timelines);
+                TimelineElement timelineElement = new TimelineElement(application.getName(), timelines, (int) LocalDate.now().toEpochDay());
                 timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
                 appTimelineList.getChildren().add(timelineElement);
                 timelineElements.put(application.getName(), timelineElement);

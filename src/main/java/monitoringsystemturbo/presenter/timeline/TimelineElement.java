@@ -13,9 +13,9 @@ public class TimelineElement extends VBox {
     private Label appNameLabel;
     private TimelineView timelineView;
 
-    public TimelineElement(String appName, List<Timeline> timelineModels) throws ClassNotFoundException {
+    public TimelineElement(String appName, List<Timeline> timelineModels, Integer day) throws ClassNotFoundException {
         appNameLabel = createAppNameLabel(appName);
-        timelineView = new TimelineView(timelineModels);
+        timelineView = new TimelineView(timelineModels,  day);
         getChildren().addAll(appNameLabel, timelineView);
     }
 

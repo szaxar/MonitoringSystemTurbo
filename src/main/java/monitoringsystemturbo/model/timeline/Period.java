@@ -44,7 +44,7 @@ public abstract class Period {
         return datetimeEnd.get().getTime() - datetimeStart.getTime();
     }
 
-    public ObjectProperty<Date> getgetDatetimeEndProperty() {
+    public ObjectProperty<Date> getDatetimeEndProperty() {
         return this.datetimeEnd;
     }
 
