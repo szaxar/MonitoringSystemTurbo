@@ -62,14 +62,14 @@ public class GeneralCsv {
         int runningTime = 0;
         for (ComputerStatistics computerStatistics : computerStatisticsList) {
             runningTime += computerStatistics.getRunningTimeInSec(fromDate, toDate);
-            if (datetimeStart == null || computerStatistics.getSystemStartTime().getTime() < datetimeStart.getTime()) {
+            if (datetimeStart == null || computerStatistics.getSystemStartTime().before(datetimeStart)) {
                 if (fromDate == null || computerStatistics.getSystemStartTime().getTime() >= fromDate.getTime()) {
                     datetimeStart = computerStatistics.getSystemStartTime();
                 } else {
                     datetimeStart = fromDate;
                 }
             }
-            if (datetimeEnd == null || computerStatistics.getSystemCloseTime().getTime() > datetimeEnd.getTime()) {
+            if (datetimeEnd == null || computerStatistics.getSystemCloseTime().after(datetimeEnd)) {
                 if (toDate == null || computerStatistics.getSystemCloseTime().getTime() <= toDate.getTime()) {
                     datetimeEnd = computerStatistics.getSystemCloseTime();
                 } else {

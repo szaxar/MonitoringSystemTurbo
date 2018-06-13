@@ -124,6 +124,7 @@ public class DetailCsv {
 
     private List<Day> getDaysByTimelines(List<Timeline> timelines) {
         HashMap<Integer, Day> dayMap = new HashMap<>();
+        long timeInMs;
         for (Timeline timeline : timelines) {
             for (Period period : timeline.getPeriods()) {
                 long datetimeStart = period.getDatetimeStart().getTime();
@@ -144,9 +145,11 @@ public class DetailCsv {
                     }
                     Day dayClass = dayMap.get(day);
                     if (period instanceof RunningPeriod) {
-                        dayClass.runningTime += (datetimeEndInDay - datetimeStartInDay) / 1000;
+                        timeInMs = (datetimeEndInDay - datetimeStartInDay) / 1000;
+                        dayClass.runningTime += timeInMs < 0 ? 0 : timeInMs;
                     } else if (period instanceof ActivePeriod) {
-                        dayClass.activeTime += (datetimeEndInDay - datetimeStartInDay) / 1000;
+                        timeInMs = (datetimeEndInDay - datetimeStartInDay) / 1000;
+                        dayClass.activeTime += timeInMs < 0 ? 0 : timeInMs;
                     }
                     if (datetimeStartInDay < dayClass.startTime.getTime()) {
                         dayClass.startTime = new Date(datetimeStartInDay);

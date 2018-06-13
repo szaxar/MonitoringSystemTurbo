@@ -43,7 +43,8 @@ public abstract class Period {
         if (toDate == null || datetimeEnd.getValue().before(toDate)) {
             toDate = datetimeEnd.getValue();
         }
-        return (int) ((toDate.getTime() - fromDate.getTime()) / 1000);
+        int timeInSec = (int) ((toDate.getTime() - fromDate.getTime()) / 1000);
+        return timeInSec < 0 ? 0 : timeInSec;
     }
 
     public ObjectProperty<Date> getDatetimeEndProperty() {

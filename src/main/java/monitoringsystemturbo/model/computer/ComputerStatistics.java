@@ -51,7 +51,8 @@ public class ComputerStatistics {
         if (toDate == null || systemCloseTime.before(toDate)) {
             toDate = systemCloseTime;
         }
-        return (int) ((toDate.getTime() - fromDate.getTime()) / 1000);
+        int timeInSec = (int) ((toDate.getTime() - fromDate.getTime()) / 1000);
+        return timeInSec < 0 ? 0 : timeInSec;
     }
 
     @Override
