@@ -14,7 +14,6 @@ import monitoringsystemturbo.model.timeline.RunningPeriod;
 import monitoringsystemturbo.model.timeline.Timeline;
 import monitoringsystemturbo.utils.DateFormats;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -28,14 +27,12 @@ public class TimelineView extends Group {
     private final static long dateOffset = hInMs + TimeZone.getDefault().getRawOffset();
 
     private Rectangle timelineBackground;
-    private List<Timeline> timelineModels;
     private HashMap<Integer, List<Node>> dayPeriodsMap = new HashMap<>();
     private Integer currentDay;
     private Rectangle currentPeriodView;
 
     TimelineView(List<Timeline> timelineModels, Integer day) throws ClassNotFoundException {
         currentDay = day;
-        this.timelineModels = timelineModels;
         setTimelineBackground();
         for (Timeline timeline : timelineModels) {
             renderPeriods(timeline.getPeriods());
@@ -144,13 +141,13 @@ public class TimelineView extends Group {
             }
         }
 
-        timeLine.getPeriods().addListener((ListChangeListener<Period>) this::onNewPeriodAdded);
+        timeLine.getPeriods().addListener(this::onNewPeriodAdded);
     }
 
     private void setListenerForPeriod(Period period) {
         period.getDatetimeEndProperty().addListener((observable, oldValue, newValue) -> {
             double widthRatio = (double) (newValue.getTime() - period.getDatetimeStart().getTime()) / dayInMs;
-            double offsetRatio = (double) (period.getDatetimeStart().getTime() % dayInMs) / dayInMs;
+            double offsetRatio = (double) ((period.getDatetimeStart().getTime() + dateOffset) % dayInMs) / dayInMs;
             double timelineWidth = widthProperty().getValue();
             currentPeriodView.setWidth(timelineWidth * widthRatio);
             currentPeriodView.setTranslateX(timelineWidth * offsetRatio);
