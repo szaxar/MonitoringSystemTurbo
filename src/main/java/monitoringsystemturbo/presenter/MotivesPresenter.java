@@ -27,13 +27,7 @@ public class MotivesPresenter {
     JFXColorPicker controllersColorPicker;
 
     @FXML
-    JFXColorPicker ripplerColorPicker;
-
-    @FXML
     JFXColorPicker textColorPicker;
-
-    @FXML
-    JFXColorPicker secondColorPicker;
 
     @FXML
     ChoiceBox choiceBox;
@@ -49,8 +43,6 @@ public class MotivesPresenter {
         textColor = textColorPicker.getValue();
         controllerColor = controllersColorPicker.getValue();
         backgroundColor = backgroundColorPicker.getValue();
-        ripplerColor = ripplerColorPicker.getValue();
-        secondColor = secondColorPicker.getValue();
         mainController.reflesh();
         primaryStage.close();
     }
@@ -60,8 +52,6 @@ public class MotivesPresenter {
         textColorPicker.setValue(textColor);
         controllersColorPicker.setValue(controllerColor);
         backgroundColorPicker.setValue(backgroundColor);
-        ripplerColorPicker.setValue(ripplerColor);
-        secondColorPicker.setValue(secondColor);
 
         choiceBox.setItems(FXCollections.observableArrayList(
                 "Standard", "Dracula"));
@@ -72,6 +62,16 @@ public class MotivesPresenter {
                 changeMotive(newValue);
             }
         });
+
+        controllersColorPicker.valueProperty().addListener((ObservableValue<? extends Color> observable, Color oldValue, Color newValue) ->
+                ripplerColor = getGreyscale(newValue) > 50 ? Color.BLACK : Color.WHITE);
+        backgroundColorPicker.valueProperty().addListener((ObservableValue<? extends Color> observable, Color oldValue, Color newValue) ->
+                secondColor = getGreyscale(newValue) > 50 ? newValue.darker() : newValue.brighter());
+    }
+
+    private double getGreyscale(Color color) {
+        // .2126 * R^gamma + .7152 * G^gamma + .0722 * B^gamma
+        return 0;
     }
 
     private void changeMotive(Number newValue) {
@@ -110,16 +110,12 @@ public class MotivesPresenter {
     public void setStandardMode(){
         controllersColorPicker.setValue(Color.BLACK);
         backgroundColorPicker.setValue(Color.WHITE);
-        ripplerColorPicker.setValue(Color.RED);
-        secondColorPicker.setValue(Color.GREY);
         textColorPicker.setValue(Color.WHITE);
     }
 
     public void setDraculaMode(){
         controllersColorPicker.setValue(Color.WHITE);
         backgroundColorPicker.setValue(Color.BLACK);
-        ripplerColorPicker.setValue(Color.RED);
-        secondColorPicker.setValue(Color.GREY);
         textColorPicker.setValue(Color.BLACK);
     }
 }
