@@ -18,6 +18,7 @@ public class MainController {
     private Stage primaryStage;
     private TrackingService trackingService;
     private MainExporter mainExporter;
+    private MainPresenter mainPresenter;
     private ActionsMonitor actionsMonitor;
 
     public MainController(Stage primaryStage, TrackingService trackingService, MainExporter mainExporter, ActionsMonitor actionsMonitor) {
@@ -44,8 +45,15 @@ public class MainController {
         OptionsController optionsController = new OptionsController(primaryStage);
         mainPresenter.setOptionsController(optionsController);
 
+        MotivesController motivesController = new MotivesController(primaryStage);
+        mainPresenter.setMotivesController(motivesController);
+        mainPresenter.setMainControler(this);
+
         primaryStage.setScene(new Scene(rootLayout));
         primaryStage.show();
     }
 
+    public void reflesh() {
+        mainPresenter.reflesh();
+    }
 }

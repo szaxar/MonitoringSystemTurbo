@@ -7,12 +7,16 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import monitoringsystemturbo.config.ConfigManager;
 import monitoringsystemturbo.controller.ApplicationListController;
+import monitoringsystemturbo.controller.AlertController;
 import monitoringsystemturbo.controller.ExportController;
 import monitoringsystemturbo.controller.OptionsController;
+import monitoringsystemturbo.controller.MainController;
+import monitoringsystemturbo.controller.MotivesController;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.history.StatisticsManager;
 import monitoringsystemturbo.model.ActionsMonitor;
@@ -44,6 +48,9 @@ public class MainPresenter {
     private VBox appTimelineList;
     @FXML
     private JFXDatePicker datePicker;
+    @FXML
+    private BorderPane borderPane;
+
 
     private Integer currentDay;
 
@@ -53,7 +60,9 @@ public class MainPresenter {
     private Map<String, TimelineElement> timelineElements;
     private List<Application> loadedApplications;
     private ApplicationListController applicationListController;
+    private MotivesController motivesController;
     private ExportController exportController;
+    private MainController mainControler;
     private OptionsController optionsController;
     private ActionsMonitor actionsMonitor;
 
@@ -158,11 +167,7 @@ public class MainPresenter {
             Application application = applicationListController.showAddView();
             if (application != null) {
                 if (loadedApplications.contains(application)) {
-                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                    errorAlert.setTitle("Error!");
-                    errorAlert.setHeaderText(null);
-                    errorAlert.setContentText("Application already exist");
-                    errorAlert.showAndWait();
+                    AlertController.showAlert("Application already exist", Alert.AlertType.INFORMATION);
                     return;
                 }
                 ConfigManager.createFileIfNeeded(application);
@@ -180,11 +185,7 @@ public class MainPresenter {
                 timelineElements.put(application.getName(), timelineElement);
             }
         } catch (Exception e) {
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setTitle("Error!");
-            errorAlert.setHeaderText(null);
-            errorAlert.setContentText("Error occurred while adding application.");
-            errorAlert.showAndWait();
+            AlertController.showAlert("Error occurred while adding application.", Alert.AlertType.ERROR);
         }
     }
 
@@ -195,19 +196,17 @@ public class MainPresenter {
 
             if (application != null) {
 
-                for (Application applicationFromList : loadedApplications) {
-                    if (applicationFromList.getName().equals(application.getName())) {
-                        List<Timeline> timelines = StatisticsManager.load(application.getName());
-                        TimelineElement timelineElement = timelineElements.get(application.getName());
-                        appTimelineList.getChildren().remove(timelineElement);
+                if (loadedApplications.contains(application)) {
+                    List<Timeline> timelines = StatisticsManager.load(application.getName());
+                    TimelineElement timelineElement = timelineElements.get(application.getName());
+                    appTimelineList.getChildren().remove(timelineElement);
 
-                        timelineElement = new TimelineElement(application.getName(), timelines);
-                        timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
-                        timelineElements.put(application.getName(), timelineElement);
-                        appTimelineList.getChildren().add(timelineElement);
-                        timelineElement.showDay(currentDay);
-                        return;
-                    }
+                    timelineElement = new TimelineElement(application.getName(), timelines);
+                    timelineElement.setTimelineViewWidthByRegion(appTimelineContainer);
+                    timelineElements.put(application.getName(), timelineElement);
+                    appTimelineList.getChildren().add(timelineElement);
+                    timelineElement.showDay(currentDay);
+                    return;
                 }
 
                 ConfigManager.createFileIfNeeded(application);
@@ -225,11 +224,7 @@ public class MainPresenter {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setTitle("Error!");
-            errorAlert.setHeaderText(null);
-            errorAlert.setContentText("Error occurred while adding an activity.");
-            errorAlert.showAndWait();
+            AlertController.showAlert("Error occurred while adding an activity.", Alert.AlertType.ERROR);
         }
     }
 
@@ -273,6 +268,8 @@ public class MainPresenter {
             exportController.showExportView(mainExporter, trackingService);
         } catch (IOException e) {
             e.printStackTrace();
+            AlertController.showAlert("Error occurred while export an activity.", Alert.AlertType.ERROR);
+
         }
     }
 
@@ -322,6 +319,31 @@ public class MainPresenter {
 
     public void setOptionsController(OptionsController optionsController) {
         this.optionsController = optionsController;
+    }
+
+    public void setMotivesController(MotivesController motivesController) {
+        this.motivesController = motivesController;
+    }
+
+    @FXML
+    public void onMotives() {
+        try {
+            motivesController.showMotivesView(mainControler);
+        } catch (IOException e) {
+            e.printStackTrace();
+            AlertController.showAlert("Error occurred while loading motives view.", Alert.AlertType.ERROR);
+        }
+    }
+
+    public void setMainControler(MainController mainControler) {
+        this.mainControler = mainControler;
+    }
+
+    public void reflesh() {
+        borderPane.setStyle("text-collor: #" + MotivesPresenter.textCollor.toString().substring(2, 8) + ";" +
+                "controller-color: #" + MotivesPresenter.controllerColor.toString().substring(2, 8) + ";" +
+                "background-collor: #" + MotivesPresenter.backgroundColor.toString().substring(2, 8) + ";" +
+                "rippler-collor: #" + MotivesPresenter.ripplerColor.toString().substring(2, 8) + ";");
     }
 }
 

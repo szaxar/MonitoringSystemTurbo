@@ -162,6 +162,7 @@ public class TimelineView extends Group {
             double timelineWidth = widthProperty().getValue();
             currentPeriodView.setWidth(timelineWidth * widthRatio);
             currentPeriodView.setTranslateX(timelineWidth * offsetRatio);
+            setPeriodTooltip(currentPeriodView, period);
         });
     }
 
