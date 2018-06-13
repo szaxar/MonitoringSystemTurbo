@@ -1,8 +1,9 @@
 .root{
-    text-collor: white;
+    text-color: white;
     controller-color: black;
-    background-collor: white;
-    rippler-collor: red;
+    background-color: white;
+    rippler-color: red;
+    secound-color: #B0B0B0;
 }
 
 .scroll-pane:focused {
@@ -15,6 +16,10 @@
     -fx-box-border: transparent;
 }
 
+.scroll-pane > .viewport {
+    -fx-background-color: background-color;
+}
+
 .jfx-date-picker{
     -jfx-default-color:controller-color;
 }
@@ -25,22 +30,32 @@
 
 .jfx-check-box{
     -jfx-checked-color:controller-color;
+    -jfx-unchecked-color: secound-color;
 }
 
 
 .jfx-button {
     -fx-background-color: controller-color;
-    -fx-text-fill: text-collor;
+    -fx-text-fill: text-color;
 }
 
 .jfx-button .jfx-rippler{
-    -jfx-rippler-fill:rippler-collor;
+    -jfx-rippler-fill:rippler-color;
 }
 
 #borderPane {
-    -fx-background-color: background-collor ;
+    -fx-background-color: background-color ;
 }
 
 #anchorPane {
-    -fx-background-color: background-collor ;
+    -fx-background-color: background-color ;
+}
+
+.list-view .list-cell:even {
+    -fx-background-color: background-color;
+    -fx-text-fill: text-color;
+}
+.list-view .list-cell:odd {
+    -fx-background-color: secound-color;
+    -fx-text-fill: text-color;
 }

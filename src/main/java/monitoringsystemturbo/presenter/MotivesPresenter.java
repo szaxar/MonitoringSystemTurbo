@@ -28,17 +28,22 @@ public class MotivesPresenter {
     @FXML
     JFXColorPicker textColorPicker;
 
-    public static Color textCollor = Color.WHITE;
+    @FXML
+    JFXColorPicker secoundColorPicker;
+
+    public static Color textColor = Color.WHITE;
     public static Color controllerColor = Color.BLACK;
     public static Color backgroundColor = Color.WHITE;
     public static Color ripplerColor = Color.RED;
+    public static Color secoundColor = Color.GREY;
 
     @FXML
     public void onConfirm() {
-        textCollor = textColorPicker.getValue();
+        textColor = textColorPicker.getValue();
         controllerColor = controllersColorPicker.getValue();
         backgroundColor = backgroundColorPicker.getValue();
         ripplerColor = ripplerColorPicker.getValue();
+        secoundColor = secoundColorPicker.getValue();
         mainController.reflesh();
         primaryStage.close();
 
@@ -46,17 +51,20 @@ public class MotivesPresenter {
 
     @FXML
     public void initialize() {
-        textColorPicker.setValue(textCollor);
+        textColorPicker.setValue(textColor);
         controllersColorPicker.setValue(controllerColor);
         backgroundColorPicker.setValue(backgroundColor);
         ripplerColorPicker.setValue(ripplerColor);
+        secoundColorPicker.setValue(secoundColor);
     }
     
     public void reflesh() {
-        anchorPane.setStyle("text-collor: #" + textCollor.toString().substring(2, 8) + ";" +
+        anchorPane.setStyle("text-color: #" + textColor.toString().substring(2, 8) + ";" +
                 "controller-color: #" + controllerColor.toString().substring(2, 8) + ";" +
-                "background-collor: #" + backgroundColor.toString().substring(2, 8) + ";" +
-                "rippler-collor: #" + ripplerColor.toString().substring(2, 8) + ";");
+                "background-color: #" + backgroundColor.toString().substring(2, 8) + ";" +
+                "rippler-color: #" + ripplerColor.toString().substring(2, 8) + ";"+
+                "secound-color: #" + secoundColor.toString().substring(2, 8) + ";"+
+                "secound-color: #" + MotivesPresenter.secoundColor.toString().substring(2, 8) + ";");
     }
 
     @FXML

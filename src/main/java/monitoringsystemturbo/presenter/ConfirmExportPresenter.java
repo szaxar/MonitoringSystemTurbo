@@ -98,9 +98,10 @@ public class ConfirmExportPresenter {
     }
 
     public void reflesh() {
-        borderPane.setStyle("text-collor: #" + MotivesPresenter.textCollor.toString().substring(2, 8) + ";" +
+        borderPane.setStyle("text-color: #" + MotivesPresenter.textColor.toString().substring(2, 8) + ";" +
                 "controller-color: #" + MotivesPresenter.controllerColor.toString().substring(2, 8) + ";" +
-                "background-collor: #" + MotivesPresenter.backgroundColor.toString().substring(2, 8) + ";" +
-                "rippler-collor: #" + MotivesPresenter.ripplerColor.toString().substring(2, 8) + ";");
+                "background-color: #" + MotivesPresenter.backgroundColor.toString().substring(2, 8) + ";" +
+                "rippler-color: #" + MotivesPresenter.ripplerColor.toString().substring(2, 8) + ";"+
+                "secound-color: #" + MotivesPresenter.secoundColor.toString().substring(2, 8) + ";");
     }
 }

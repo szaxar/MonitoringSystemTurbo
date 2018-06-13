@@ -180,9 +180,10 @@ public class ExportPresenter {
     }
 
     public void reflesh() {
-        anchorPane.setStyle("text-collor: #" + MotivesPresenter.textCollor.toString().substring(2, 8) + ";" +
+        anchorPane.setStyle("text-color: #" + MotivesPresenter.textColor.toString().substring(2, 8) + ";" +
                 "controller-color: #" + MotivesPresenter.controllerColor.toString().substring(2, 8) + ";" +
-                "background-collor: #" + MotivesPresenter.backgroundColor.toString().substring(2, 8) + ";" +
-                "rippler-collor: #" + MotivesPresenter.ripplerColor.toString().substring(2, 8) + ";");
+                "background-color: #" + MotivesPresenter.backgroundColor.toString().substring(2, 8) + ";" +
+                "rippler-color: #" + MotivesPresenter.ripplerColor.toString().substring(2, 8) + ";"+
+                "secound-color: #" + MotivesPresenter.secoundColor.toString().substring(2, 8) + ";");
     }
 }
