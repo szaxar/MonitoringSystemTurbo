@@ -26,7 +26,6 @@ public class AddApplicationPresenter {
 
     private Stage primaryStage;
     private Application application;
-    private boolean isNameEmpty = true;
     private boolean isPathEmpty = true;
 
     public void setPrimaryStage(Stage primaryStage) {
@@ -35,12 +34,11 @@ public class AddApplicationPresenter {
 
     @FXML
     public void initialize() {
-        nameApplication.textProperty().addListener((observable, oldValue, newValue) -> {
-            isNameEmpty = newValue.isEmpty();
-            resolveButtonStatus();
-        });
         fullPathApplication.textProperty().addListener((observable, oldValue, newValue) -> {
             isPathEmpty = newValue.isEmpty();
+            if (fullPathApplication.getText().endsWith(".exe")) {
+                nameApplication.setText(resolveName(fullPathApplication.getText()));
+            }
             resolveButtonStatus();
         });
     }
@@ -68,9 +66,7 @@ public class AddApplicationPresenter {
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("EXE Files", "*.exe"));
         File selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile != null) {
-            if (nameApplication.getText().isEmpty()) {
-                nameApplication.setText(FilenameUtils.getBaseName(selectedFile.getName()));
-            }
+            nameApplication.setText(FilenameUtils.getBaseName(selectedFile.getName()));
             fullPathApplication.setText(selectedFile.getAbsolutePath());
             addButton.setDisable(false);
         }
@@ -86,14 +82,20 @@ public class AddApplicationPresenter {
     }
 
     private void resolveButtonStatus() {
-        addButton.setDisable(isNameEmpty || isPathEmpty);
+        addButton.setDisable(isPathEmpty);
     }
 
     public void reflesh() {
         borderPane.setStyle("text-color: #" + MotivesPresenter.textColor.toString().substring(2, 8) + ";" +
                 "controller-color: #" + MotivesPresenter.controllerColor.toString().substring(2, 8) + ";" +
                 "background-color: #" + MotivesPresenter.backgroundColor.toString().substring(2, 8) + ";" +
-                "rippler-color: #" + MotivesPresenter.ripplerColor.toString().substring(2, 8) + ";"+
+                "rippler-color: #" + MotivesPresenter.ripplerColor.toString().substring(2, 8) + ";" +
                 "second-color: #" + MotivesPresenter.secondColor.toString().substring(2, 8) + ";");
+    }
+
+    private String resolveName(String fullPath) {
+        String[] splitFullPath = fullPath.split("\\\\");
+        return splitFullPath[splitFullPath.length - 1]
+                .split("\\.")[0];
     }
 }
