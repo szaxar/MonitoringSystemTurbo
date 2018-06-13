@@ -26,10 +26,12 @@ public class TrackingService {
 
     public void addAppToMonitor(String appName) {
         applicationNames.add(appName);
+        applicationMonitor.startMonitoring(appName);
     }
 
     public void stopAppMonitoring(String appName) {
         applicationMonitor.stopMonitoring(appName);
+        applicationNames.remove(appName);
     }
 
     public List<String> getApplicationsNames() {
