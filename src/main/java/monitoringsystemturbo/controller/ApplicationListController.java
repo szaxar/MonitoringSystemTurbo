@@ -56,6 +56,7 @@ public class ApplicationListController {
 
         AddActivityPresenter addActivityPresenter = loader.getController();
         addActivityPresenter.setPrimaryStage(dialogStage);
+        addActivityPresenter.reflesh();
 
         Scene scene = new Scene(rootLayout);
         dialogStage.setScene(scene);

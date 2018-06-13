@@ -21,7 +21,7 @@
                   <HBox HBox.hgrow="ALWAYS">
                      <children>
                         <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onPrevDay" text="&lt;" />
-                        <JFXDatePicker fx:id="datePicker" />
+                        <JFXDatePicker fx:id="datePicker"/>
                         <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onNextDay" text="&gt;" />
                      </children>
                   </HBox>
