@@ -54,7 +54,7 @@ public class OptionsPresenter {
     }
 
     public void reflesh() {
-        anchorPane.setStyle("text-collor: #" + MotivesPresenter.textCollor.toString().substring(2, 8) + ";" +
+        anchorPane.setStyle("text-collor: #" + MotivesPresenter.textColor.toString().substring(2, 8) + ";" +
                 "controller-color: #" + MotivesPresenter.controllerColor.toString().substring(2, 8) + ";" +
                 "background-collor: #" + MotivesPresenter.backgroundColor.toString().substring(2, 8) + ";" +
                 "rippler-collor: #" + MotivesPresenter.ripplerColor.toString().substring(2, 8) + ";");

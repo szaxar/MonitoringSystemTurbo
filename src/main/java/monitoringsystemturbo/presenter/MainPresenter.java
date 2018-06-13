@@ -70,7 +70,8 @@ public class MainPresenter {
     private ListView<Application> applicationList;
 
     @FXML
-    public void initialize(TrackingService trackingService, MainExporter mainExporter, List<Application> loadedApplications) {
+    public void initialize(TrackingService trackingService, MainExporter mainExporter,
+                           List<Application> loadedApplications, ActionsMonitor actionsMonitor) {
         currentDay = (int) LocalDate.now().toEpochDay();
         this.trackingService = trackingService;
         this.mainExporter = mainExporter;
