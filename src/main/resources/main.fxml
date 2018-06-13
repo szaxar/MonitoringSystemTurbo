@@ -15,7 +15,7 @@
    <center>
       <VBox spacing="15.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox>
+             <HBox spacing="5">
                <children>
                   <HBox HBox.hgrow="ALWAYS">
                      <children>
@@ -25,6 +25,8 @@
                      </children>
                   </HBox>
                   <Button mnemonicParsing="false" onAction="#onExport" text="Export" />
+                   <Button mnemonicParsing="false" onAction="#onOptions" text="Options"/>
+
                </children>
             </HBox>
             <VBox alignment="TOP_RIGHT">

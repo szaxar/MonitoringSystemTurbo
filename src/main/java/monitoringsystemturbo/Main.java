@@ -50,7 +50,7 @@ public class Main extends Application {
         initializeAppsToMonitor(loadedApplications);
         trackingService.start();
 
-        MainController mainController = new MainController(primaryStage, trackingService, mainExporter);
+        MainController mainController = new MainController(primaryStage, trackingService, mainExporter, activityMonitor);
         mainController.showMainWindow(loadedApplications);
 
         primaryStage.setOnCloseRequest(event -> {

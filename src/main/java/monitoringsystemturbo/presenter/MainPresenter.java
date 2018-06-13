@@ -12,8 +12,10 @@ import javafx.scene.layout.VBox;
 import monitoringsystemturbo.config.ConfigManager;
 import monitoringsystemturbo.controller.ApplicationListController;
 import monitoringsystemturbo.controller.ExportController;
+import monitoringsystemturbo.controller.OptionsController;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.history.StatisticsManager;
+import monitoringsystemturbo.model.ActivityMonitor;
 import monitoringsystemturbo.model.TrackingService;
 import monitoringsystemturbo.model.app.Application;
 import monitoringsystemturbo.model.computer.ComputerStatistics;
@@ -52,15 +54,18 @@ public class MainPresenter {
     private List<Application> loadedApplications;
     private ApplicationListController applicationListController;
     private ExportController exportController;
+    private OptionsController optionsController;
+    private ActivityMonitor activityMonitor;
 
     @FXML
     private ListView<Application> applicationList;
 
     @FXML
-    public void initialize(TrackingService trackingService, MainExporter mainExporter, List<Application> loadedApplications) {
+    public void initialize(TrackingService trackingService, MainExporter mainExporter, List<Application> loadedApplications, ActivityMonitor activityMonitor) {
         this.trackingService = trackingService;
         this.mainExporter = mainExporter;
         this.loadedApplications = loadedApplications;
+        this.activityMonitor = activityMonitor;
         setCellFactory();
         applicationList.setItems(FXCollections.observableList(loadedApplications));
         renderTimelineLegend();
@@ -271,6 +276,15 @@ public class MainPresenter {
         }
     }
 
+    @FXML
+    public void onOptions() {
+        try {
+            optionsController.showOptionsView(activityMonitor);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void setCellFactory() {
         applicationList.setCellFactory(param -> new ListCell<Application>() {
             @Override
@@ -305,4 +319,9 @@ public class MainPresenter {
     public void setExportController(ExportController exportController) {
         this.exportController = exportController;
     }
+
+    public void setOptionsController(OptionsController optionsController) {
+        this.optionsController = optionsController;
+    }
 }
+
