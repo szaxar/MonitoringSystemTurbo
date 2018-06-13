@@ -16,18 +16,19 @@
    <center>
       <VBox spacing="15.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox>
+             <HBox spacing="5">
                <children>
                   <HBox HBox.hgrow="ALWAYS">
                      <children>
                         <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onPrevDay" text="&lt;" />
-                        <JFXDatePicker fx:id="datePicker" />
+                        <JFXDatePicker fx:id="datePicker"/>
                         <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onNextDay" text="&gt;" />
                      </children>
                   </HBox>
                   <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onMotives" text="Motives" />
                   <AnchorPane prefHeight="31.0" prefWidth="23.0" />
                   <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onExport" text="Export" />
+                  <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onOptions" text="Options"/>
                </children>
             </HBox>
             <VBox alignment="TOP_RIGHT">

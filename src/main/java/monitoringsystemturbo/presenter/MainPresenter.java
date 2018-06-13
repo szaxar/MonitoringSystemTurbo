@@ -14,10 +14,12 @@ import monitoringsystemturbo.config.ConfigManager;
 import monitoringsystemturbo.controller.ApplicationListController;
 import monitoringsystemturbo.controller.AlertController;
 import monitoringsystemturbo.controller.ExportController;
+import monitoringsystemturbo.controller.OptionsController;
 import monitoringsystemturbo.controller.MainController;
 import monitoringsystemturbo.controller.MotivesController;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.history.StatisticsManager;
+import monitoringsystemturbo.model.ActionsMonitor;
 import monitoringsystemturbo.model.TrackingService;
 import monitoringsystemturbo.model.app.Application;
 import monitoringsystemturbo.model.computer.ComputerStatistics;
@@ -61,6 +63,8 @@ public class MainPresenter {
     private MotivesController motivesController;
     private ExportController exportController;
     private MainController mainControler;
+    private OptionsController optionsController;
+    private ActionsMonitor actionsMonitor;
 
     @FXML
     private ListView<Application> applicationList;
@@ -71,6 +75,7 @@ public class MainPresenter {
         this.trackingService = trackingService;
         this.mainExporter = mainExporter;
         this.loadedApplications = loadedApplications;
+        this.actionsMonitor = actionsMonitor;
         setCellFactory();
         applicationList.setItems(FXCollections.observableList(loadedApplications));
         renderTimelineLegend();
@@ -269,6 +274,15 @@ public class MainPresenter {
         }
     }
 
+    @FXML
+    public void onOptions() {
+        try {
+            optionsController.showOptionsView(actionsMonitor);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void setCellFactory() {
         applicationList.setCellFactory(param -> new ListCell<Application>() {
             @Override
@@ -304,6 +318,9 @@ public class MainPresenter {
         this.exportController = exportController;
     }
 
+    public void setOptionsController(OptionsController optionsController) {
+        this.optionsController = optionsController;
+    }
 
     public void setMotivesController(MotivesController motivesController) {
         this.motivesController = motivesController;
@@ -316,9 +333,7 @@ public class MainPresenter {
         } catch (IOException e) {
             e.printStackTrace();
             AlertController.showAlert("Error occurred while loading motives view.", Alert.AlertType.ERROR);
-
         }
-
     }
 
     public void setMainControler(MainController mainControler) {
@@ -326,9 +341,11 @@ public class MainPresenter {
     }
 
     public void reflesh() {
-        borderPane.setStyle("text-collor: #" + MotivesPresenter.textCollor.toString().substring(2, 8) + ";" +
+        borderPane.setStyle("text-color: #" + MotivesPresenter.textColor.toString().substring(2, 8) + ";" +
                 "controller-color: #" + MotivesPresenter.controllerColor.toString().substring(2, 8) + ";" +
-                "background-collor: #" + MotivesPresenter.backgroundColor.toString().substring(2, 8) + ";" +
-                "rippler-collor: #" + MotivesPresenter.ripplerColor.toString().substring(2, 8) + ";");
+                "background-color: #" + MotivesPresenter.backgroundColor.toString().substring(2, 8) + ";" +
+                "rippler-color: #" + MotivesPresenter.ripplerColor.toString().substring(2, 8) + ";"+
+                "second-color: #" + MotivesPresenter.secondColor.toString().substring(2, 8) + ";");
     }
 }
+

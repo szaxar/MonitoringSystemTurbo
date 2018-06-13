@@ -5,6 +5,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import monitoringsystemturbo.exporter.MainExporter;
+import monitoringsystemturbo.model.ActionsMonitor;
 import monitoringsystemturbo.model.TrackingService;
 import monitoringsystemturbo.model.app.Application;
 import monitoringsystemturbo.presenter.MainPresenter;
@@ -18,11 +19,13 @@ public class MainController {
     private TrackingService trackingService;
     private MainExporter mainExporter;
     private MainPresenter mainPresenter;
+    private ActionsMonitor actionsMonitor;
 
-    public MainController(Stage primaryStage, TrackingService trackingService, MainExporter mainExporter) {
+    public MainController(Stage primaryStage, TrackingService trackingService, MainExporter mainExporter, ActionsMonitor actionsMonitor) {
         this.primaryStage = primaryStage;
         this.trackingService = trackingService;
         this.mainExporter = mainExporter;
+        this.actionsMonitor = actionsMonitor;
     }
 
     public void showMainWindow(List<Application> loadedApplications) throws IOException {
@@ -31,13 +34,16 @@ public class MainController {
         Parent rootLayout = loader.load();
 
         mainPresenter = loader.getController();
-        mainPresenter.initialize(trackingService, mainExporter, loadedApplications);
+        mainPresenter.initialize(trackingService, mainExporter, loadedApplications, actionsMonitor);
 
         ApplicationListController applicationListController = new ApplicationListController(primaryStage);
         mainPresenter.setApplicationListController(applicationListController);
 
         ExportController exportController = new ExportController(primaryStage);
         mainPresenter.setExportController(exportController);
+
+        OptionsController optionsController = new OptionsController(primaryStage);
+        mainPresenter.setOptionsController(optionsController);
 
         MotivesController motivesController = new MotivesController(primaryStage);
         mainPresenter.setMotivesController(motivesController);
