@@ -2,22 +2,25 @@ package monitoringsystemturbo.exporter;
 
 public class CsvBuilder {
 
-    private static final String SEPARATOR = ",";
+    private static final String SEPARATOR = ";";
     private StringBuilder csvContent = new StringBuilder();
 
-    public void writeRow(String... cells) {
+    public CsvBuilder writeRow(String... cells) {
         writeCells(cells);
         nextRow();
+        return this;
     }
 
-    public void writeCells(String... cells) {
+    public CsvBuilder writeCells(String... cells) {
         for (String cell : cells) {
             csvContent.append(cell).append(SEPARATOR);
         }
+        return this;
     }
 
-    public void nextRow() {
+    public CsvBuilder nextRow() {
         csvContent.append('\n');
+        return this;
     }
 
     public String build() {

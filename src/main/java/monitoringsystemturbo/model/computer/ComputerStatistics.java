@@ -13,7 +13,6 @@ public class ComputerStatistics {
     protected Date systemStartTime;
     protected Date systemCloseTime;
     protected ObjectProperty<Date> systemCloseTimeProperty;
-    private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 
     public ComputerStatistics(Date systemStartTime) {
         this.systemStartTime = systemStartTime;
@@ -42,7 +41,17 @@ public class ComputerStatistics {
     }
 
     public int getRunningTimeInSec() {
-        return (int) ((systemCloseTime.getTime() - systemStartTime.getTime()) / 1000);
+        return getRunningTimeInSec(null, null);
+    }
+
+    public int getRunningTimeInSec(Date fromDate, Date toDate) {
+        if (fromDate == null || systemStartTime.getTime() > fromDate.getTime()) {
+            fromDate = systemStartTime;
+        }
+        if (toDate == null || systemCloseTime.getTime() < toDate.getTime()) {
+            toDate = systemCloseTime;
+        }
+        return (int) ((toDate.getTime() - fromDate.getTime()) / 1000);
     }
 
     @Override

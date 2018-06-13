@@ -14,15 +14,10 @@ import java.util.List;
 import java.util.Map;
 
 public class MainExporter {
-    private static final String REPORT = "report";
-
-    private final Exporter exporter;
-
-    public MainExporter() {
-        exporter = new Exporter(REPORT);
-    }
+    private static final String FILENAME = "report";
 
     public void export(TrackingService trackingService, List<String> applicationsToExport) throws IOException {
+        Exporter exporter = new Exporter(FILENAME);
         addHistoricalComputerStatistics(exporter);
         addHistoricalAppStatistics(exporter, applicationsToExport);
         addCurrentStatistics(exporter, trackingService, applicationsToExport);
@@ -32,6 +27,7 @@ public class MainExporter {
     }
 
     public void export(TrackingService trackingService, List<String> applicationsToExport, LocalDateTime fromTime, LocalDateTime toTime) throws IOException {
+        Exporter exporter = new Exporter(FILENAME);
         addHistoricalComputerStatistics(exporter);
         addHistoricalAppStatistics(exporter, applicationsToExport);
         addCurrentStatistics(exporter, trackingService, applicationsToExport);
