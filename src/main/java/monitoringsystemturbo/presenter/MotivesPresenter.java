@@ -64,14 +64,13 @@ public class MotivesPresenter {
         });
 
         controllersColorPicker.valueProperty().addListener((ObservableValue<? extends Color> observable, Color oldValue, Color newValue) ->
-                ripplerColor = getGreyscale(newValue) > 50 ? Color.BLACK : Color.WHITE);
+                ripplerColor = getGreyscale(newValue) > 0.5 ? Color.BLACK : Color.WHITE);
         backgroundColorPicker.valueProperty().addListener((ObservableValue<? extends Color> observable, Color oldValue, Color newValue) ->
-                secondColor = getGreyscale(newValue) > 50 ? newValue.darker() : newValue.brighter());
+                secondColor = getGreyscale(newValue) > 0.5 ? newValue.darker() : newValue.brighter());
     }
 
     private double getGreyscale(Color color) {
-        // .2126 * R^gamma + .7152 * G^gamma + .0722 * B^gamma
-        return 0;
+        return 0.2126 * color.getRed() + 0.7152 * color.getGreen() + 0.0722 * color.getBlue();
     }
 
     private void changeMotive(Number newValue) {
