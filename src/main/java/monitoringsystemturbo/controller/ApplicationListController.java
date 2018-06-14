@@ -68,14 +68,14 @@ public class ApplicationListController {
         Date fromDate = addActivityPresenter.getFromDate();
         Date toDate = addActivityPresenter.getToDate();
         Application activity = addActivityPresenter.getActivity();
-        if(loadedApplications.stream()
-                .map(it -> it.getName())
+        if(activity != null && loadedApplications.stream()
+                .map(Application::getName)
                 .collect(Collectors.toList())
                 .contains(activity.getName())) {
             AlertController.showAlert("This name is already used by application.", Alert.AlertType.WARNING);
             return null;
         }
-        if (fromDate != null && toDate != null) {
+        if (activity != null && fromDate != null && toDate != null) {
             Timeline timeline = new Timeline(fromDate, toDate);
             timeline.addPeriod(fromDate, toDate);
             StatisticsManager.save(activity.getName(), timeline);
