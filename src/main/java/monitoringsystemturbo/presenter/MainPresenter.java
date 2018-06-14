@@ -33,6 +33,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static monitoringsystemturbo.utils.IconConverter.iconToFxImage;
 
@@ -170,6 +171,13 @@ public class MainPresenter {
             if (application != null) {
                 if (loadedApplications.contains(application)) {
                     AlertController.showAlert("Application already exist", Alert.AlertType.INFORMATION);
+                    return;
+                }
+                if (loadedApplications.stream()
+                        .map(Application::getName)
+                        .collect(Collectors.toList())
+                        .contains(application.getName())) {
+                    AlertController.showAlert("This name is already used by activity.", Alert.AlertType.WARNING);
                     return;
                 }
                 ConfigManager.createFileIfNeeded(application);
