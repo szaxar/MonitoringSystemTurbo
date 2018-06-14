@@ -63,7 +63,6 @@
 
 }
 
-
 .choice-box {
     -fx-background-color: controller-color;
     -fx-text-fill: text-color;
@@ -95,5 +94,8 @@
 
 .jfx-text-field {
     -fx-text-fill: background-text-color;
+}
 
+.list-view .list-cell:focused {
+    -fx-background-color: grey;
 }
