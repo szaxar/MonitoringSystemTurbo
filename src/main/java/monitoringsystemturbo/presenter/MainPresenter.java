@@ -194,9 +194,11 @@ public class MainPresenter {
     @FXML
     public void onAddActivity() {
         try {
-            Application application = applicationListController.showActivityView();
+            Application application = applicationListController.showActivityView(loadedApplications);
 
             if (application != null) {
+
+                ConfigManager.createFileIfNeeded(application);
 
                 if (loadedApplications.contains(application)) {
                     List<Timeline> timelines = StatisticsManager.load(application.getName());
@@ -211,7 +213,6 @@ public class MainPresenter {
                     return;
                 }
 
-                ConfigManager.createFileIfNeeded(application);
                 loadedApplications.add(application);
                 applicationList.setItems(FXCollections.observableList(loadedApplications));
                 ConfigManager.save(loadedApplications);
@@ -242,7 +243,9 @@ public class MainPresenter {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            trackingService.stopAppMonitoring(application.getName());
+            if (!application.getFullPath().equals("")) {
+                trackingService.stopAppMonitoring(application.getName());
+            }
             removeApplicationFromList(application);
         }
     }
@@ -267,7 +270,7 @@ public class MainPresenter {
     @FXML
     public void onExport() {
         try {
-            exportController.showExportView(mainExporter, trackingService);
+            exportController.showExportView(mainExporter, trackingService, loadedApplications);
         } catch (IOException e) {
             e.printStackTrace();
             AlertController.showAlert("Error occurred while export an activity.", Alert.AlertType.ERROR);

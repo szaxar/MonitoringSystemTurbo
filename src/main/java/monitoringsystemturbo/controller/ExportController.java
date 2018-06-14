@@ -7,9 +7,12 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import monitoringsystemturbo.exporter.MainExporter;
 import monitoringsystemturbo.model.TrackingService;
+import monitoringsystemturbo.model.app.Application;
 import monitoringsystemturbo.presenter.ExportPresenter;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ExportController {
 
@@ -19,7 +22,7 @@ public class ExportController {
         this.primaryStage = primaryStage;
     }
 
-    public void showExportView(MainExporter mainExporter, TrackingService trackingService) throws IOException {
+    public void showExportView(MainExporter mainExporter, TrackingService trackingService, List<Application> loadedApplications) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(this.getClass().getResource("/exportDateView.fxml"));
         Parent rootLayout = loader.load();
@@ -33,10 +36,14 @@ public class ExportController {
         exportPresenter.setPrimaryStage(dialogStage);
         exportPresenter.setMainExporter(mainExporter);
         exportPresenter.setTrackingService(trackingService);
+        exportPresenter.setLoadedApplicationNames(loadedApplications.stream()
+                .map(it -> it.getName())
+                .collect(Collectors.toList()));
         exportPresenter.reflesh();
 
         Scene scene = new Scene(rootLayout);
         dialogStage.setScene(scene);
         dialogStage.showAndWait();
     }
+
 }

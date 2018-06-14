@@ -27,6 +27,7 @@ public class ExportPresenter {
     private Stage primaryStage;
     private MainExporter mainExporter;
     private TrackingService trackingService;
+    private List<String> loadedApplicationNames;
     private List<String> applicationsToExport;
     private LocalDateTime fromTime;
     private LocalDateTime toTime;
@@ -76,7 +77,7 @@ public class ExportPresenter {
         } else {
             ConfirmExportController confirmExportController = new ConfirmExportController(primaryStage);
             try {
-                applicationsToExport = confirmExportController.showConfirmationAndGetAppList(trackingService.getApplicationsNames());
+                applicationsToExport = confirmExportController.showConfirmationAndGetAppList(loadedApplicationNames);
                 if (!confirmExportController.getCancelValue()) {
                     export();
                     AlertController.showAlert("Data exported successfully!", Alert.AlertType.INFORMATION);
@@ -160,6 +161,10 @@ public class ExportPresenter {
 
     public void setTrackingService(TrackingService trackingService) {
         this.trackingService = trackingService;
+    }
+
+    public void setLoadedApplicationNames(List<String> loadedApplicationNames) {
+        this.loadedApplicationNames = loadedApplicationNames;
     }
 
     public void setDisableToAllPickers(boolean isDisable) {

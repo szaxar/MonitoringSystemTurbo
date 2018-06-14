@@ -3,6 +3,7 @@ package monitoringsystemturbo.controller;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import monitoringsystemturbo.history.StatisticsManager;
@@ -13,6 +14,8 @@ import monitoringsystemturbo.presenter.AddApplicationPresenter;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ApplicationListController {
 
@@ -44,7 +47,7 @@ public class ApplicationListController {
         return addApplicationPresenter.getApplication();
     }
 
-    public Application showActivityView() throws IOException {
+    public Application showActivityView(List<Application> loadedApplications) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(this.getClass().getResource("/addActivity.fxml"));
         Parent rootLayout = loader.load();
@@ -65,7 +68,14 @@ public class ApplicationListController {
         Date fromDate = addActivityPresenter.getFromDate();
         Date toDate = addActivityPresenter.getToDate();
         Application activity = addActivityPresenter.getActivity();
-        if (fromDate != null && toDate != null) {
+        if(activity != null && loadedApplications.stream()
+                .map(Application::getName)
+                .collect(Collectors.toList())
+                .contains(activity.getName())) {
+            AlertController.showAlert("This name is already used by application.", Alert.AlertType.WARNING);
+            return null;
+        }
+        if (activity != null && fromDate != null && toDate != null) {
             Timeline timeline = new Timeline(fromDate, toDate);
             timeline.addPeriod(fromDate, toDate);
             StatisticsManager.save(activity.getName(), timeline);

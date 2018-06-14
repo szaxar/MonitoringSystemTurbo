@@ -18,10 +18,10 @@ import org.jnativehook.NativeHookException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 public class Main extends Application {
     private static final String APPLICATION_NAME = "MonitoringSystemTurbo";
@@ -52,9 +52,12 @@ public class Main extends Application {
             System.exit(1);
         }
         mainExporter = new MainExporter();
-        trackingService = new TrackingService(loadedApplications.stream()
-                .map(it -> it.getName())
-                .collect(Collectors.toList()));
+        List<String> names = new ArrayList<>();
+        for (monitoringsystemturbo.model.app.Application application : loadedApplications) {
+            if (!application.getFullPath().equals(""))
+                names.add(application.getName());
+        }
+        trackingService = new TrackingService(names);
         actionsMonitor = new ActionsMonitor(trackingService);
         initializeEventListeners();
         trackingService.start();
