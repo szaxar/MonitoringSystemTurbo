@@ -215,6 +215,7 @@ public class MainPresenter {
                 loadedApplications.add(application);
                 applicationList.setItems(FXCollections.observableList(loadedApplications));
                 ConfigManager.save(loadedApplications);
+                trackingService.addAppToMonitor(application.getName());
 
                 List<Timeline> timelines = StatisticsManager.load(application.getName());
                 TimelineElement timelineElement = new TimelineElement(application.getName(), timelines, (int) LocalDate.now().toEpochDay());
