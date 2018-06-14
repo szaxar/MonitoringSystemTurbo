@@ -4,6 +4,7 @@
     background-color: white;
     rippler-color: red;
     second-color: grey;
+    background-text-color: black;
 }
 
 .scroll-pane:focused {
@@ -52,16 +53,20 @@
 
 .list-view .list-cell:even {
     -fx-background-color: background-color;
+    -fx-text-fill: black;
+
 }
 .list-view .list-cell:odd {
     -fx-background-color: second-color;
+    -fx-text-fill: black;
+
 }
+
 
 .choice-box {
     -fx-background-color: controller-color;
     -fx-text-fill: text-color;
     -fx-mark-color: second-color;
-
 }
 
 .choice-box .context-menu {
@@ -80,4 +85,9 @@
 
 .choice-box .label {
     -fx-text-fill: text-color;
+}
+
+
+.label {
+    -fx-text-fill: background-text-color;
 }
