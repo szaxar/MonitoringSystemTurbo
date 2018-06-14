@@ -68,7 +68,16 @@ public class ApplicationListController {
         Date fromDate = addActivityPresenter.getFromDate();
         Date toDate = addActivityPresenter.getToDate();
         Application activity = addActivityPresenter.getActivity();
-        if(activity != null && loadedApplications.stream()
+        if (loadedApplications.contains(activity)) {
+            if (activity != null && fromDate != null && toDate != null) {
+                Timeline timeline = new Timeline(fromDate, toDate);
+                timeline.addPeriod(fromDate, toDate);
+                StatisticsManager.save(activity.getName(), timeline);
+            }
+
+            return activity;
+        }
+        if (activity != null && loadedApplications.stream()
                 .map(Application::getName)
                 .collect(Collectors.toList())
                 .contains(activity.getName())) {
