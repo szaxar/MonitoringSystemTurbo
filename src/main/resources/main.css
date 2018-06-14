@@ -32,6 +32,7 @@
 .jfx-check-box{
     -jfx-checked-color:controller-color;
     -jfx-unchecked-color: second-color;
+    -fx-text-fill: background-text-color;
 }
 
 .jfx-button {
@@ -90,4 +91,9 @@
 
 .label {
     -fx-text-fill: background-text-color;
+}
+
+.jfx-text-field {
+    -fx-text-fill: background-text-color;
+
 }
