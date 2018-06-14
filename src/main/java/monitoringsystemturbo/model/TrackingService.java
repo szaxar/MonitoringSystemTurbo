@@ -80,7 +80,7 @@ public class TrackingService {
                 return applicationService.getTimeline();
             }
         }
-        throw new IllegalStateException("You did not specify such an app to monitor!");
+        return new Timeline();
     }
 
     public Map<String, Timeline> getAllApplicationsStatistics() {
