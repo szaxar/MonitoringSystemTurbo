@@ -3,7 +3,8 @@
     controller-color: black;
     background-color: white;
     rippler-color: red;
-    second-color: grey;
+    second-color: #e9e9e9;
+    background-text-color: black;
 }
 
 .scroll-pane:focused {
@@ -31,6 +32,7 @@
 .jfx-check-box{
     -jfx-checked-color:controller-color;
     -jfx-unchecked-color: second-color;
+    -fx-text-fill: background-text-color;
 }
 
 .jfx-button {
@@ -52,16 +54,20 @@
 
 .list-view .list-cell:even {
     -fx-background-color: background-color;
+    -fx-text-fill: black;
+
 }
 .list-view .list-cell:odd {
     -fx-background-color: second-color;
+    -fx-text-fill: black;
+
 }
+
 
 .choice-box {
     -fx-background-color: controller-color;
     -fx-text-fill: text-color;
     -fx-mark-color: second-color;
-
 }
 
 .choice-box .context-menu {
@@ -80,4 +86,14 @@
 
 .choice-box .label {
     -fx-text-fill: text-color;
+}
+
+
+.label {
+    -fx-text-fill: background-text-color;
+}
+
+.jfx-text-field {
+    -fx-text-fill: background-text-color;
+
 }
