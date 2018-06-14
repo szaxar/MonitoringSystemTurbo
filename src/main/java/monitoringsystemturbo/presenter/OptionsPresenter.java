@@ -33,8 +33,10 @@ public class OptionsPresenter {
         String option = timeDurationChoiceBox.getValue().toString().split(" ")[0];
         if (option.equals("Off"))
             actionsMonitor.setExtendedMonitoring(false);
-        else
+        else {
+            actionsMonitor.setExtendedMonitoring(true);
             actionsMonitor.setStopTime(Integer.parseInt(option));
+        }
         primaryStage.close();
     }
 
