@@ -194,9 +194,11 @@ public class MainPresenter {
     @FXML
     public void onAddActivity() {
         try {
-            Application application = applicationListController.showActivityView();
+            Application application = applicationListController.showActivityView(loadedApplications);
 
             if (application != null) {
+
+                ConfigManager.createFileIfNeeded(application);
 
                 if (loadedApplications.contains(application)) {
                     List<Timeline> timelines = StatisticsManager.load(application.getName());
@@ -211,7 +213,6 @@ public class MainPresenter {
                     return;
                 }
 
-                ConfigManager.createFileIfNeeded(application);
                 loadedApplications.add(application);
                 applicationList.setItems(FXCollections.observableList(loadedApplications));
                 ConfigManager.save(loadedApplications);
