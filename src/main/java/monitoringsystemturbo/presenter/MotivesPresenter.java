@@ -35,7 +35,7 @@ public class MotivesPresenter {
     public static Color textColor = Color.WHITE;
     public static Color controllerColor = Color.BLACK;
     public static Color backgroundColor = Color.WHITE;
-    public static Color ripplerColor = Color.RED;
+    public static Color ripplerColor = Color.WHITE;
     public static Color secondColor = Color.GREY;
     public static Color backgroundTextColor = Color.BLACK;
 
