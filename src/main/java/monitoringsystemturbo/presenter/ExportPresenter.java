@@ -27,6 +27,7 @@ public class ExportPresenter {
     private Stage primaryStage;
     private MainExporter mainExporter;
     private TrackingService trackingService;
+    private List<String> loadedApplicationNames;
     private List<String> applicationsToExport;
     private LocalDateTime fromTime;
     private LocalDateTime toTime;
@@ -76,7 +77,7 @@ public class ExportPresenter {
         } else {
             ConfirmExportController confirmExportController = new ConfirmExportController(primaryStage);
             try {
-                applicationsToExport = confirmExportController.showConfirmationAndGetAppList(trackingService.getApplicationsNames());
+                applicationsToExport = confirmExportController.showConfirmationAndGetAppList(loadedApplicationNames);
                 if (!confirmExportController.getCancelValue()) {
                     export();
                     AlertController.showAlert("Data exported successfully!", Alert.AlertType.INFORMATION);
@@ -162,6 +163,10 @@ public class ExportPresenter {
         this.trackingService = trackingService;
     }
 
+    public void setLoadedApplications(List<String> loadedApplicationNames) {
+        this.loadedApplicationNames = loadedApplicationNames;
+    }
+
     public void setDisableToAllPickers(boolean isDisable) {
         toDatePicker.setDisable(isDisable);
         toTimePicker.setDisable(isDisable);
@@ -183,7 +188,7 @@ public class ExportPresenter {
         anchorPane.setStyle("text-color: #" + MotivesPresenter.textColor.toString().substring(2, 8) + ";" +
                 "controller-color: #" + MotivesPresenter.controllerColor.toString().substring(2, 8) + ";" +
                 "background-color: #" + MotivesPresenter.backgroundColor.toString().substring(2, 8) + ";" +
-                "rippler-color: #" + MotivesPresenter.ripplerColor.toString().substring(2, 8) + ";"+
+                "rippler-color: #" + MotivesPresenter.ripplerColor.toString().substring(2, 8) + ";" +
                 "second-color: #" + MotivesPresenter.secondColor.toString().substring(2, 8) + ";");
     }
 }

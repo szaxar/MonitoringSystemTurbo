@@ -215,7 +215,6 @@ public class MainPresenter {
                 loadedApplications.add(application);
                 applicationList.setItems(FXCollections.observableList(loadedApplications));
                 ConfigManager.save(loadedApplications);
-                trackingService.addAppToMonitor(application.getName());
 
                 List<Timeline> timelines = StatisticsManager.load(application.getName());
                 TimelineElement timelineElement = new TimelineElement(application.getName(), timelines, (int) LocalDate.now().toEpochDay());
@@ -243,7 +242,9 @@ public class MainPresenter {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            trackingService.stopAppMonitoring(application.getName());
+            if (!application.getFullPath().equals("")) {
+                trackingService.stopAppMonitoring(application.getName());
+            }
             removeApplicationFromList(application);
         }
     }
@@ -268,7 +269,7 @@ public class MainPresenter {
     @FXML
     public void onExport() {
         try {
-            exportController.showExportView(mainExporter, trackingService);
+            exportController.showExportView(mainExporter, trackingService, loadedApplications);
         } catch (IOException e) {
             e.printStackTrace();
             AlertController.showAlert("Error occurred while export an activity.", Alert.AlertType.ERROR);
@@ -346,7 +347,7 @@ public class MainPresenter {
         borderPane.setStyle("text-color: #" + MotivesPresenter.textColor.toString().substring(2, 8) + ";" +
                 "controller-color: #" + MotivesPresenter.controllerColor.toString().substring(2, 8) + ";" +
                 "background-color: #" + MotivesPresenter.backgroundColor.toString().substring(2, 8) + ";" +
-                "rippler-color: #" + MotivesPresenter.ripplerColor.toString().substring(2, 8) + ";"+
+                "rippler-color: #" + MotivesPresenter.ripplerColor.toString().substring(2, 8) + ";" +
                 "second-color: #" + MotivesPresenter.secondColor.toString().substring(2, 8) + ";");
     }
 }
