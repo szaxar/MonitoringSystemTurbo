@@ -163,7 +163,7 @@ public class ExportPresenter {
         this.trackingService = trackingService;
     }
 
-    public void setLoadedApplications(List<String> loadedApplicationNames) {
+    public void setLoadedApplicationNames(List<String> loadedApplicationNames) {
         this.loadedApplicationNames = loadedApplicationNames;
     }
 

@@ -36,7 +36,7 @@ public class ExportController {
         exportPresenter.setPrimaryStage(dialogStage);
         exportPresenter.setMainExporter(mainExporter);
         exportPresenter.setTrackingService(trackingService);
-        exportPresenter.setLoadedApplications(loadedApplications.stream()
+        exportPresenter.setLoadedApplicationNames(loadedApplications.stream()
                 .map(it -> it.getName())
                 .collect(Collectors.toList()));
         exportPresenter.reflesh();
