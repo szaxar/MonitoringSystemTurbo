@@ -123,7 +123,6 @@ public class MotivesPresenter {
     }
 
     public Color getbackgroundTextColor() {
-        System.out.println(backgroundColor);
         if (backgroundColor.equals(Color.BLACK)) return Color.WHITE;
         else return Color.BLACK;
     }

@@ -48,12 +48,13 @@
 .list-view .list-cell:even {
     -fx-background-color: background-color;
     -fx-text-fill: black;
-
 }
 .list-view .list-cell:odd {
     -fx-background-color: second-color;
     -fx-text-fill: black;
-
+}
+.list-view  {
+    -fx-background-color: background-color;
 }
 
 .choice-box {
