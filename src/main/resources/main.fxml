@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXListView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import monitoringsystemturbo.presenter.Legend?>
+
+<BorderPane fx:id="borderPane" prefHeight="800.0" prefWidth="1200.0" stylesheets="main.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="monitoringsystemturbo.presenter.MainPresenter">
+   <center>
+      <VBox spacing="15.0" BorderPane.alignment="CENTER">
+         <children>
+             <HBox spacing="5">
+               <children>
+                  <HBox HBox.hgrow="ALWAYS">
+                     <children>
+                        <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onPrevDay" text="&lt;" />
+                        <JFXDatePicker fx:id="datePicker"/>
+                        <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onNextDay" text="&gt;" />
+                     </children>
+                  </HBox>
+                  <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onMotives" text="Motives" />
+                  <AnchorPane prefHeight="31.0" prefWidth="23.0" />
+                  <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onExport" text="Export" />
+                  <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onOptions" text="Options"/>
+               </children>
+            </HBox>
+            <VBox alignment="TOP_RIGHT">
+               <children>
+                  <Legend fx:id="timelineLegend" alignment="TOP_RIGHT" spacing="5.0" />
+               </children>
+            </VBox>
+            <Pane fx:id="computerTimelineContainer" />
+            <ScrollPane fx:id="appTimelineContainer" VBox.vgrow="ALWAYS">
+               <content>
+                  <VBox fx:id="appTimelineList" spacing="10.0" />
+               </content>
+            </ScrollPane>
+         </children>
+         <padding>
+            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+         </padding>
+      </VBox>
+   </center>
+   <left>
+      <VBox prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <JFXListView fx:id="applicationList" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+            <HBox>
+               <children>
+                  <VBox spacing="5" HBox.hgrow="ALWAYS">
+                     <children>
+                        <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onAddApplication" text="Add app" />
+                        <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#onAddActivity" text="Add activity" />
+                     </children>
+                  </VBox>
+                  <JFXButton buttonType="RAISED" onAction="#onRemoveApplication" text="Delete">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </JFXButton>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
+   </left>
+</BorderPane>

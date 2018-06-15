@@ -1,0 +1,34 @@
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+targetCompatibility = 1.8
+sourceCompatibility = 1.8
+version = '0.1'
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'monitoringsystemturbo.Main'
+    }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+dependencies {
+    compile group: 'net.java.dev.jna', name: 'jna', version: '4.5.1'
+    compile group: 'net.java.dev.jna', name: 'jna-platform', version: '4.5.1'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.5'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.5'
+    compile group: 'commons-io', name: 'commons-io', version: '2.0.1'
+    compile 'com.jfoenix:jfoenix:8.0.4' // Java 8
+    compile group: 'com.1stleg', name: 'jnativehook', version: '2.1.0'
+
+    testImplementation 'junit:junit:4.12'
+}
